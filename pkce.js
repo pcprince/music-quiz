@@ -5,8 +5,8 @@
  *****************************************************************************/
 
 const clientId = 'b91c4f9175aa4b9d8ed6f43c23a5620c';
-const redirectUri = 'http://localhost:8000';
-// const redirectUri = 'https://pcprince.co.uk/music-quiz';
+// const redirectUri = 'http://localhost:8000';
+const redirectUri = 'https://pcprince.co.uk/music-quiz';
 
 const scope = 'streaming user-read-email user-read-private';
 const authUrl = new URL("https://accounts.spotify.com/authorize")
