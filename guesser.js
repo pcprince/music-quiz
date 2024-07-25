@@ -117,11 +117,13 @@ function prepareGame () {
 
     guessInput.addEventListener('keyup', () => {
 
+        const guess = guessInput.value;
+
         let matchIndex = -1;
 
         unguessedClips.forEach((clip, index) => {
 
-            const isMatch = isCloseMatch(guessInput.value, clip.songName);
+            const isMatch = isCloseMatch(guess, clip.songName);
 
             if (isMatch) {
 
@@ -132,6 +134,16 @@ function prepareGame () {
         });
 
         if (matchIndex !== -1) {
+
+            // Let user type final letter if that is the only difference
+
+            const likelyClipName = cleanString(unguessedClips[matchIndex].songName);
+
+            if (likelyClipName.substring(0, likelyClipName.length - 1) === guess) {
+
+                return;
+
+            }
 
             console.log('Matched with', matchIndex);
 
