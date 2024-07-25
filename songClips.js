@@ -4,38 +4,42 @@
  * July 2024
  *****************************************************************************/
 
+// https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1?si=fd6faea231064972
+
+/* global token, createSongUI, prepareGame */
+
 // Song clip JSON structure
-// let songClips = [
-//     {
-//         songName: "99 Red Balloons",
-//         artist: "Goldfinger",
-//         startTime: 30,
-//         clipLength: 5
-//     },
-//     {
-//         songName: "Undone - The Sweater Song",
-//         artist: "Weezer",
-//         startTime: 60,
-//         clipLength: 5
-//     },
-//     {
-//         songName: "September",
-//         artist: "Earth, Wind & Fire",
-//         startTime: 20,
-//         clipLength: 5
-//     }
-// ];
+const fixedSongs = [
+    {
+        songName: '99 Red Balloons',
+        artist: 'Goldfinger',
+        startTime: 30,
+        clipLength: 5
+    },
+    {
+        songName: 'Undone - The Sweater Song',
+        artist: 'Weezer',
+        startTime: 60,
+        clipLength: 5
+    },
+    {
+        songName: 'September',
+        artist: 'Earth, Wind & Fire',
+        startTime: 20,
+        clipLength: 5
+    }
+];
 
 const DISTANCE_FROM_START_MS = 10000;
 const DISTANCE_FROM_END_MS = 10000;
 
 let songClips = [];
 
-async function getRandomSongsFromSpotifyRadio(playlistId, numberOfSongs, token) {
+async function getRandomSongsFromSpotifyRadio (playlistId, numberOfSongs, token) {
 
     const allTracks = [];
-    let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`; // Initial URL with maximum limit
-    
+    let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+
     try {
 
         // Fetch all tracks from the playlist
@@ -49,7 +53,9 @@ async function getRandomSongsFromSpotifyRadio(playlistId, numberOfSongs, token) 
             });
 
             if (!response.ok) {
+
                 throw new Error('Network response was not ok');
+
             }
 
             const data = await response.json();
@@ -71,9 +77,14 @@ async function getRandomSongsFromSpotifyRadio(playlistId, numberOfSongs, token) 
             const minStartTime = DISTANCE_FROM_START_MS; // Avoid the first 10 seconds
             const startTime = Math.floor(Math.random() * (maxStartTime - minStartTime + 1)) + minStartTime;
 
+            // Specific remasters seem to break the search
+            const trackName = track.name.split(' - ')[0];
+
             return {
-                songName: track.name,
+                songName: trackName,
+                // TODO: This may cause issues when guessing the name of an artist for a song with multiple artists
                 artist: track.artists.map(artist => artist.name).join(', '),
+                uri: track.uri,
                 startTime: Math.floor(startTime / 1000), // Convert to seconds
                 clipLength: 5 // Always 5 seconds
             };
@@ -90,30 +101,100 @@ async function getRandomSongsFromSpotifyRadio(playlistId, numberOfSongs, token) 
 }
 
 // Helper function to get a random subset of an array
-function getRandomSubset(array, size) {
+function getRandomSubset (array, size) {
 
     const shuffled = array.slice().sort(() => 0.5 - Math.random());
     return shuffled.slice(0, size);
 
 }
 
-function populateClipList () {
+async function searchTrack (songName, artist) {
+
+    const query = encodeURIComponent(`track:${songName} artist:${artist}`);
+
+    try {
+
+        const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=1`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+
+            const data = await response.json();
+
+            console.log(data);
+
+            if (data.tracks.items.length > 0) {
+
+                const track = data.tracks.items[0];
+
+                return track.uri;
+
+            } else {
+
+                console.error('Track not found');
+                return null;
+
+            }
+
+        } else {
+
+            console.error('Error fetching song URI:', response.status, response.statusText);
+            return null;
+
+        }
+
+    } catch (error) {
+
+        console.error('Error occurred while fetching song URI:', error);
+        return null;
+
+    }
+
+}
+
+function processSongList (songs) {
+
+    songClips = songs;
+
+    songClips = songClips.map((clip, index) => ({
+        ...clip,
+        index
+    }));
+
+    // Add URI to each song
+
+    for (let i = 0; i < songClips.length; i++) {
+
+        const clip = songClips[i];
+
+        if (!clip.uri) {
+
+            searchTrack(clip.songName, clip.artist).then(uri => {
+
+                songClips[i].uri = uri;
+
+            });
+
+        }
+
+    }
+
+    createSongUI();
+
+    prepareGame();
+
+}
+
+async function populateClipList () {
+
+    console.log('Populating clip list...');
 
     const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
 
-    getRandomSongsFromSpotifyRadio(playlistId, 20, token).then(songs => {
-    
-        songClips = songs;
-    
-        songClips = songClips.map((clip, index) => ({
-            ...clip,
-            index: index
-        }));
-    
-        createSongUI();
-    
-        prepareGame();
-    
-    });
+    const songs = await getRandomSongsFromSpotifyRadio(playlistId, 20, token);
+    processSongList(songs);
 
 }
