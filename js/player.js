@@ -190,8 +190,6 @@ function playClip (trackUri, startTime, clipLength) {
 
             clipTimeout = setTimeout(() => {
 
-                console.log('Stopping:', currentClipIndex);
-
                 if (currentClipIndex < songClips.length - 1) {
 
                     currentClipIndex++;
@@ -242,6 +240,8 @@ function playClipsSequentially () {
 }
 
 function stopClip () {
+
+    console.log('Stopping:', currentClipIndex);
 
     clearTimeout(clipTimeout);
 

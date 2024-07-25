@@ -61,10 +61,7 @@ function cleanString (str) {
     // Step 4: Replace & or lone N with "and"
     cleaned = cleaned.replace(/&|(\bN\b)/g, 'and');
 
-    // Step 5: Remove all occurrences of "the"
-    cleaned = cleaned.replace(/\bthe\b/gi, '');
-
-    // Step 6: Remove all spaces
+    // Step 5: Remove all spaces
     cleaned = cleaned.replace(/\s+/g, '');
 
     return cleaned.toLowerCase();
@@ -139,7 +136,7 @@ function prepareGame () {
 
             const likelyClipName = cleanString(unguessedClips[matchIndex].songName);
 
-            if (likelyClipName.substring(0, likelyClipName.length - 1) === guess) {
+            if (likelyClipName.substring(0, likelyClipName.length - 1) === cleanString(guess)) {
 
                 return;
 
