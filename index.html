@@ -7,24 +7,33 @@
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </head>
 <body>
-    <button id="play-button">Play Clips</button>
+    <span id="timer-span">00:00</span>
+    <button id="start-timer-button" disabled>Start</button>
+    <button id="pause-timer-button" style="width: 60px;" disabled>Pause</button>
+    <button id="resume-timer-button" style="width: 60px; display: none;">Resume</button>
+    <br><br>
+    <button id="play-button" disabled>Play Clips</button>
     <button id="stop-button" disabled>Stop</button>
     <button id="resume-button" disabled>Resume</button>
     <button id="prev-button" disabled>Previous</button>
     <button id="next-button" disabled>Next</button>
     <br><br>
+    <span id="score-span">-</span>/<span id="max-score-span">-</span>
+    <br><br>
     <span id="clip-info">Clip: -</span>
     <br><br>
     <div id="song-ui-container"></div>
     <br>
-    <input id="guess-input">
+    <input id="guess-input" disabled>
     <br><br>
-    <button id="give-up-button">Give Up</button>
+    <button id="give-up-button" disabled>Give Up</button>
 </body>
 
 <script src="js/pkce.js"></script>
 <script src="js/songClips.js"></script>
 <script src="js/guesser.js"></script>
 <script src="js/player.js"></script>
+<script src="js/timer.js"></script>
+<script src="js/game.js"></script>
 
 </html>

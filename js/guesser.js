@@ -5,10 +5,11 @@
  *****************************************************************************/
 
 /* global songClips */
+/* global endGame, updateScore */
 
 const MAX_DISTANCE = 1;
 
-let playButtons, songNameSpans, hyphenSpans, artistSpans;
+let playClipButtons, songNameSpans, hyphenSpans, artistSpans;
 
 const guessInput = document.getElementById('guess-input');
 const giveUpButton = document.getElementById('give-up-button');
@@ -103,9 +104,9 @@ function updateGuessUI (playingIndex) {
 
 }
 
-function prepareGame () {
+function prepareUI () {
 
-    playButtons = document.getElementsByClassName('play-button');
+    playClipButtons = document.getElementsByClassName('play-button');
     songNameSpans = document.getElementsByClassName('song-name-span');
     hyphenSpans = document.getElementsByClassName('hyphen-span');
     artistSpans = document.getElementsByClassName('artist-span');
@@ -150,18 +151,12 @@ function prepareGame () {
 
             unguessedClips.splice(matchIndex, 1);
 
-        }
-
-    });
-
-    giveUpButton.addEventListener('click', () => {
-
-        for (let i = 0; i < unguessedClips.length; i++) {
-
-            revealSong(i, 'red');
+            updateScore();
 
         }
 
     });
+
+    giveUpButton.addEventListener('click', endGame);
 
 }

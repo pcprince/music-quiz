@@ -8,13 +8,12 @@
 /* global token, songClips, updateGuessUI */
 
 // Define browser elements at the top of the script
-const playButton = document.getElementById('play-button');
+const playAllButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 const resumeButton = document.getElementById('resume-button');
 const prevButton = document.getElementById('prev-button');
 const nextButton = document.getElementById('next-button');
 const clipInfo = document.getElementById('clip-info');
-const songUiContainer = document.getElementById('song-ui-container');
 
 let currentClipIndex = 0;
 let clipTimeout;
@@ -30,64 +29,7 @@ function playSpecificClip (index) {
 
 }
 
-function createSongUI () {
-
-    songClips.forEach((clip, index) => {
-
-        const button = document.createElement('button');
-        button.textContent = `Play ${index + 1}`;
-        button.classList.add('play-button');
-
-        button.addEventListener('click', () => {
-
-            stopButton.disabled = false;
-            resumeButton.disabled = true;
-            prevButton.disabled = false;
-            nextButton.disabled = false;
-
-            playSpecificClip(index);
-
-        });
-
-        songUiContainer.appendChild(button);
-
-        // Add song name
-
-        const songNameSpan = document.createElement('span');
-        songNameSpan.textContent = '???????';
-        songNameSpan.classList.add('song-name-span');
-        songNameSpan.style.marginLeft = '5px';
-
-        songUiContainer.appendChild(songNameSpan);
-
-        // Add hyphen between song name and artist
-
-        const hyphenSpan = document.createElement('span');
-        hyphenSpan.textContent = '-';
-        hyphenSpan.style.marginLeft = '5px';
-        hyphenSpan.classList.add('hyphen-span');
-
-        songUiContainer.appendChild(hyphenSpan);
-
-        // Add artist
-
-        const artistSpan = document.createElement('span');
-        artistSpan.textContent = '???????';
-        artistSpan.classList.add('artist-span');
-        artistSpan.style.marginLeft = '5px';
-
-        songUiContainer.appendChild(artistSpan);
-
-        // Add newline
-
-        // TODO: Make this a row
-        songUiContainer.appendChild(document.createElement('br'));
-
-    });
-
-}
-
-function connectToPlayer () {
+function connectToPlayer (readyCallback) {
 
     player = new Spotify.Player({
         name: 'Spotify Clip Player',
@@ -117,7 +59,7 @@ function connectToPlayer () {
 
         resetUI();
 
-        playButton.addEventListener('click', () => {
+        playAllButton.addEventListener('click', () => {
 
             playClipsSequentially(songClips);
             stopButton.disabled = false;
@@ -154,6 +96,8 @@ function connectToPlayer () {
             nextClip();
 
         });
+
+        readyCallback();
 
     });
 
@@ -241,7 +185,11 @@ function playClipsSequentially () {
 
 function stopClip () {
 
-    console.log('Stopping:', currentClipIndex);
+    if (currentClipIndex !== -1) {
+
+        console.log('Stopping:', currentClipIndex);
+
+    }
 
     clearTimeout(clipTimeout);
 
@@ -327,8 +275,19 @@ function resetUI () {
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
+// TODO: Timer
+// TODO: Table
+
 // TODO: Don't generate quiz until function is called to do so
-// TODO: Artist score
-// TODO: Select from an array of playlists
+// TODO: Artist score/custom scoring
+
+// TODO: Select from an array of playlists preselected playlists (All On 90s, etc.)
 // TODO: Paste in playlist URL
 // TODO: Combine multiple playlists
+// TODO: Load sporacle quizzes
+
+// TODO: Help button which reselects clip and adds 5 seconds to timer
+
+// TODO: Interface
+
+// TODO: Album mode

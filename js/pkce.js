@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global localStorage, location */
-/* global populateClipList, connectToPlayer */
+/* global prepareGame */
 
 const clientId = 'b91c4f9175aa4b9d8ed6f43c23a5620c';
 const redirectUri = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
@@ -96,8 +96,7 @@ async function authorise () {
 
         token = response.access_token;
 
-        await populateClipList();
-        connectToPlayer();
+        prepareGame();
 
     } else {
 

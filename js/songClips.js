@@ -6,7 +6,10 @@
 
 // https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1?si=fd6faea231064972
 
-/* global token, createSongUI, prepareGame */
+/* global token, prepareUI */
+/* global stopButton, resumeButton, prevButton, nextButton, playSpecificClip */
+
+const songUiContainer = document.getElementById('song-ui-container');
 
 // Song clip JSON structure
 const fixedSongs = [
@@ -155,6 +158,65 @@ async function searchTrack (songName, artist) {
 
 }
 
+function createSongUI () {
+
+    songClips.forEach((clip, index) => {
+
+        const playClipButton = document.createElement('button');
+        playClipButton.textContent = `Play ${index + 1}`;
+        playClipButton.classList.add('play-button');
+        playClipButton.id = `play-clip-button${index}`;
+        playClipButton.disabled = true;
+
+        playClipButton.addEventListener('click', () => {
+
+            stopButton.disabled = false;
+            resumeButton.disabled = true;
+            prevButton.disabled = false;
+            nextButton.disabled = false;
+
+            playSpecificClip(index);
+
+        });
+
+        songUiContainer.appendChild(playClipButton);
+
+        // Add song name
+
+        const songNameSpan = document.createElement('span');
+        songNameSpan.textContent = '???????';
+        songNameSpan.classList.add('song-name-span');
+        songNameSpan.style.marginLeft = '5px';
+
+        songUiContainer.appendChild(songNameSpan);
+
+        // Add hyphen between song name and artist
+
+        const hyphenSpan = document.createElement('span');
+        hyphenSpan.textContent = '-';
+        hyphenSpan.style.marginLeft = '5px';
+        hyphenSpan.classList.add('hyphen-span');
+
+        songUiContainer.appendChild(hyphenSpan);
+
+        // Add artist
+
+        const artistSpan = document.createElement('span');
+        artistSpan.textContent = '???????';
+        artistSpan.classList.add('artist-span');
+        artistSpan.style.marginLeft = '5px';
+
+        songUiContainer.appendChild(artistSpan);
+
+        // Add newline
+
+        // TODO: Make this a row
+        songUiContainer.appendChild(document.createElement('br'));
+
+    });
+
+}
+
 function processSongList (songs) {
 
     songClips = songs;
@@ -184,7 +246,7 @@ function processSongList (songs) {
 
     createSongUI();
 
-    prepareGame();
+    prepareUI();
 
 }
 
