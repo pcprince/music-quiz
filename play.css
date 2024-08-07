@@ -11,3 +11,7 @@
 #stop-button, #resume-button {
     width: 82px;
 }
+
+#prepare-button {
+    width: 125px;
+}

@@ -63,15 +63,18 @@ function endGame () {
 
 }
 
-async function prepareGame () {
+async function prepareGame (playlistId, readyCallback) {
 
-    await populateClipList();
+    await populateClipList(playlistId);
 
     connectToPlayer(() => {
 
         initialiseScore();
 
         console.log('Game is ready');
+
+        readyCallback();
+
         startTimerButton.disabled = false;
 
     });

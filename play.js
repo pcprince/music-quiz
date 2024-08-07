@@ -5,12 +5,43 @@
  *****************************************************************************/
 
 /* global authorise, prepareGame */
+/* global spotifyReady */
+/* global bootstrap */
 
-window.onSpotifyWebPlaybackSDKReady = () => {
+const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
+    backdrop: 'static',
+    keyboard: false
+});
 
-    authorise(prepareGame);
+const prepareButton = document.getElementById('prepare-button');
+
+prepareButton.addEventListener('click', () => {
+
+    if (spotifyReady) {
+
+        prepareButton.disabled = true;
+        prepareButton.innerText = 'Preparing...';
+
+        // TODO: Read from UI or use a default one
+        const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
+
+        prepareGame(playlistId, () => {
+
+            startModal.hide();
+
+        });
+
+    }
+
+});
+
+window.onload = () => {
+
+    startModal.show();
 
 };
+
+window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started

@@ -5,7 +5,6 @@
  *****************************************************************************/
 
 /* global localStorage, location */
-/* global prepareGame */
 
 const clientId = 'b91c4f9175aa4b9d8ed6f43c23a5620c';
 let redirectUri = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
@@ -15,6 +14,8 @@ const scope = 'streaming user-read-email user-read-private';
 const authUrl = new URL('https://accounts.spotify.com/authorize');
 
 let token;
+
+let spotifyReady;
 
 async function sha256 (plain) {
 
@@ -63,7 +64,7 @@ async function redirect () {
 
 }
 
-async function authorise (successCallback) {
+async function authorise () {
 
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -97,11 +98,7 @@ async function authorise (successCallback) {
 
         token = response.access_token;
 
-        if (successCallback) {
-
-            successCallback();
-
-        }
+        spotifyReady = true;
 
     } else {
 

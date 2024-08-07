@@ -4,7 +4,7 @@
  * July 2024
  *****************************************************************************/
 
-// https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1?si=fd6faea231064972
+// https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1
 
 /* global token, prepareUI */
 /* global stopButton, resumeButton, prevButton, nextButton, playSpecificClip */
@@ -250,11 +250,9 @@ function processSongList (songs) {
 
 }
 
-async function populateClipList () {
+async function populateClipList (playlistId) {
 
     console.log('Populating clip list...');
-
-    const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
 
     const songs = await getRandomSongsFromSpotifyRadio(playlistId, 20, token);
     processSongList(songs);
