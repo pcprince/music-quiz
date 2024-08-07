@@ -8,7 +8,8 @@
 /* global prepareGame */
 
 const clientId = 'b91c4f9175aa4b9d8ed6f43c23a5620c';
-const redirectUri = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
+let redirectUri = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
+redirectUri += '/play.html';
 
 const scope = 'streaming user-read-email user-read-private';
 const authUrl = new URL('https://accounts.spotify.com/authorize');
@@ -105,5 +106,3 @@ async function authorise () {
     }
 
 }
-
-window.onSpotifyWebPlaybackSDKReady = authorise;
