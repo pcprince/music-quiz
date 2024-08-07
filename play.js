@@ -4,14 +4,17 @@
  * August 2024
  *****************************************************************************/
 
-/* global authorise */
+/* global authorise, prepareGame */
 
-window.onSpotifyWebPlaybackSDKReady = authorise;
+window.onSpotifyWebPlaybackSDKReady = () => {
+
+    authorise(prepareGame);
+
+};
 
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Timer
 // TODO: Table
 
 // TODO: Don't generate quiz until function is called to do so

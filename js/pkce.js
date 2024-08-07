@@ -63,7 +63,7 @@ async function redirect () {
 
 }
 
-async function authorise () {
+async function authorise (successCallback) {
 
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -97,7 +97,11 @@ async function authorise () {
 
         token = response.access_token;
 
-        prepareGame();
+        if (successCallback) {
+
+            successCallback();
+
+        }
 
     } else {
 

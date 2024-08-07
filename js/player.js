@@ -8,7 +8,6 @@
 /* global token, songClips, updateGuessUI */
 
 // Define browser elements at the top of the script
-const playAllButton = document.getElementById('play-button');
 const stopButton = document.getElementById('stop-button');
 const resumeButton = document.getElementById('resume-button');
 const prevButton = document.getElementById('prev-button');
@@ -26,6 +25,26 @@ function playSpecificClip (index) {
     currentClipIndex = index;
     playNextClip();
     updateClipInfo();
+
+}
+
+function setStopResumeShown (stopShown) {
+
+    stopButton.style.display = stopShown ? '' : 'none';
+    resumeButton.style.display = stopShown ? 'none' : '';
+
+}
+
+function playAll () {
+
+    playClipsSequentially(songClips);
+
+    stopButton.disabled = false;
+    resumeButton.disabled = true;
+    setStopResumeShown(true);
+
+    prevButton.disabled = false;
+    nextButton.disabled = false;
 
 }
 
@@ -59,43 +78,11 @@ function connectToPlayer (readyCallback) {
 
         resetUI();
 
-        playAllButton.addEventListener('click', () => {
+        stopButton.addEventListener('click', stopClip);
+        resumeButton.addEventListener('click', resumeClip);
 
-            playClipsSequentially(songClips);
-            stopButton.disabled = false;
-            resumeButton.disabled = true;
-            prevButton.disabled = false;
-            nextButton.disabled = false;
-
-        });
-
-        stopButton.addEventListener('click', () => {
-
-            stopClip();
-            stopButton.disabled = true;
-            resumeButton.disabled = false;
-
-        });
-
-        resumeButton.addEventListener('click', () => {
-
-            resumeClip();
-            stopButton.disabled = false;
-            resumeButton.disabled = true;
-
-        });
-
-        prevButton.addEventListener('click', () => {
-
-            previousClip();
-
-        });
-
-        nextButton.addEventListener('click', () => {
-
-            nextClip();
-
-        });
+        prevButton.addEventListener('click', previousClip);
+        nextButton.addEventListener('click', nextClip);
 
         readyCallback();
 
@@ -109,6 +96,7 @@ function playClip (trackUri, startTime, clipLength) {
 
     stopButton.disabled = false;
     resumeButton.disabled = true;
+    setStopResumeShown(true);
 
     console.log('Playing:', currentClipIndex);
 
@@ -191,6 +179,10 @@ function stopClip () {
 
     }
 
+    stopButton.disabled = true;
+    resumeButton.disabled = false;
+    setStopResumeShown(false);
+
     clearTimeout(clipTimeout);
 
     fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
@@ -209,6 +201,10 @@ function stopClip () {
 function resumeClip () {
 
     if (isStopped) {
+
+        stopButton.disabled = false;
+        resumeButton.disabled = true;
+        setStopResumeShown(true);
 
         playNextClip();
 
@@ -244,11 +240,11 @@ function updateClipInfo () {
 
     if (currentClipIndex === -1) {
 
-        clipInfo.textContent = 'Clip: -';
+        clipInfo.textContent = '-';
 
     } else {
 
-        clipInfo.textContent = `Clip: ${currentClipIndex + 1} / ${songClips.length}`;
+        clipInfo.textContent = `${currentClipIndex + 1} / ${songClips.length}`;
 
     }
 
@@ -267,9 +263,9 @@ function resetUI () {
 
     stopButton.disabled = true;
     resumeButton.disabled = true;
+    setStopResumeShown(false);
+
     prevButton.disabled = true;
     nextButton.disabled = true;
 
 }
-
-// https://developer.spotify.com/dashboard

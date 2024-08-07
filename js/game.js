@@ -4,8 +4,8 @@
  * July 2024
  *****************************************************************************/
 
-/* global populateClipList, connectToPlayer, endTimer */
-/* global playAllButton, playClipButtons, startTimerButton, stopButton, resumeButton, prevButton, nextButton */
+/* global populateClipList, connectToPlayer, endTimer, playAll */
+/* global playClipButtons, startTimerButton */
 /* global guessInput, giveUpButton, unguessedClips, revealSong */
 /* global songClips */
 
@@ -15,6 +15,12 @@ const maxScoreSpan = document.getElementById('max-score-span');
 function updateScore () {
 
     scoreSpan.innerText = songClips.length - unguessedClips.length;
+
+    if (unguessedClips.length === 0) {
+
+        endGame();
+
+    }
 
 }
 
@@ -33,7 +39,7 @@ function startGame () {
 
     }
 
-    playAllButton.disabled = false;
+    playAll();
 
     guessInput.disabled = false;
     giveUpButton.disabled = false;
@@ -42,23 +48,13 @@ function startGame () {
 
 function endGame () {
 
-    for (let i = 0; i < playClipButtons.length; i++) {
-
-        playClipButtons[i].disabled = true;
-
-    }
-
     for (let i = 0; i < unguessedClips.length; i++) {
 
         revealSong(i, 'red');
 
     }
 
-    playAllButton.disabled = true;
-    stopButton.disabled = true;
-    resumeButton.disabled = true;
-    prevButton.disabled = true;
-    nextButton.disabled = true;
+    stopClip();
 
     guessInput.disabled = true;
     giveUpButton.disabled = true;

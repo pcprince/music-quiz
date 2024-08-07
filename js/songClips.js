@@ -164,14 +164,14 @@ function createSongUI () {
 
         const playClipButton = document.createElement('button');
         playClipButton.textContent = `Play ${index + 1}`;
-        playClipButton.classList.add('play-button');
+        playClipButton.classList.add('play-button', 'btn', 'btn-secondary');
         playClipButton.id = `play-clip-button${index}`;
         playClipButton.disabled = true;
 
         playClipButton.addEventListener('click', () => {
 
-            stopButton.disabled = false;
-            resumeButton.disabled = true;
+            stopButton.style.display = '';
+            resumeButton.style.display = 'none';
             prevButton.disabled = false;
             nextButton.disabled = false;
 
