@@ -7,3 +7,7 @@
     width: 69px;
     font-size: small !important;
 }
+
+#stop-button, #resume-button {
+    width: 82px;
+}
