@@ -13,14 +13,28 @@ const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
     keyboard: false
 });
 
-const prepareButton = document.getElementById('prepare-button');
+const playlistChooseButton = document.getElementById('playlist-choose-button');
+const quickplayButton = document.getElementById('quickplay-button');
+const playlistURLButton = document.getElementById('playlist-url-button');
 
-prepareButton.addEventListener('click', () => {
+const startModalContentHome = document.getElementById('start-modal-content-home');
+const startModalContentChoose = document.getElementById('start-modal-content-choose');
+const startModalContentUrl = document.getElementById('start-modal-content-url');
+
+const cancelPlaylistChooseButton = document.getElementById('cancel-playlist-choose-button');
+const playPlaylistChooseButton = document.getElementById('play-playlist-choose-button');
+
+const cancelPlaylistUrlButton = document.getElementById('cancel-playlist-url-button');
+const playPlaylistUrlButton = document.getElementById('play-playlist-url-button');
+
+quickplayButton.addEventListener('click', () => {
 
     if (spotifyReady) {
 
-        prepareButton.disabled = true;
-        prepareButton.innerText = 'Preparing...';
+        playlistChooseButton.disabled = true;
+        quickplayButton.disabled = true;
+        playlistURLButton.disabled = true;
+        quickplayButton.innerText = 'Preparing...';
 
         // TODO: Read from UI or use a default one
         const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
@@ -35,10 +49,83 @@ prepareButton.addEventListener('click', () => {
 
 });
 
+playPlaylistChooseButton.addEventListener('click', () => {
+
+    // if (spotifyReady) {
+
+    //     choosePlaylistButton.disabled = true;
+    //     quickplayButton.disabled = true;
+    //     playlistURLButton.disabled = true;
+    //     quickplayButton.innerText = 'Preparing...';
+
+    //     const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
+
+    //     prepareGame(playlistId, () => {
+
+    //         startModal.hide();
+
+    //     });
+
+    // }
+
+});
+
+playPlaylistUrlButton.addEventListener('click', () => {
+
+    // if (spotifyReady) {
+
+    //     choosePlaylistButton.disabled = true;
+    //     quickplayButton.disabled = true;
+    //     playlistURLButton.disabled = true;
+    //     quickplayButton.innerText = 'Preparing...';
+
+    //     const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
+
+    //     prepareGame(playlistId, () => {
+
+    //         startModal.hide();
+
+    //     });
+
+    // }
+
+});
+
+function showStartModalHome () {
+
+    startModalContentHome.style.display = '';
+    startModalContentChoose.style.display = 'none';
+    startModalContentUrl.style.display = 'none';
+
+}
+
+function showStartModalChoose () {
+
+    startModalContentHome.style.display = 'none';
+    startModalContentChoose.style.display = '';
+    startModalContentUrl.style.display = 'none';
+
+}
+
+function showStartModalUrl () {
+
+    startModalContentHome.style.display = 'none';
+    startModalContentChoose.style.display = 'none';
+    startModalContentUrl.style.display = '';
+
+}
+
+playlistChooseButton.addEventListener('click', showStartModalChoose);
+playlistURLButton.addEventListener('click', showStartModalUrl);
+
+cancelPlaylistChooseButton.addEventListener('click', showStartModalHome);
+cancelPlaylistUrlButton.addEventListener('click', showStartModalHome);
+
 function enablePrepareUI() {
 
-    // TODO: Change this to include all UI in modal
-    prepareButton.disabled = false;
+    playlistChooseButton.disabled = false;
+    quickplayButton.disabled = false;
+    playlistURLButton.disabled = false;
 
 }
 
@@ -58,10 +145,10 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // TODO: Combine multiple playlists
 // TODO: Load sporacle quizzes
 
-// TODO: Help button which reselects clip and adds 5 seconds to timer
-
 // TODO: Table
 // TODO: Interface
 
 // TODO: Artist score/custom scoring
 // TODO: Album mode
+
+// TODO: "Guessed at x:xx"

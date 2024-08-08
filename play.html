@@ -9,21 +9,78 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <!-- TODO: Add modal with playlist URL input/selection https://getbootstrap.com/docs/5.3/components/modal/ -->
     <!-- Playlist selection modal -->
-    <div class="modal fade" id="start-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal modal-lg fade" id="start-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <!-- Modal content home -->
+                <div class="modal-content" id="start-modal-content-home">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify Quiz</h1>
                     </div>
                     <div class="modal-body">
-                        Select a playlist to draw from.
+                        This is a music quiz app by Peter.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="prepare-button" disabled>Prepare Quiz</button>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4" style="text-align: center;">
+                                    <button type="button" class="btn btn-primary start-modal-btn" id="playlist-choose-button" disabled>Choose Playlist</button>
+                                </div>
+                                <div class="col-4" style="text-align: center;">
+                                    <button type="button" class="btn btn-success start-modal-btn" id="quickplay-button" disabled>Quickplay</button>
+                                </div>
+                                <div class="col-4" style="text-align: center;">
+                                    <button type="button" class="btn btn-primary start-modal-btn" id="playlist-url-button" disabled>Enter Playlist URL</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Modal content choose -->
+                <div class="modal-content" id="start-modal-content-choose" style="display: none;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify Quiz</h1>
+                    </div>
+                    <div class="modal-body">
+                        Choose a playlist
+                    </div>
+                    <div class="modal-footer">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6" style="text-align: center;">
+                                    <button type="button" class="btn btn-secondary start-modal-btn" id="cancel-playlist-choose-button">Cancel</button>
+                                </div>
+                                <div class="col-6" style="text-align: center;">
+                                    <button type="button" class="btn btn-success start-modal-btn" id="play-playlist-choose-button">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal content URL -->
+                <div class="modal-content" id="start-modal-content-url" style="display: none;">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify Quiz</h1>
+                    </div>
+                    <div class="modal-body">
+                        Enter a URL
+                    </div>
+                    <div class="modal-footer">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6" style="text-align: center;">
+                                    <button type="button" class="btn btn-secondary start-modal-btn" id="cancel-playlist-url-button">Cancel</button>
+                                </div>
+                                <div class="col-6" style="text-align: center;">
+                                    <button type="button" class="btn btn-primary start-modal-btn" id="play-playlist-url-button">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
     </div>
 
