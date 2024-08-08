@@ -6,12 +6,15 @@
 
 /* global Spotify */
 /* global token, songClips, updateGuessUI */
+/* global helpButton */
 
 // Define browser elements at the top of the script
 const stopButton = document.getElementById('stop-button');
 const resumeButton = document.getElementById('resume-button');
+
 const prevButton = document.getElementById('prev-button');
 const nextButton = document.getElementById('next-button');
+
 const clipInfo = document.getElementById('clip-info');
 
 let currentClipIndex = 0;
@@ -19,6 +22,9 @@ let clipTimeout;
 let isStopped = false;
 let player;
 let deviceId;
+
+let stopAttempts = 0;
+const MAX_STOP_ATTEMPTS = 5;
 
 function playSpecificClip (index) {
 
@@ -173,6 +179,15 @@ function playClipsSequentially () {
 
 function stopClip () {
 
+    stopAttempts++;
+
+    if (stopAttempts > MAX_STOP_ATTEMPTS) {
+
+        console.error('Failed to stop playback after ' + MAX_STOP_ATTEMPTS + ' attempts. Giving up.');
+        return;
+
+    }
+
     if (currentClipIndex !== -1) {
 
         console.log('Stopping:', currentClipIndex);
@@ -190,9 +205,19 @@ function stopClip () {
         headers: {
             'Authorization': `Bearer ${token}`
         }
-    }).then(() => {
+    }).then((response) => {
 
-        isStopped = true;
+        if (response.ok) {
+
+            isStopped = true;
+            stopAttempts = 0;
+
+        } else {
+
+            console.log('Failed to stop clip. Trying again...');
+            stopClip();
+
+        }
 
     });
 
@@ -267,5 +292,7 @@ function resetUI () {
 
     prevButton.disabled = true;
     nextButton.disabled = true;
+
+    helpButton.disabled = true;
 
 }

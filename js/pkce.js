@@ -5,10 +5,11 @@
  *****************************************************************************/
 
 /* global localStorage, location */
+/* global enablePrepareUI */
 
 const clientId = 'b91c4f9175aa4b9d8ed6f43c23a5620c';
-let redirectUri = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
-redirectUri += '/play.html';
+const homeURL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8000' : 'https://pcprince.co.uk/music-quiz';
+const redirectURL = homeURL + '/play.html';
 
 const scope = 'streaming user-read-email user-read-private';
 const authUrl = new URL('https://accounts.spotify.com/authorize');
@@ -56,7 +57,7 @@ async function redirect () {
         scope,
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
-        redirect_uri: redirectUri
+        redirect_uri: redirectURL
     };
 
     authUrl.search = new URLSearchParams(params).toString();
@@ -82,7 +83,7 @@ async function authorise () {
                 client_id: clientId,
                 grant_type: 'authorization_code',
                 code,
-                redirect_uri: redirectUri,
+                redirect_uri: redirectURL,
                 code_verifier: codeVerifier
             })
         };
@@ -92,13 +93,31 @@ async function authorise () {
         const body = await fetch(url, payload);
         const response = await body.json();
 
-        localStorage.setItem('access_token', response.access_token);
+        if (response.access_token) {
 
-        console.log('Obtained access token:', response.access_token);
+            localStorage.setItem('access_token', response.access_token);
 
-        token = response.access_token;
+            console.log('Obtained access token:', response.access_token);
 
-        spotifyReady = true;
+            token = response.access_token;
+
+            spotifyReady = true;
+
+            enablePrepareUI();
+
+        } else {
+
+            console.error('Failed to verify code');
+            console.error('Error:', response.error);
+            console.log('Redirecting to home page in 3 seconds...');
+
+            setTimeout(() => {
+
+                window.location.href = homeURL;
+
+            }, 3000);
+
+        }
 
     } else {
 

@@ -6,10 +6,21 @@
 
 // https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1
 
-/* global token, prepareUI */
-/* global stopButton, resumeButton, prevButton, nextButton, playSpecificClip */
+/* global bootstrap */
+/* global token, currentClipIndex */
+/* global stopButton, resumeButton, prevButton, nextButton */
+/* global prepareUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip */
 
 const songUiContainer = document.getElementById('song-ui-container');
+
+const helpButton = document.getElementById('help-button');
+const helpModal = new bootstrap.Modal(document.getElementById('help-modal'), {
+    backdrop: 'static',
+    keyboard: false
+});
+const reselectNumberSpan = document.getElementById('reselect-number-span');
+const cancelReselectButton = document.getElementById('cancel-reselect-button');
+const reselectButton = document.getElementById('reselect-button');
 
 // Song clip JSON structure
 const fixedSongs = [
@@ -37,6 +48,21 @@ const DISTANCE_FROM_START_MS = 10000;
 const DISTANCE_FROM_END_MS = 10000;
 
 let songClips = [];
+
+function selectRandomClip (durationMs) {
+
+    // Ensure that the start time is within valid range
+    const maxStartTime = Math.max(0, durationMs - DISTANCE_FROM_END_MS - 5000); // Last 10 seconds + 5 seconds clip length
+    const minStartTime = DISTANCE_FROM_START_MS; // Avoid the first 10 seconds
+    let startTime = Math.floor(Math.random() * (maxStartTime - minStartTime + 1)) + minStartTime;
+    startTime = Math.floor(startTime / 1000);
+
+    let clipLength = 5000; // Always 5 seconds
+    clipLength = Math.floor(clipLength / 1000);
+
+    return {startTime, clipLength};
+
+}
 
 async function getRandomSongsFromSpotifyRadio (playlistId, numberOfSongs, token) {
 
@@ -75,21 +101,19 @@ async function getRandomSongsFromSpotifyRadio (playlistId, numberOfSongs, token)
             const track = item.track;
             const durationMs = track.duration_ms; // Track duration in milliseconds
 
-            // Ensure that the start time is within valid range
-            const maxStartTime = Math.max(0, durationMs - DISTANCE_FROM_END_MS - 5000); // Last 10 seconds + 5 seconds clip length
-            const minStartTime = DISTANCE_FROM_START_MS; // Avoid the first 10 seconds
-            const startTime = Math.floor(Math.random() * (maxStartTime - minStartTime + 1)) + minStartTime;
+            const randomClip = selectRandomClip(durationMs);
 
             // Specific remasters seem to break the search
             const trackName = track.name.split(' - ')[0];
 
             return {
                 songName: trackName,
-                // TODO: This may cause issues when guessing the name of an artist for a song with multiple artists
+                // FIXME: This may cause issues when guessing the name of an artist for a song with multiple artists. Replace with array and check array
                 artist: track.artists.map(artist => artist.name).join(', '),
+                durationMs: track.duration_ms,
                 uri: track.uri,
-                startTime: Math.floor(startTime / 1000), // Convert to seconds
-                clipLength: 5 // Always 5 seconds
+                startTime: randomClip.startTime, // Convert to seconds
+                clipLength: randomClip.clipLength
             };
 
         });
@@ -133,7 +157,7 @@ async function searchTrack (songName, artist) {
 
                 const track = data.tracks.items[0];
 
-                return track.uri;
+                return track;
 
             } else {
 
@@ -234,9 +258,14 @@ function processSongList (songs) {
 
         if (!clip.uri) {
 
-            searchTrack(clip.songName, clip.artist).then(uri => {
+            searchTrack(clip.songName, clip.artist).then(track => {
 
-                songClips[i].uri = uri;
+                if (track) {
+
+                    songClips[i].uri = track.uri;
+                    songClips[i].durationMs = track.durationMs;
+
+                }
 
             });
 
@@ -258,3 +287,41 @@ async function populateClipList (playlistId) {
     processSongList(songs);
 
 }
+
+helpButton.addEventListener('click', () => {
+
+    reselectNumberSpan.innerText = currentClipIndex + 1;
+
+    stopClip();
+    pauseTimer();
+
+    helpModal.show();
+
+});
+
+cancelReselectButton.addEventListener('click', () => {
+
+    resumeClip();
+    resumeTimer();
+
+    helpModal.hide();
+
+});
+
+reselectButton.addEventListener('click', () => {
+
+    const newRandomClip = selectRandomClip(songClips[currentClipIndex].durationMs);
+
+    console.log('Updated clip ' + currentClipIndex + '. ' + songClips[currentClipIndex].startTime + ' -> ' + newRandomClip.startTime);
+
+    songClips[currentClipIndex].startTime = newRandomClip.startTime;
+    songClips[currentClipIndex].clipLength = newRandomClip.clipLength;
+
+    addSecondsToTimer(5);
+
+    resumeClip();
+    resumeTimer();
+
+    helpModal.hide();
+
+});

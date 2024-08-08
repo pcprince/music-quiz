@@ -4,50 +4,101 @@
  * July 2024
  *****************************************************************************/
 
-/* global startGame, endGame */
+/* global bootstrap */
+/* global startGame, endGame, stopClip */
 
 const timerSpan = document.getElementById('timer-span');
 const startTimerButton = document.getElementById('start-timer-button');
 const pauseTimerButton = document.getElementById('pause-timer-button');
 const resumeTimerButton = document.getElementById('resume-timer-button');
 
+const pauseModal = new bootstrap.Modal(document.getElementById('pause-modal'), {
+    backdrop: 'static',
+    keyboard: false
+});
+
+const GAME_LENGTH = 15 * 60 * 1000;
+
 let timeRemaining = 0;
-let tickTimeout;
-let timerPaused = false;
+let timerInterval;
+let isPaused = true;
+let lastUpdateTime = Date.now();
 
-function updateTimerSpan () {
+function formatTime (ms) {
 
-    const minsRemaining = Math.floor(timeRemaining / 60);
-    const secsRemaining = timeRemaining - (minsRemaining * 60);
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
 
-    timerSpan.innerText = String(minsRemaining).padStart(2, '0') + ':' + String(secsRemaining).padStart(2, '0');
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
 }
 
-function tickTimer () {
+function updateTimer () {
 
-    updateTimerSpan();
+    const now = Date.now();
+    const elapsed = now - lastUpdateTime;
 
-    if (timeRemaining <= 0) {
+    if (!isPaused) {
 
-        endTimer();
-        endGame();
+        timeRemaining -= elapsed;
 
-        return;
+        if (timeRemaining <= 0) {
+
+            clearInterval(timerInterval);
+            timeRemaining = 0;
+
+            endGame();
+
+        }
 
     }
 
-    timeRemaining--;
+    lastUpdateTime = now;
+    timerSpan.textContent = formatTime(timeRemaining);
 
-    tickTimeout = setTimeout(tickTimer, 1000);
+}
+
+function resumeTimer () {
+
+    if (isPaused) {
+
+        isPaused = false;
+        lastUpdateTime = Date.now();
+        timerInterval = setInterval(updateTimer, 100);
+
+    }
+
+}
+
+function pauseTimer () {
+
+    if (!isPaused) {
+
+        isPaused = true;
+        clearInterval(timerInterval);
+
+    }
+
+}
+
+function endTimer () {
+
+    clearInterval(timerInterval);
+
+    pauseTimerButton.disabled = true;
+    resumeTimerButton.disabled = true;
 
 }
 
 function startTimer () {
 
-    timeRemaining = 15 * 60;
+    timeRemaining = GAME_LENGTH;
 
-    updateTimerSpan();
+    lastUpdateTime = Date.now();
+    timerInterval = setInterval(updateTimer, 100);
+
+    isPaused = false;
 
     pauseTimerButton.disabled = false;
     resumeTimerButton.disabled = false;
@@ -55,53 +106,29 @@ function startTimer () {
 
     startGame();
 
-    tickTimer();
-
 }
 
-function pauseTimer () {
+function addSecondsToTimer (t) {
 
-    if (timerPaused) {
-
-        return;
-
-    }
-
-    clearTimeout(tickTimeout);
-
-    timerPaused = true;
-
-    pauseTimerButton.style.display = 'none';
-    resumeTimerButton.style.display = '';
-
-}
-
-function resumeTimer () {
-
-    if (!timerPaused) {
-
-        return;
-
-    }
-
-    timerPaused = false;
-
-    resumeTimerButton.style.display = 'none';
-    pauseTimerButton.style.display = '';
-
-    tickTimer();
-
-}
-
-function endTimer () {
-
-    clearTimeout(tickTimeout);
-
-    pauseTimerButton.disabled = true;
-    resumeTimerButton.disabled = true;
+    timeRemaining += t * 1000;
 
 }
 
 startTimerButton.addEventListener('click', startTimer);
-pauseTimerButton.addEventListener('click', pauseTimer);
-resumeTimerButton.addEventListener('click', resumeTimer);
+
+pauseTimerButton.addEventListener('click', () => {
+
+    pauseModal.show();
+
+    pauseTimer();
+    stopClip();
+
+});
+
+resumeTimerButton.addEventListener('click', () => {
+
+    pauseModal.hide();
+
+    resumeTimer();
+
+});

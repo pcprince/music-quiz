@@ -10,6 +10,7 @@
 </head>
 <body>
     <!-- TODO: Add modal with playlist URL input/selection https://getbootstrap.com/docs/5.3/components/modal/ -->
+    <!-- Playlist selection modal -->
     <div class="modal fade" id="start-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -20,17 +21,48 @@
                         Select a playlist to draw from.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="prepare-button">Prepare Quiz</button>
+                        <button type="button" class="btn btn-primary" id="prepare-button" disabled>Prepare Quiz</button>
                     </div>
                 </div>
             </div>
+    </div>
+
+    <!-- Help modal -->
+    <div class="modal fade" id="help-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Reselect Clip <span id="reselect-number-span">0</span></h1>
+                </div>
+                <div class="modal-body">
+                    If the current clip is impossible to guess (such as if a period of silence was selected), you can have a new clip randomly selected and 5 seconds added to the clock.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-reselect-button">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="reselect-button">Reselect Clip</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause modal -->
+    <div class="modal modal-sm fade" id="pause-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="justify-content: center;">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Paused</h1>
+                </div>
+                <div class="modal-footer" style="justify-content: center;">
+                    <button type="button" class="btn btn-success" id="resume-timer-button">Resume</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <span id="timer-span">00:00</span>
     <button class="btn btn-primary btn-timer" id="start-timer-button" disabled>Start</button>
 
     <button class="btn btn-primary btn-timer" id="pause-timer-button" disabled>Pause</button>
-    <button class="btn btn-primary btn-timer" id="resume-timer-button" style="display: none;">Resume</button>
 
     <button class="btn btn-primary" id="give-up-button" disabled>Give Up</button>
     <br><br>
@@ -46,6 +78,8 @@
     <input id="guess-input" disabled>
     <br>
     <span>Score: </span><span id="score-span">-</span>/<span id="max-score-span">-</span>
+    <br>
+    <button class="btn btn-danger" id="help-button" disabled>Help</button>
     <br><br>
     <div id="song-ui-container"></div>
 

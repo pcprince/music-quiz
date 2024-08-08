@@ -4,8 +4,8 @@
  * July 2024
  *****************************************************************************/
 
-/* global populateClipList, connectToPlayer, endTimer, playAll */
-/* global playClipButtons, startTimerButton */
+/* global populateClipList, connectToPlayer, endTimer, playAll, stopClip */
+/* global playClipButtons, startTimerButton, helpButton */
 /* global guessInput, giveUpButton, unguessedClips, revealSong */
 /* global songClips */
 
@@ -43,6 +43,8 @@ function startGame () {
 
     guessInput.disabled = false;
     giveUpButton.disabled = false;
+
+    helpButton.disabled = false;
 
 }
 
