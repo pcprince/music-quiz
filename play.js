@@ -37,9 +37,11 @@ quickplayButton.addEventListener('click', () => {
         quickplayButton.innerText = 'Preparing...';
 
         // TODO: Read from UI or use a default one
-        const playlistId = '5Rrf7mqN8uus2AaQQQNdc1';
+        const playlistIdArray = ['540hMK8BIBAC2hzxsDXSNu'];
+        // const playlistIdArray = ['5Rrf7mqN8uus2AaQQQNdc1'];
+        const songCount = 5;
 
-        prepareGame(playlistId, () => {
+        prepareGame(playlistIdArray, songCount, () => {
 
             startModal.hide();
 
@@ -140,6 +142,10 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
+// TODO: Rewrite playlist function to accept array of playlist IDs and pull a number from each
+
+// TODO: Enter random seed and number
+
 // TODO: Select from an array of playlists preselected playlists (All On 90s, etc.)
 // TODO: Paste in playlist URL
 // TODO: Combine multiple playlists
@@ -152,3 +158,6 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // TODO: Album mode
 
 // TODO: "Guessed at x:xx"
+
+// TODO: Detect "ing" -> in' (specific cases?)
+// TODO: Checkbox for skipping correct guesses on playback

@@ -23,13 +23,16 @@ let isStopped = false;
 let player;
 let deviceId;
 
-let stopAttempts = 0;
-const MAX_STOP_ATTEMPTS = 5;
+let retryStopCount = 0;
+const MAX_STOP_ATTEMPTS = 3;
+
+let retryPlaybackCount = 0;
+const MAX_PLAYBACK_ATTEMPTS = 3;
 
 function playSpecificClip (index) {
 
     currentClipIndex = index;
-    playNextClip();
+    playCurrentClip();
     updateClipInfo();
 
 }
@@ -43,7 +46,8 @@ function setStopResumeShown (stopShown) {
 
 function playAll () {
 
-    playClipsSequentially(songClips);
+    currentClipIndex = 0;
+    playCurrentClip();
 
     stopButton.disabled = false;
     resumeButton.disabled = true;
@@ -72,7 +76,31 @@ function connectToPlayer (readyCallback) {
     player.addListener('initialization_error', ({message}) => {console.error(message);});
     player.addListener('authentication_error', ({message}) => {console.error(message);});
     player.addListener('account_error', ({message}) => {console.error(message);});
-    player.addListener('playback_error', ({message}) => {console.error(message);});
+    player.addListener('playback_error', async ({message}) => {
+
+        console.error(message);
+
+        if (retryPlaybackCount < MAX_PLAYBACK_ATTEMPTS) {
+
+            // If track fails to play, try again a couple of times with a 1 second delay between each attempt
+
+            retryPlaybackCount++;
+            console.log('Retrying...');
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            playSpecificClip(currentClipIndex);
+
+        } else {
+
+            console.error('Max retries reached. Giving up.');
+            retryPlaybackCount = 0;
+
+            nextClip();
+
+        }
+
+    });
     /* eslint-disable padded-blocks, block-spacing */
 
     // Ready
@@ -110,49 +138,45 @@ function playClip (trackUri, startTime, clipLength) {
 
     clearTimeout(clipTimeout);
 
-    return fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            uris: [trackUri],
-            position_ms: startTime * 1000
-        }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    }).then(response => {
+    try {
 
-        if (response.ok) {
+        return fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                uris: [trackUri],
+                position_ms: startTime * 1000
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => {
 
-            isStopped = false;
+            if (response.ok) {
 
-            clipTimeout = setTimeout(() => {
+                retryPlaybackCount = 0;
 
-                if (currentClipIndex < songClips.length - 1) {
+                isStopped = false;
 
-                    currentClipIndex++;
-                    playNextClip();
+                clipTimeout = setTimeout(nextClip, clipLength * 1000);
 
-                } else {
+            } else {
 
-                    stopClip();
-                    resetUI(); // Reset UI when the last clip finishes
+                throw new Error('Error playing track', currentClipIndex);
 
-                }
+            }
 
-            }, clipLength * 1000);
+        });
 
-        } else {
+    } catch (error) {
 
-            console.error('Failed to play the track');
+        console.error(error);
 
-        }
-
-    });
+    }
 
 }
 
-function playNextClip () {
+function playCurrentClip () {
 
     const clip = songClips[currentClipIndex];
 
@@ -170,18 +194,11 @@ function playNextClip () {
 
 }
 
-function playClipsSequentially () {
-
-    currentClipIndex = 0;
-    playNextClip();
-
-}
-
 function stopClip () {
 
-    stopAttempts++;
+    retryStopCount++;
 
-    if (stopAttempts > MAX_STOP_ATTEMPTS) {
+    if (retryStopCount > MAX_STOP_ATTEMPTS) {
 
         console.error('Failed to stop playback after ' + MAX_STOP_ATTEMPTS + ' attempts. Giving up.');
         return;
@@ -210,7 +227,7 @@ function stopClip () {
         if (response.ok) {
 
             isStopped = true;
-            stopAttempts = 0;
+            retryStopCount = 0;
 
         } else {
 
@@ -231,7 +248,7 @@ function resumeClip () {
         resumeButton.disabled = true;
         setStopResumeShown(true);
 
-        playNextClip();
+        playCurrentClip();
 
     }
 
@@ -243,7 +260,7 @@ function previousClip () {
 
         currentClipIndex--;
         stopClip();
-        playNextClip();
+        playCurrentClip();
 
     }
 
@@ -254,8 +271,12 @@ function nextClip () {
     if (currentClipIndex < songClips.length - 1) {
 
         currentClipIndex++;
+        playCurrentClip();
+
+    } else {
+
         stopClip();
-        playNextClip();
+        resetUI(); // Reset UI when the last clip finishes
 
     }
 

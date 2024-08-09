@@ -18,6 +18,7 @@ const helpModal = new bootstrap.Modal(document.getElementById('help-modal'), {
     backdrop: 'static',
     keyboard: false
 });
+
 const reselectNumberSpan = document.getElementById('reselect-number-span');
 const cancelReselectButton = document.getElementById('cancel-reselect-button');
 const reselectButton = document.getElementById('reselect-button');
@@ -243,18 +244,16 @@ function createSongUI () {
 
 function processSongList (songs) {
 
-    songClips = songs;
-
-    songClips = songClips.map((clip, index) => ({
+    songs = songs.map((clip, index) => ({
         ...clip,
         index
     }));
 
     // Add URI to each song
 
-    for (let i = 0; i < songClips.length; i++) {
+    for (let i = 0; i < songs.length; i++) {
 
-        const clip = songClips[i];
+        const clip = songs[i];
 
         if (!clip.uri) {
 
@@ -262,8 +261,8 @@ function processSongList (songs) {
 
                 if (track) {
 
-                    songClips[i].uri = track.uri;
-                    songClips[i].durationMs = track.durationMs;
+                    songs[i].uri = track.uri;
+                    songs[i].durationMs = track.durationMs;
 
                 }
 
@@ -273,18 +272,52 @@ function processSongList (songs) {
 
     }
 
-    createSongUI();
-
-    prepareUI();
+    return songs;
 
 }
 
-async function populateClipList (playlistId) {
+async function populateClipList (playlistIdArray, songCount) {
 
     console.log('Populating clip list...');
 
-    const songs = await getRandomSongsFromSpotifyRadio(playlistId, 20, token);
-    processSongList(songs);
+    const playListCount = playlistIdArray.length;
+
+    let trackCounts;
+
+    if (playlistIdArray.length === 1) {
+
+        trackCounts = [songCount];
+
+    } else {
+
+        // Calculate how many tracks should come from each array
+
+        const baseValue = Math.floor(songCount / playListCount);
+        trackCounts = Array(playListCount).fill(baseValue);
+
+        const remainder = songCount - (baseValue * playListCount);
+
+        trackCounts[playListCount - 1] += remainder;
+
+    }
+
+    songClips = [];
+
+    for (let i = 0; i < playListCount; i++) {
+
+        const playlistId = playlistIdArray[i];
+        const trackCount = trackCounts[i];
+
+        let newSongs = await getRandomSongsFromSpotifyRadio(playlistId, trackCount, token);
+        newSongs = processSongList(newSongs);
+
+        songClips = songClips.concat(newSongs);
+
+    }
+
+    createSongUI();
+
+    prepareUI();
 
 }
 

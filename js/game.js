@@ -65,9 +65,9 @@ function endGame () {
 
 }
 
-async function prepareGame (playlistId, readyCallback) {
+async function prepareGame (playlistIdArray, songCount, readyCallback) {
 
-    await populateClipList(playlistId);
+    await populateClipList(playlistIdArray, songCount);
 
     connectToPlayer(() => {
 
