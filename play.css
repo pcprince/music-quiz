@@ -15,3 +15,8 @@
 .start-modal-btn {
     width: 150px;
 }
+
+.error-span {
+    color: red;
+    font-weight: bold;
+}

@@ -23,6 +23,12 @@
                     <div class="modal-footer">
                         <div class="container">
                             <div class="row">
+                                <div class="col-12" style="text-align: center;">
+                                    <span>Total song count:</span>
+                                    <input id="quickplay-song-count-input" type="number" value="20" style="width: 75px;">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
                                 <div class="col-4" style="text-align: center;">
                                     <button type="button" class="btn btn-primary start-modal-btn" id="playlist-choose-button" disabled>Choose Playlist</button>
                                 </div>
@@ -43,11 +49,19 @@
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify Quiz</h1>
                     </div>
                     <div class="modal-body">
-                        Choose a playlist
+                        Hold control to select multiple playlists.
+                        <br><br>
+                        <select id="playlist-choose-select" class="form-select" multiple aria-label="select" size="5" style="min-height: 300px;"></select>
                     </div>
                     <div class="modal-footer">
                         <div class="container">
                             <div class="row">
+                                <div class="col-12" style="text-align: center;">
+                                    <span>Total song count:</span>
+                                    <input id="playlist-choose-song-count-input" type="number" value="20" style="width: 75px;">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
                                 <div class="col-6" style="text-align: center;">
                                     <button type="button" class="btn btn-secondary start-modal-btn" id="cancel-playlist-choose-button">Cancel</button>
                                 </div>
@@ -65,11 +79,24 @@
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify Quiz</h1>
                     </div>
                     <div class="modal-body">
-                        Enter a URL
+                        Enter a URL:
+                        <input id="playlist-url-input" style="min-width: 450px;">
+                        <button class="btn btn-secondary" id="playlist-url-add-button" style="font-size: small;">Add</button>
+                        <button class="btn btn-secondary" id="playlist-url-remove-button" style="font-size: small;">Remove</button>
+                        <br><br>
+                        <select id="playlist-url-select" class="form-select" multiple aria-label="select" size="5" style="min-height: 300px;"></select>
+                        <br>
+                        <span id="playlist-url-error-span" class="error-span"></span>
                     </div>
                     <div class="modal-footer">
                         <div class="container">
                             <div class="row">
+                                <div class="col-12" style="text-align: center;">
+                                    <span>Total song count:</span>
+                                    <input id="playlist-url-song-count-input" type="number" value="20" style="width: 75px;">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
                                 <div class="col-6" style="text-align: center;">
                                     <button type="button" class="btn btn-secondary start-modal-btn" id="cancel-playlist-url-button">Cancel</button>
                                 </div>

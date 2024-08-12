@@ -12,6 +12,8 @@
 const scoreSpan = document.getElementById('score-span');
 const maxScoreSpan = document.getElementById('max-score-span');
 
+let gameStarted = false;
+
 function updateScore () {
 
     scoreSpan.innerText = songClips.length - unguessedClips.length;
@@ -32,6 +34,8 @@ function initialiseScore () {
 }
 
 function startGame () {
+
+    gameStarted = true;
 
     for (let i = 0; i < playClipButtons.length; i++) {
 

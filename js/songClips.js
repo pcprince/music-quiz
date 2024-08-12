@@ -65,7 +65,7 @@ function selectRandomClip (durationMs) {
 
 }
 
-async function getRandomSongsFromSpotifyRadio (playlistId, numberOfSongs, token) {
+async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token) {
 
     const allTracks = [];
     let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
@@ -242,40 +242,6 @@ function createSongUI () {
 
 }
 
-function processSongList (songs) {
-
-    songs = songs.map((clip, index) => ({
-        ...clip,
-        index
-    }));
-
-    // Add URI to each song
-
-    for (let i = 0; i < songs.length; i++) {
-
-        const clip = songs[i];
-
-        if (!clip.uri) {
-
-            searchTrack(clip.songName, clip.artist).then(track => {
-
-                if (track) {
-
-                    songs[i].uri = track.uri;
-                    songs[i].durationMs = track.durationMs;
-
-                }
-
-            });
-
-        }
-
-    }
-
-    return songs;
-
-}
-
 async function populateClipList (playlistIdArray, songCount) {
 
     console.log('Populating clip list...');
@@ -308,12 +274,38 @@ async function populateClipList (playlistIdArray, songCount) {
         const playlistId = playlistIdArray[i];
         const trackCount = trackCounts[i];
 
-        let newSongs = await getRandomSongsFromSpotifyRadio(playlistId, trackCount, token);
-        newSongs = processSongList(newSongs);
+        const newSongs = await getRandomSongsFromPlaylist(playlistId, trackCount, token);
+
+        // Process songs (add URI and index)
+
+        for (let i = 0; i < newSongs.length; i++) {
+
+            newSongs[i].index = i + songClips.length;
+
+            const clip = newSongs[i];
+
+            if (!clip.uri) {
+
+                searchTrack(clip.songName, clip.artist).then(track => {
+
+                    if (track) {
+
+                        newSongs[i].uri = track.uri;
+                        newSongs[i].durationMs = track.durationMs;
+
+                    }
+
+                });
+
+            }
+
+        }
 
         songClips = songClips.concat(newSongs);
 
     }
+
+    console.log(songClips);
 
     createSongUI();
 

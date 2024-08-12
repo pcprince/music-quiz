@@ -7,6 +7,7 @@
 /* global Spotify */
 /* global token, songClips, updateGuessUI */
 /* global helpButton */
+/* global gameStarted */
 
 // Define browser elements at the top of the script
 const stopButton = document.getElementById('stop-button');
@@ -79,6 +80,12 @@ function connectToPlayer (readyCallback) {
     player.addListener('playback_error', async ({message}) => {
 
         console.error(message);
+
+        if (!gameStarted) {
+
+            return;
+
+        }
 
         if (retryPlaybackCount < MAX_PLAYBACK_ATTEMPTS) {
 
