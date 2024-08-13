@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global bootstrap */
-/* global authorise, prepareGame */
+/* global authorise, populateClipList, loadClipListFromFile, prepareGame */
 /* global token, spotifyReady */
 
 const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
@@ -49,6 +49,8 @@ const playlistChooseIds = [
     '5Rrf7mqN8uus2AaQQQNdc1', // 500 Greatest Songs of All Time
     '3ycsMKOg7CXaxcdNI36ogX' // NME's 500 Greatest Songs of All Time
 ];
+
+let chooseOpened = false;
 
 function extractPlaylistID (playlistUrl) {
 
@@ -186,7 +188,7 @@ playlistUrlRemoveButton.addEventListener('click', () => {
 
 });
 
-quickplayButton.addEventListener('click', () => {
+quickplayButton.addEventListener('click', async () => {
 
     if (spotifyReady) {
 
@@ -197,17 +199,15 @@ quickplayButton.addEventListener('click', () => {
 
         const songCount = Math.max(quickplaySongCountInput.value, 1);
 
-        prepareGame(['5Rrf7mqN8uus2AaQQQNdc1'], songCount, () => {
+        await loadClipListFromFile(songCount);
 
-            startModal.hide();
-
-        });
+        prepareGame();
 
     }
 
 });
 
-playlistChoosePlayButton.addEventListener('click', () => {
+playlistChoosePlayButton.addEventListener('click', async () => {
 
     if (spotifyReady) {
 
@@ -223,23 +223,29 @@ playlistChoosePlayButton.addEventListener('click', () => {
 
         const playlistIds = [];
 
-        // TODO: Get all selected values
+        for (let i = 0; i < playlistChooseSelect.options.length; i++) {
 
-        console.log(playlistChooseSelect.value);
+            const option = playlistChooseSelect.options[i];
 
-        // const songCount = Math.max(playlistChooseSongCountInput.value, 1);
+            if (option.selected) {
 
-        // prepareGame(playlistIds, songCount, () => {
+                playlistIds.push(option.value);
 
-        //     startModal.hide();
+            }
 
-        // });
+        }
+
+        const songCount = Math.max(playlistChooseSongCountInput.value, 1);
+
+        await populateClipList(playlistIds, songCount);
+
+        prepareGame();
 
     }
 
 });
 
-playlistUrlPlayButton.addEventListener('click', () => {
+playlistUrlPlayButton.addEventListener('click', async () => {
 
     if (spotifyReady) {
 
@@ -256,11 +262,9 @@ playlistUrlPlayButton.addEventListener('click', () => {
 
         const songCount = Math.max(playlistUrlSongCountInput.value, 1);
 
-        prepareGame(playlistIdArray, songCount, () => {
+        await populateClipList(playlistIdArray, songCount);
 
-            startModal.hide();
-
-        });
+        prepareGame();
 
     }
 
@@ -274,7 +278,45 @@ function showStartModalHome () {
 
 }
 
-function showStartModalChoose () {
+async function showStartModalChoose () {
+
+    if (!chooseOpened) {
+
+        playlistChooseButton.innerText = 'Loading...';
+
+        playlistChooseButton.disabled = true;
+        quickplayButton.disabled = true;
+        playlistUrlButton.disabled = true;
+
+        quickplaySongCountInput.disabled = true;
+
+        chooseOpened = true;
+
+        // Populate playlist choose select
+
+        for (let i = 0; i < playlistChooseIds.length; i++) {
+
+            const playlistInfo = await getPlayListInformation(playlistChooseIds[i]);
+
+            const option = document.createElement('option');
+            option.value = playlistChooseIds[i];
+            option.text = playlistInfo.name + ' (' + playlistInfo.trackCount + ' songs)';
+
+            playlistChooseSelect.appendChild(option);
+
+        }
+
+        // Re-enable UI
+
+        playlistChooseButton.innerText = 'Choose Playlist';
+
+        playlistChooseButton.disabled = false;
+        quickplayButton.disabled = false;
+        playlistUrlButton.disabled = false;
+
+        quickplaySongCountInput.disabled = false;
+
+    }
 
     startModalContentHome.style.display = 'none';
     startModalContentChoose.style.display = '';
@@ -298,22 +340,6 @@ playlistUrlCancelButton.addEventListener('click', showStartModalHome);
 
 async function enablePrepareUI() {
 
-    // Populate playlist choose select
-
-    // TODO: Run this when choose button is pressed for the first time
-
-    for (let i = 0; i < playlistChooseIds.length; i++) {
-
-        const playlistInfo = await getPlayListInformation(playlistChooseIds[i]);
-
-        const option = document.createElement('option');
-        option.value = playlistChooseIds[i];
-        option.text = playlistInfo.name + ' (' + playlistInfo.trackCount + ' songs)';
-
-        playlistChooseSelect.appendChild(option);
-
-    }
-
     // Enable buttons
 
     playlistChooseButton.disabled = false;
@@ -335,7 +361,7 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Rewrite playlist function to accept array of playlist IDs and pull a number from each
+// TODO: Add ability to create a quiz from scratch rather than re-authenticating
 
 // TODO: Enter random seed and number
 

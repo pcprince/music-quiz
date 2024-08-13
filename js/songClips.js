@@ -11,6 +11,8 @@
 /* global stopButton, resumeButton, prevButton, nextButton */
 /* global prepareUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip */
 
+const CLIP_LENGTH_MS = 8000;
+
 const songUiContainer = document.getElementById('song-ui-container');
 
 const helpButton = document.getElementById('help-button');
@@ -23,28 +25,6 @@ const reselectNumberSpan = document.getElementById('reselect-number-span');
 const cancelReselectButton = document.getElementById('cancel-reselect-button');
 const reselectButton = document.getElementById('reselect-button');
 
-// Song clip JSON structure
-const fixedSongs = [
-    {
-        songName: '99 Red Balloons',
-        artist: 'Goldfinger',
-        startTime: 30,
-        clipLength: 5
-    },
-    {
-        songName: 'Undone - The Sweater Song',
-        artist: 'Weezer',
-        startTime: 60,
-        clipLength: 5
-    },
-    {
-        songName: 'September',
-        artist: 'Earth, Wind & Fire',
-        startTime: 20,
-        clipLength: 5
-    }
-];
-
 const DISTANCE_FROM_START_MS = 10000;
 const DISTANCE_FROM_END_MS = 10000;
 
@@ -53,12 +33,12 @@ let songClips = [];
 function selectRandomClip (durationMs) {
 
     // Ensure that the start time is within valid range
-    const maxStartTime = Math.max(0, durationMs - DISTANCE_FROM_END_MS - 5000); // Last 10 seconds + 5 seconds clip length
+    const maxStartTime = Math.max(0, durationMs - DISTANCE_FROM_END_MS - CLIP_LENGTH_MS); // Last 10 seconds + 5 seconds clip length
     const minStartTime = DISTANCE_FROM_START_MS; // Avoid the first 10 seconds
     let startTime = Math.floor(Math.random() * (maxStartTime - minStartTime + 1)) + minStartTime;
     startTime = Math.floor(startTime / 1000);
 
-    let clipLength = 5000; // Always 5 seconds
+    let clipLength = CLIP_LENGTH_MS; // Always 8 seconds
     clipLength = Math.floor(clipLength / 1000);
 
     return {startTime, clipLength};
@@ -152,8 +132,6 @@ async function searchTrack (songName, artist) {
 
             const data = await response.json();
 
-            console.log(data);
-
             if (data.tracks.items.length > 0) {
 
                 const track = data.tracks.items[0];
@@ -239,6 +217,69 @@ function createSongUI () {
         songUiContainer.appendChild(document.createElement('br'));
 
     });
+
+}
+
+async function loadClipListFromFile (songCount) {
+
+    // TODO: Accept seed and number
+
+    console.log('Populating clip list from preselected playlist...');
+
+    try {
+
+        const response = await fetch('../preselectedClips.json');
+
+        if (!response.ok) {
+
+            throw new Error(`HTTP error! status: ${response.status}`);
+
+        }
+
+        const allTracks = await response.json();
+
+        songCount = Math.min(songCount, allTracks.length);
+
+        const randomSongs = getRandomSubset(allTracks, songCount);
+
+        // Process songs (add URI and index)
+
+        for (let i = 0; i < randomSongs.length; i++) {
+
+            randomSongs[i].index = i + songClips.length;
+
+            const clip = randomSongs[i];
+
+            if (!clip.uri) {
+
+                searchTrack(clip.songName, clip.artist).then(track => {
+
+                    if (track) {
+
+                        randomSongs[i].uri = track.uri;
+                        randomSongs[i].durationMs = track.durationMs;
+
+                    }
+
+                });
+
+            }
+
+        }
+
+        songClips = randomSongs;
+
+        console.log(songClips);
+
+        createSongUI();
+
+        prepareUI();
+
+    } catch (error) {
+
+        console.error('Error reading JSON file:', error);
+
+    }
 
 }
 

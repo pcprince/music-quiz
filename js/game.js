@@ -4,8 +4,8 @@
  * July 2024
  *****************************************************************************/
 
-/* global populateClipList, connectToPlayer, endTimer, playAll, stopClip */
-/* global playClipButtons, startTimerButton, helpButton */
+/* global connectToPlayer, endTimer, playAll, stopClip */
+/* global playClipButtons, startTimerButton, helpButton, startModal */
 /* global guessInput, giveUpButton, unguessedClips, revealSong */
 /* global songClips */
 
@@ -69,9 +69,7 @@ function endGame () {
 
 }
 
-async function prepareGame (playlistIdArray, songCount, readyCallback) {
-
-    await populateClipList(playlistIdArray, songCount);
+async function prepareGame () {
 
     connectToPlayer(() => {
 
@@ -79,7 +77,7 @@ async function prepareGame (playlistIdArray, songCount, readyCallback) {
 
         console.log('Game is ready');
 
-        readyCallback();
+        startModal.hide();
 
         startTimerButton.disabled = false;
 
