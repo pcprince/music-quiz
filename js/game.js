@@ -5,8 +5,8 @@
  *****************************************************************************/
 
 /* global connectToPlayer, endTimer, playAll, stopClip */
-/* global playClipButtons, startTimerButton, helpButton, startModal */
-/* global guessInput, giveUpButton, unguessedClips, revealSong */
+/* global playClipButtons, startTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
+/* global unguessedClips, revealSong, resetStartModal */
 /* global songClips */
 
 const scoreSpan = document.getElementById('score-span');
@@ -30,6 +30,13 @@ function initialiseScore () {
 
     scoreSpan.innerText = '0';
     maxScoreSpan.innerText = songClips.length;
+
+}
+
+function resetScore () {
+
+    scoreSpan.innerText = '-';
+    maxScoreSpan.innerText = '-';
 
 }
 
@@ -67,6 +74,8 @@ function endGame () {
 
     endTimer();
 
+    remakeButton.disabled = false;
+
 }
 
 async function prepareGame () {
@@ -77,7 +86,7 @@ async function prepareGame () {
 
         console.log('Game is ready');
 
-        startModal.hide();
+        resetStartModal();
 
         startTimerButton.disabled = false;
 

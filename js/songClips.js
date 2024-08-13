@@ -9,7 +9,7 @@
 /* global bootstrap */
 /* global token, currentClipIndex */
 /* global stopButton, resumeButton, prevButton, nextButton */
-/* global prepareUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip */
+/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip */
 
 const CLIP_LENGTH_MS = 8000;
 
@@ -321,8 +321,6 @@ async function populateClipList (playlistIdArray, songCount) {
 
         for (let i = 0; i < newSongs.length; i++) {
 
-            newSongs[i].index = i + songClips.length;
-
             const clip = newSongs[i];
 
             if (!clip.uri) {
@@ -346,11 +344,31 @@ async function populateClipList (playlistIdArray, songCount) {
 
     }
 
-    console.log(songClips);
+    // Shuffle
+
+    songClips = songClips.slice().sort(() => 0.5 - Math.random());
+
+    // Add index value
+
+    songClips = songClips.map((item, index) => {
+
+        return {...item, index};
+
+    });
 
     createSongUI();
 
     prepareUI();
+
+}
+
+function clearClipList () {
+
+    songClips = [];
+
+    songUiContainer.innerHTML = '';
+
+    resetUI();
 
 }
 

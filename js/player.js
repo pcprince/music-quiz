@@ -293,7 +293,7 @@ function updateClipInfo () {
 
     if (currentClipIndex === -1) {
 
-        clipInfo.textContent = '-';
+        clipInfo.textContent = '- / -';
 
     } else {
 

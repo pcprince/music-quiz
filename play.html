@@ -10,7 +10,7 @@
 </head>
 <body>
     <!-- Playlist selection modal -->
-    <div class="modal modal-lg fade" id="start-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal modal-xl fade" id="start-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <!-- Modal content home -->
                 <div class="modal-content" id="start-modal-content-home">
@@ -23,9 +23,15 @@
                     <div class="modal-footer">
                         <div class="container">
                             <div class="row">
-                                <div class="col-12" style="text-align: center;">
+                                <div class="col-6 align-self-center" style="text-align: center;">
                                     <span>Total song count:</span>
                                     <input id="quickplay-song-count-input" type="number" value="20" style="width: 75px;">
+                                </div>
+                                <div class="col-6 align-self-center" style="text-align: center;">
+                                    <input type="checkbox" id="quickplay-seeded-checkbox">
+                                    <span>Seed:</span>
+                                    <input id="quickplay-seeded-seed-input" style="width: 70px;" disabled>
+                                    <input id="quickplay-seeded-number-input" type="number" value="1" style="width: 50px;" disabled>
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 15px;">
@@ -149,12 +155,14 @@
     <button class="btn btn-primary btn-timer" id="pause-timer-button" disabled>Pause</button>
 
     <button class="btn btn-primary" id="give-up-button" disabled>Give Up</button>
+
+    <button class="btn btn-primary" id="remake-button" disabled>Remake</button>
     <br><br>
 
     <button class="btn btn-primary" id="stop-button" disabled>Stop</button>
     <button class="btn btn-primary" id="resume-button" style="display: none;">Resume</button>
 
-    <span>Playing: </span><span id="clip-info">-</span>
+    <span>Playing: </span><span id="clip-info">- / -</span>
     <button class="btn btn-primary" id="prev-button" disabled>Previous</button>
     <button class="btn btn-primary" id="next-button" disabled>Next</button>
     <br><br>

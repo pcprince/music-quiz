@@ -5,13 +5,15 @@
  *****************************************************************************/
 
 /* global bootstrap */
-/* global authorise, populateClipList, loadClipListFromFile, prepareGame */
+/* global authorise, populateClipList, loadClipListFromFile, prepareGame, clearClipList, resetScore */
 /* global token, spotifyReady */
 
 const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
     backdrop: 'static',
     keyboard: false
 });
+
+const remakeButton = document.getElementById('remake-button');
 
 const playlistChooseButton = document.getElementById('playlist-choose-button');
 const quickplayButton = document.getElementById('quickplay-button');
@@ -22,6 +24,10 @@ const startModalContentChoose = document.getElementById('start-modal-content-cho
 const startModalContentUrl = document.getElementById('start-modal-content-url');
 
 const quickplaySongCountInput = document.getElementById('quickplay-song-count-input');
+const quickplaySeededCheckbox = document.getElementById('quickplay-seeded-checkbox');
+const quickplaySeededSeedInput = document.getElementById('quickplay-seeded-seed-input');
+const quickplaySeededNumberInput = document.getElementById('quickplay-seeded-number-input');
+
 const playlistChooseSongCountInput = document.getElementById('playlist-choose-song-count-input');
 const playlistUrlSongCountInput = document.getElementById('playlist-url-song-count-input');
 
@@ -50,6 +56,54 @@ const playlistChooseIds = [
     '3ycsMKOg7CXaxcdNI36ogX' // NME's 500 Greatest Songs of All Time
 ];
 
+const playlistChooseInfo = [
+    {
+        id: '37i9dQZF1DXaKIA8E7WcJj',
+        name: 'All Out 60s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DWTJ7xPn4vNaz',
+        name: 'All Out 70s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DX4UtSsGT1Sbe',
+        name: 'All Out 80s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DXbTxeAdrVG2l',
+        name: 'All Out 90s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DX4o1oenSJRJd',
+        name: 'All Out 2000s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DX5Ejj0EkURtP',
+        name: 'All Out 2010s',
+        trackCount: 150
+    },
+    {
+        id: '37i9dQZF1DX2M1RktxUUHG',
+        name: 'All Out 2020s',
+        trackCount: 150
+    },
+    {
+        id: '5Rrf7mqN8uus2AaQQQNdc1',
+        name: '500 Greatest Songs of All Time',
+        trackCount: 500
+    },
+    {
+        id: '3ycsMKOg7CXaxcdNI36ogX',
+        name: 'NME\'s 500 Greatest Songs of All Time',
+        trackCount: 483
+    }
+];
+
 let chooseOpened = false;
 
 function extractPlaylistID (playlistUrl) {
@@ -74,6 +128,21 @@ function extractPlaylistID (playlistUrl) {
 async function getPlayListInformation (playlistId) {
 
     console.log(playlistId);
+
+    for (let i = 0; i < playlistChooseInfo.length; i++) {
+
+        const playlistInfo = playlistChooseInfo[i];
+
+        if (playlistInfo.id === playlistId) {
+
+            return {
+                name: playlistInfo.name,
+                trackCount: playlistInfo.trackCount
+            };
+
+        }
+
+    }
 
     try {
 
@@ -123,6 +192,27 @@ function displayPlayListUrlError (errorText) {
         playlistUrlErrorSpan.innerText = '';
 
     }, 1000);
+
+}
+
+function resetStartModal () {
+
+    startModal.hide();
+
+    quickplayButton.innerText = 'Play';
+    playlistChoosePlayButton.innerText = 'Play';
+    playlistUrlPlayButton.innerText = 'Play';
+
+    playlistChooseButton.disabled = false;
+    quickplayButton.disabled = false;
+    playlistUrlButton.disabled = false;
+    playlistChooseSelect.disabled = false;
+
+    playlistChoosePlayButton.disabled = false;
+    playlistChooseCancelButton.disabled = false;
+
+    playlistUrlAddButton.disabled = false;
+    playlistUrlRemoveButton.disabled = false;
 
 }
 
@@ -258,6 +348,9 @@ playlistUrlPlayButton.addEventListener('click', async () => {
 
         playlistUrlPlayButton.innerText = 'Preparing...';
 
+        playlistUrlAddButton.disabled = true;
+        playlistUrlRemoveButton.disabled = true;
+
         const playlistIdArray = [...playlistUrlSelect.options].map(o => o.value);
 
         const songCount = Math.max(playlistUrlSongCountInput.value, 1);
@@ -348,6 +441,27 @@ async function enablePrepareUI() {
 
 }
 
+quickplaySeededCheckbox.addEventListener('change', () => {
+
+    // TODO: Implement seeding
+
+    quickplaySeededSeedInput.disabled = !quickplaySeededCheckbox.checked;
+    quickplaySeededNumberInput.disabled = !quickplaySeededCheckbox.checked;
+
+});
+
+remakeButton.addEventListener('click', () => {
+
+    remakeButton.disabled = true;
+
+    clearClipList();
+
+    resetScore();
+
+    startModal.show();
+
+});
+
 window.onload = async () => {
 
     // Display start modal
@@ -360,8 +474,6 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
-
-// TODO: Add ability to create a quiz from scratch rather than re-authenticating
 
 // TODO: Enter random seed and number
 
@@ -377,5 +489,4 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // TODO: Add "Play all song" button when quiz is over
 
-// TODO: Detect "ing" -> in' (specific cases?)
 // TODO: Checkbox for skipping correct guesses on playback

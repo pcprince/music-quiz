@@ -48,24 +48,30 @@ function levenshtein (a, b) {
 
 }
 
-function cleanString (str) {
+function cleanString (input) {
 
-    // Step 1: Split around " - " and take the left part
-    let cleaned = str.split(' - ')[0];
+    // Step 1: Convert the string to lowercase
+    let cleaned = input.toLowerCase();
 
-    // Step 2: Remove all text inside parentheses (including the parentheses themselves)
-    cleaned = cleaned.replace(/\(.*?\)/g, '');
+    // Step 2: Remove text inside standard brackets if it's at the end of the string
+    cleaned = cleaned.replace(/\s*\(.*?\)\s*$/, '');
 
-    // Step 3: Remove all punctuation
+    // Step 3: Split the string around " - " and take all the text to the left of it
+    cleaned = cleaned.split(' - ')[0];
+
+    // Step 4: Remove all punctuation
     cleaned = cleaned.replace(/[^\w\s]/g, '');
 
-    // Step 4: Replace & or lone N with "and"
-    cleaned = cleaned.replace(/&|(\bN\b)/g, 'and');
+    // Step 5: Replace & or a lone 'n' with "and"
+    cleaned = cleaned.replace(/\s*&\s*/g, 'and').replace(/\bn\b/g, 'and');
 
-    // Step 5: Remove all spaces
+    // Step 6: Remove all instances of "the"
+    cleaned = cleaned.replace(/\bthe\b/g, '');
+
+    // Step 7: Strip out all spaces
     cleaned = cleaned.replace(/\s+/g, '');
 
-    return cleaned.toLowerCase();
+    return cleaned;
 
 }
 
@@ -113,50 +119,67 @@ function prepareUI () {
 
     unguessedClips = JSON.parse(JSON.stringify(songClips));
 
-    guessInput.addEventListener('keyup', () => {
+}
 
-        const guess = guessInput.value;
+function resetUI () {
 
-        let matchIndex = -1;
+    playClipButtons = [];
+    songNameSpans = [];
+    hyphenSpans = [];
+    artistSpans = [];
 
-        unguessedClips.forEach((clip, index) => {
+    unguessedClips = [];
 
-            const isMatch = isCloseMatch(guess, clip.songName);
+}
 
-            if (isMatch) {
+guessInput.addEventListener('keyup', () => {
 
-                matchIndex = index;
+    const guess = guessInput.value;
 
-            }
+    let matchIndex = -1;
 
-        });
+    unguessedClips.forEach((clip, index) => {
 
-        if (matchIndex !== -1) {
+        const isMatch = isCloseMatch(guess, clip.songName);
 
-            // Let user type final letter if that is the only difference
+        if (isMatch) {
 
-            const likelyClipName = cleanString(unguessedClips[matchIndex].songName);
-
-            if (likelyClipName.substring(0, likelyClipName.length - 1) === cleanString(guess)) {
-
-                return;
-
-            }
-
-            console.log('Matched with', matchIndex);
-
-            guessInput.value = '';
-
-            revealSong(matchIndex, 'green');
-
-            unguessedClips.splice(matchIndex, 1);
-
-            updateScore();
+            matchIndex = index;
 
         }
 
     });
 
-    giveUpButton.addEventListener('click', endGame);
+    if (matchIndex !== -1) {
 
-}
+        // Let user type final letter if that is the only difference
+
+        const likelyClipName = cleanString(unguessedClips[matchIndex].songName);
+
+        if (likelyClipName.substring(0, likelyClipName.length - 1) === cleanString(guess)) {
+
+            return;
+
+        }
+
+        console.log('Matched with', matchIndex);
+
+        guessInput.value = '';
+
+        revealSong(matchIndex, 'green');
+
+        unguessedClips.splice(matchIndex, 1);
+
+        updateScore();
+
+    }
+
+});
+
+giveUpButton.addEventListener('click', () => {
+
+    console.log('Giving up');
+
+    endGame();
+
+});
