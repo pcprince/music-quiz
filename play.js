@@ -658,9 +658,6 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// FIXME: Currently possible to start a choose playlist game with no playlists selected
-// FIXME: Currently possible to start a enter url game with no playlists selected
-
 // TODO: Disallow duplicate artists
 
 // TODO: Display error when failed to add playlist URL

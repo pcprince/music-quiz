@@ -90,7 +90,8 @@ function revealSong (index, colour) {
     const clip = unguessedClips[index];
 
     songNameSpans[clip.index].innerText = clip.songName;
-    artistSpans[clip.index].innerText = clip.artist;
+
+    artistSpans[clip.index].innerText = clip.artists.map(artist => artist.name).join(', ');
 
     songNameSpans[clip.index].style.color = colour;
     hyphenSpans[clip.index].style.color = colour;

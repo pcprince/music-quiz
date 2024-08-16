@@ -93,7 +93,7 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
             return {
                 songName: trackName,
                 // FIXME: This may cause issues when guessing the name of an artist for a song with multiple artists. Replace with array and check array
-                artist: track.artists.map(artist => artist.name).join(', '),
+                artists: track.artists,
                 durationMs: track.duration_ms,
                 uri: track.uri,
                 startTime: randomClip.startTime, // Convert to seconds
@@ -277,8 +277,6 @@ function createSongUI () {
 
 async function loadClipListFromFile (songCount, seed, offset) {
 
-    // TODO: Accept seed and number
-
     console.log('Populating clip list from preselected playlist...');
 
     try {
@@ -307,7 +305,7 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
             if (!clip.uri) {
 
-                searchTrack(clip.songName, clip.artist).then(track => {
+                searchTrack(clip.songName, clip.artists[0].name).then(track => {
 
                     if (track) {
 
@@ -359,8 +357,8 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
         // Assign the remaining tracks to a random playlist
 
-        // TODO: Seed?
-        const remainderIndex = Math.floor(Math.random() * (playListCount - 1));
+        const r = seed ? seededRandom(seed) : Math.random();
+        const remainderIndex = Math.floor(r * (playListCount - 1));
 
         trackCounts[remainderIndex] += remainder;
 
@@ -383,7 +381,7 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
             if (!clip.uri) {
 
-                searchTrack(clip.songName, clip.artist).then(track => {
+                searchTrack(clip.songName, clip.artists[0].name).then(track => {
 
                     if (track) {
 
