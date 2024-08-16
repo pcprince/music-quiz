@@ -48,14 +48,47 @@ function selectRandomClip (durationMs, seed) {
 
 }
 
+function removeDuplicateArtists (songArray) {
+
+    // Create an empty set to store unique artist names
+    const seenArtists = new Set();
+
+    // Filter the array, only keeping songs where none of the artists have been seen before
+    const uniqueArray = songArray.filter(song => {
+
+        const artists = song.artists;
+
+        // Check if any of the artists in the current song have been seen before
+        const hasDuplicate = artists.some(artist => seenArtists.has(artist.name));
+
+        if (hasDuplicate) {
+
+            console.log('Removed', song.songName, '-', song.artists[0].name);
+            return false;
+
+        } else {
+
+            artists.forEach(artist => seenArtists.add(artist.name));
+            return true;
+
+        }
+
+    });
+
+    const diff = songArray.length - uniqueArray.length;
+    console.log('Removed ' + diff + ' tracks due to duplicate artists');
+
+    return uniqueArray;
+
+}
+
 async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, seed, offset) {
 
-    const allTracks = [];
+    let allTracks = [];
     let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
 
     try {
 
-        // Fetch all tracks from the playlist
         while (nextUrl) {
 
             const response = await fetch(nextUrl, {
@@ -72,18 +105,27 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
             }
 
             const data = await response.json();
-            allTracks.push(...data.items);
-            nextUrl = data.next; // Get the next URL if available
+
+            // allTracks.push(...data.items);
+
+            for (let i = 0; i < data.items.length; i++) {
+
+                allTracks.push(data.items[i].track);
+
+            }
+
+            nextUrl = data.next;
 
         }
 
-        // Randomly select the specified number of songs
+        // TODO: Only disable duplicates if artist scoring is enabled
+        allTracks = removeDuplicateArtists(allTracks);
+
         const randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
 
-        return randomSongs.map(item => {
+        return randomSongs.map(track => {
 
-            const track = item.track;
-            const durationMs = track.duration_ms; // Track duration in milliseconds
+            const durationMs = track.duration_ms;
 
             const randomClip = selectRandomClip(durationMs, seed);
 
@@ -92,11 +134,10 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
 
             return {
                 songName: trackName,
-                // FIXME: This may cause issues when guessing the name of an artist for a song with multiple artists. Replace with array and check array
                 artists: track.artists,
                 durationMs: track.duration_ms,
                 uri: track.uri,
-                startTime: randomClip.startTime, // Convert to seconds
+                startTime: randomClip.startTime,
                 clipLength: randomClip.clipLength
             };
 
@@ -147,10 +188,8 @@ function getRandomSubset (array, size, seed, offset) {
     // Shuffle the array, either with the seed or randomly
     const shuffledArray = shuffleArray(array, seed);
 
-    // Use offset 0 if not provided
     offset = offset !== undefined ? offset : 0;
 
-    // Ensure size does not exceed the array length
     size = Math.min(size, array.length);
 
     // Multiply offset by size to ensure no quiz overlap
@@ -160,7 +199,6 @@ function getRandomSubset (array, size, seed, offset) {
 
     for (let i = 0; i < size; i++) {
 
-        // Calculate the index with wrapping
         const index = (offset + i) % shuffledArray.length;
 
         result.push(shuffledArray[index]);
@@ -289,7 +327,9 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         }
 
-        const allTracks = await response.json();
+        let allTracks = await response.json();
+
+        allTracks = removeDuplicateArtists(allTracks);
 
         songCount = Math.min(songCount, allTracks.length);
 
