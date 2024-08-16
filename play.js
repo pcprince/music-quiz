@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global bootstrap */
-/* global authorise, populateClipList, loadClipListFromFile, prepareGame, clearClipList, resetScore */
+/* global authorise, populateClipList, loadClipListFromFile, prepareGame, clearClipList, resetScore, stopClip */
 /* global token, spotifyReady */
 
 const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
@@ -15,6 +15,8 @@ const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
 
 const remakeButton = document.getElementById('remake-button');
 
+// Modal home buttons
+
 const playlistChooseButton = document.getElementById('playlist-choose-button');
 const quickplayButton = document.getElementById('quickplay-button');
 const playlistUrlButton = document.getElementById('playlist-url-button');
@@ -23,13 +25,34 @@ const startModalContentHome = document.getElementById('start-modal-content-home'
 const startModalContentChoose = document.getElementById('start-modal-content-choose');
 const startModalContentUrl = document.getElementById('start-modal-content-url');
 
+// Quickplay UI
+
 const quickplaySongCountInput = document.getElementById('quickplay-song-count-input');
 const quickplaySeededCheckbox = document.getElementById('quickplay-seeded-checkbox');
+const quickplaySeededCheckboxLabel = document.getElementById('quickplay-seeded-checkbox-label');
 const quickplaySeededSeedInput = document.getElementById('quickplay-seeded-seed-input');
 const quickplaySeededNumberInput = document.getElementById('quickplay-seeded-number-input');
 
+// Playlist choose UI
+
+const playlistChooseCheckboxHolder = document.getElementById('playlist-choose-checkbox-holder');
+
+const playlistChooseCancelButton = document.getElementById('cancel-playlist-choose-button');
+const playlistChoosePlayButton = document.getElementById('play-playlist-choose-button');
+
 const playlistChooseSongCountInput = document.getElementById('playlist-choose-song-count-input');
+const playlistChooseSeededCheckbox = document.getElementById('playlist-choose-seeded-checkbox');
+const playlistChooseSeededCheckboxLabel = document.getElementById('playlist-choose-seeded-checkbox-label');
+const playlistChooseSeededSeedInput = document.getElementById('playlist-choose-seeded-seed-input');
+const playlistChooseSeededNumberInput = document.getElementById('playlist-choose-seeded-number-input');
+
+// Playlist enter URL UI
+
 const playlistUrlSongCountInput = document.getElementById('playlist-url-song-count-input');
+const playlistUrlSeededCheckbox = document.getElementById('playlist-url-seeded-checkbox');
+const playlistUrlSeededCheckboxLabel = document.getElementById('playlist-url-seeded-checkbox-label');
+const playlistUrlSeededSeedInput = document.getElementById('playlist-url-seeded-seed-input');
+const playlistUrlSeededNumberInput = document.getElementById('playlist-url-seeded-number-input');
 
 const playlistUrlCancelButton = document.getElementById('cancel-playlist-url-button');
 const playlistUrlPlayButton = document.getElementById('play-playlist-url-button');
@@ -38,11 +61,8 @@ const playlistUrlInput = document.getElementById('playlist-url-input');
 const playlistUrlAddButton = document.getElementById('playlist-url-add-button');
 const playlistUrlRemoveButton = document.getElementById('playlist-url-remove-button');
 const playlistUrlSelect = document.getElementById('playlist-url-select');
-const playlistUrlErrorSpan = document.getElementById('playlist-url-error-span');
 
-const playlistChooseSelect = document.getElementById('playlist-choose-select');
-const playlistChooseCancelButton = document.getElementById('cancel-playlist-choose-button');
-const playlistChoosePlayButton = document.getElementById('play-playlist-choose-button');
+// Playlist choose cached playlists
 
 const playlistChooseIds = [
     '37i9dQZF1DXaKIA8E7WcJj', // All Out 60s
@@ -106,6 +126,24 @@ const playlistChooseInfo = [
 
 let chooseOpened = false;
 
+function displayError (target, message) {
+
+    const popover = new bootstrap.Popover(target, {
+        content: message,
+        trigger: 'manual',
+        placement: 'top'
+    });
+
+    popover.show();
+
+    setTimeout(() => {
+
+        popover.hide();
+
+    }, 2000);
+
+}
+
 function extractPlaylistID (playlistUrl) {
 
     // Regular expression to match both URL and URI formats, ignoring query parameters
@@ -126,8 +164,6 @@ function extractPlaylistID (playlistUrl) {
 }
 
 async function getPlayListInformation (playlistId) {
-
-    console.log(playlistId);
 
     for (let i = 0; i < playlistChooseInfo.length; i++) {
 
@@ -181,20 +217,6 @@ async function getPlayListInformation (playlistId) {
 
 const playlistUrls = [];
 
-function displayPlayListUrlError (errorText) {
-
-    console.error(errorText);
-
-    playlistUrlErrorSpan.innerText = errorText;
-
-    setTimeout(() => {
-
-        playlistUrlErrorSpan.innerText = '';
-
-    }, 1000);
-
-}
-
 function resetStartModal () {
 
     startModal.hide();
@@ -206,13 +228,22 @@ function resetStartModal () {
     playlistChooseButton.disabled = false;
     quickplayButton.disabled = false;
     playlistUrlButton.disabled = false;
-    playlistChooseSelect.disabled = false;
+
+    const playlistChooseCheckboxes = document.getElementsByClassName('playlist-choose-checkbox');
+
+    for (let i = 0; i < playlistChooseCheckboxes.length; i++) {
+
+        playlistChooseCheckboxes[i].disabled = false;
+
+    }
 
     playlistChoosePlayButton.disabled = false;
     playlistChooseCancelButton.disabled = false;
 
     playlistUrlAddButton.disabled = false;
     playlistUrlRemoveButton.disabled = false;
+    playlistUrlPlayButton.disabled = false;
+    playlistUrlCancelButton.disabled = false;
 
 }
 
@@ -222,6 +253,7 @@ playlistUrlAddButton.addEventListener('click', async () => {
 
     if (!playlistID) {
 
+        displayError(playlistUrlAddButton, 'Invalid playlist URL!');
         return;
 
     }
@@ -230,7 +262,7 @@ playlistUrlAddButton.addEventListener('click', async () => {
 
     if (playlistUrls.includes(playlistID)) {
 
-        displayPlayListUrlError('Playlist already added');
+        displayError(playlistUrlAddButton, 'Playlist already added!');
         return;
 
     }
@@ -241,7 +273,7 @@ playlistUrlAddButton.addEventListener('click', async () => {
 
         if (playlistInfo.trackCount === 0) {
 
-            displayPlayListUrlError('Playlist is empty');
+            displayError(playlistUrlAddButton, 'Playlist is empty!');
 
         } else {
 
@@ -257,7 +289,7 @@ playlistUrlAddButton.addEventListener('click', async () => {
 
     } else {
 
-        displayPlayListUrlError('Failed to retrieve playlist information');
+        displayError(playlistUrlAddButton, 'Failed to retrieve playlist information!');
 
     }
 
@@ -289,7 +321,16 @@ quickplayButton.addEventListener('click', async () => {
 
         const songCount = Math.max(quickplaySongCountInput.value, 1);
 
-        await loadClipListFromFile(songCount);
+        let seed, offset;
+
+        if (quickplaySeededCheckbox.checked && quickplaySeededSeedInput.value.length > 0) {
+
+            seed = quickplaySeededSeedInput.value;
+            offset = parseInt(quickplaySeededNumberInput.value);
+
+        }
+
+        await loadClipListFromFile(songCount, seed, offset);
 
         prepareGame();
 
@@ -299,12 +340,38 @@ quickplayButton.addEventListener('click', async () => {
 
 playlistChoosePlayButton.addEventListener('click', async () => {
 
+    let playlistsChosen = false;
+
+    const playlistChooseCheckboxes = document.getElementsByClassName('playlist-choose-checkbox');
+
+    for (let i = 0; i < playlistChooseCheckboxes.length; i++) {
+
+        if (playlistChooseCheckboxes[i].checked) {
+
+            playlistsChosen = true;
+
+        }
+
+    }
+
+    if (!playlistsChosen) {
+
+        displayError(playlistChoosePlayButton, 'No playlists selected!');
+        return;
+
+    }
+
     if (spotifyReady) {
 
         playlistChooseButton.disabled = true;
         quickplayButton.disabled = true;
         playlistUrlButton.disabled = true;
-        playlistChooseSelect.disabled = true;
+
+        for (let i = 0; i < playlistChooseCheckboxes.length; i++) {
+
+            playlistChooseCheckboxes[i].disabled = true;
+
+        }
 
         playlistChoosePlayButton.disabled = true;
         playlistChooseCancelButton.disabled = true;
@@ -313,13 +380,11 @@ playlistChoosePlayButton.addEventListener('click', async () => {
 
         const playlistIds = [];
 
-        for (let i = 0; i < playlistChooseSelect.options.length; i++) {
+        for (let i = 0; i < playlistChooseCheckboxes.length; i++) {
 
-            const option = playlistChooseSelect.options[i];
+            if (playlistChooseCheckboxes[i].checked) {
 
-            if (option.selected) {
-
-                playlistIds.push(option.value);
+                playlistIds.push(playlistChooseIds[i]);
 
             }
 
@@ -327,7 +392,16 @@ playlistChoosePlayButton.addEventListener('click', async () => {
 
         const songCount = Math.max(playlistChooseSongCountInput.value, 1);
 
-        await populateClipList(playlistIds, songCount);
+        let seed, offset;
+
+        if (playlistChooseSeededCheckbox.checked && playlistChooseSeededSeedInput.value.length > 0) {
+
+            seed = playlistChooseSeededSeedInput.value;
+            offset = parseInt(playlistChooseSeededNumberInput.value);
+
+        }
+
+        await populateClipList(playlistIds, songCount, seed, offset);
 
         prepareGame();
 
@@ -336,6 +410,13 @@ playlistChoosePlayButton.addEventListener('click', async () => {
 });
 
 playlistUrlPlayButton.addEventListener('click', async () => {
+
+    if (playlistUrlSelect.options.length <= 0) {
+
+        displayError(playlistUrlPlayButton, 'No playlists added!');
+        return;
+
+    }
 
     if (spotifyReady) {
 
@@ -355,7 +436,16 @@ playlistUrlPlayButton.addEventListener('click', async () => {
 
         const songCount = Math.max(playlistUrlSongCountInput.value, 1);
 
-        await populateClipList(playlistIdArray, songCount);
+        let seed, offset;
+
+        if (playlistUrlSeededCheckbox.checked && playlistUrlSeededSeedInput.value.length > 0) {
+
+            seed = playlistUrlSeededSeedInput.value;
+            offset = parseInt(playlistUrlSeededNumberInput.value);
+
+        }
+
+        await populateClipList(playlistIdArray, songCount, seed, offset);
 
         prepareGame();
 
@@ -391,11 +481,25 @@ async function showStartModalChoose () {
 
             const playlistInfo = await getPlayListInformation(playlistChooseIds[i]);
 
-            const option = document.createElement('option');
-            option.value = playlistChooseIds[i];
-            option.text = playlistInfo.name + ' (' + playlistInfo.trackCount + ' songs)';
+            // Add a checkbox
 
-            playlistChooseSelect.appendChild(option);
+            const playlistRow = document.createElement('div');
+
+            const playlistCheckbox = document.createElement('input');
+            playlistCheckbox.type = 'checkbox';
+            playlistCheckbox.id = 'playlist-choose-checkbox' + i;
+            playlistCheckbox.classList.add('playlist-choose-checkbox');
+
+            playlistRow.appendChild(playlistCheckbox);
+
+            const playlistCheckboxLabel = document.createElement('label');
+            playlistCheckboxLabel.htmlFor = playlistCheckbox.id;
+            playlistCheckboxLabel.innerText = playlistInfo.name + ' (' + playlistInfo.trackCount + ' songs)';
+            playlistCheckboxLabel.style = 'margin-left: 3px;';
+
+            playlistRow.appendChild(playlistCheckboxLabel);
+
+            playlistChooseCheckboxHolder.appendChild(playlistRow);
 
         }
 
@@ -441,16 +545,95 @@ async function enablePrepareUI() {
 
 }
 
-quickplaySeededCheckbox.addEventListener('change', () => {
+function updateSeedUI (e) {
 
-    // TODO: Implement seeding
+    const targetCheckbox = e.target;
 
-    quickplaySeededSeedInput.disabled = !quickplaySeededCheckbox.checked;
-    quickplaySeededNumberInput.disabled = !quickplaySeededCheckbox.checked;
+    quickplaySeededCheckbox.checked = targetCheckbox.checked;
+    playlistChooseSeededCheckbox.checked = targetCheckbox.checked;
+    playlistUrlSeededCheckbox.checked = targetCheckbox.checked;
 
-});
+    quickplaySeededSeedInput.disabled = !targetCheckbox.checked;
+    quickplaySeededNumberInput.disabled = !targetCheckbox.checked;
+
+    quickplaySeededCheckboxLabel.style.color = targetCheckbox.checked ? '' : 'gray';
+
+    playlistChooseSeededSeedInput.disabled = !targetCheckbox.checked;
+    playlistChooseSeededNumberInput.disabled = !targetCheckbox.checked;
+
+    playlistChooseSeededCheckboxLabel.style.color = targetCheckbox.checked ? '' : 'gray';
+
+    playlistUrlSeededSeedInput.disabled = !targetCheckbox.checked;
+    playlistUrlSeededNumberInput.disabled = !targetCheckbox.checked;
+
+    playlistUrlSeededCheckboxLabel.style.color = targetCheckbox.checked ? '' : 'gray';
+
+}
+
+quickplaySeededCheckbox.addEventListener('change', updateSeedUI);
+playlistChooseSeededCheckbox.addEventListener('change', updateSeedUI);
+playlistUrlSeededCheckbox.addEventListener('change', updateSeedUI);
+
+function matchSeedValues (e) {
+
+    switch (e.target.id) {
+
+    case quickplaySeededSeedInput.id:
+        playlistChooseSeededSeedInput.value = quickplaySeededSeedInput.value;
+        playlistChooseSeededNumberInput.value = quickplaySeededNumberInput.value;
+
+        playlistUrlSeededSeedInput.value = quickplaySeededSeedInput.value;
+        playlistUrlSeededNumberInput.value = quickplaySeededNumberInput.value;
+
+        break;
+    case playlistChooseSeededSeedInput.id:
+        quickplaySeededSeedInput.value = playlistChooseSeededSeedInput.value;
+        quickplaySeededNumberInput.value = playlistChooseSeededNumberInput.value;
+
+        playlistUrlSeededSeedInput.value = playlistChooseSeededSeedInput.value;
+        playlistUrlSeededNumberInput.value = playlistChooseSeededNumberInput.value;
+
+        break;
+    case playlistUrlSeededSeedInput.id:
+        quickplaySeededSeedInput.value = playlistUrlSeededSeedInput.value;
+        quickplaySeededNumberInput.value = playlistUrlSeededNumberInput.value;
+
+        playlistChooseSeededSeedInput.value = playlistUrlSeededSeedInput.value;
+        playlistChooseSeededNumberInput.value = playlistUrlSeededNumberInput.value;
+
+        break;
+
+    }
+
+}
+
+quickplaySeededSeedInput.addEventListener('change', matchSeedValues);
+playlistChooseSeededSeedInput.addEventListener('change', matchSeedValues);
+playlistUrlSeededSeedInput.addEventListener('change', matchSeedValues);
+
+quickplaySeededNumberInput.addEventListener('change', matchSeedValues);
+playlistChooseSeededNumberInput.addEventListener('change', matchSeedValues);
+playlistUrlSeededNumberInput.addEventListener('change', matchSeedValues);
+
+function matchSongCounts (e) {
+
+    const input = e.target;
+    input.value = Math.min(input.value, 50);
+    input.value = Math.max(input.value, 1);
+
+    quickplaySongCountInput.value = input.value;
+    playlistChooseSongCountInput.value = input.value;
+    playlistUrlSongCountInput.value = input.value;
+
+}
+
+quickplaySongCountInput.addEventListener('change', matchSongCounts);
+playlistChooseSongCountInput.addEventListener('change', matchSongCounts);
+playlistUrlSongCountInput.addEventListener('change', matchSongCounts);
 
 remakeButton.addEventListener('click', () => {
+
+    stopClip();
 
     remakeButton.disabled = true;
 
@@ -475,7 +658,12 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Enter random seed and number
+// FIXME: Currently possible to start a choose playlist game with no playlists selected
+// FIXME: Currently possible to start a enter url game with no playlists selected
+
+// TODO: Disallow duplicate artists
+
+// TODO: Display error when failed to add playlist URL
 
 // TODO: Load sporacle quizzes
 

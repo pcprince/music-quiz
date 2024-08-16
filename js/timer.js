@@ -24,7 +24,7 @@ let timerInterval;
 let isPaused = true;
 let lastUpdateTime = Date.now();
 
-function formatTime (ms) {
+function formatTimeMs (ms) {
 
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -55,7 +55,7 @@ function updateTimer () {
     }
 
     lastUpdateTime = now;
-    timerSpan.textContent = formatTime(timeRemaining);
+    timerSpan.textContent = formatTimeMs(timeRemaining);
 
 }
 

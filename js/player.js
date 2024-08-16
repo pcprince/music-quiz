@@ -5,9 +5,9 @@
  *****************************************************************************/
 
 /* global Spotify */
-/* global token, songClips, updateGuessUI */
+/* global updateGuessUI, formatTimeMs */
+/* global token, songClips, gameStarted */
 /* global helpButton */
-/* global gameStarted */
 
 // Define browser elements at the top of the script
 const stopButton = document.getElementById('stop-button');
@@ -139,7 +139,8 @@ function playClip (trackUri, startTime, clipLength) {
     resumeButton.disabled = true;
     setStopResumeShown(true);
 
-    console.log('Playing:', currentClipIndex);
+    const endTime = startTime + clipLength;
+    console.log('Playing clip ' + currentClipIndex + ' (' + formatTimeMs(startTime * 1000) + ' - ' + formatTimeMs(endTime * 1000) + ')');
 
     updateClipInfo();
 

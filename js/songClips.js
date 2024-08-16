@@ -9,7 +9,7 @@
 /* global bootstrap */
 /* global token, currentClipIndex */
 /* global stopButton, resumeButton, prevButton, nextButton */
-/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip */
+/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, seededRandom */
 
 const CLIP_LENGTH_MS = 8000;
 
@@ -30,12 +30,15 @@ const DISTANCE_FROM_END_MS = 10000;
 
 let songClips = [];
 
-function selectRandomClip (durationMs) {
+function selectRandomClip (durationMs, seed) {
 
     // Ensure that the start time is within valid range
     const maxStartTime = Math.max(0, durationMs - DISTANCE_FROM_END_MS - CLIP_LENGTH_MS); // Last 10 seconds + 5 seconds clip length
     const minStartTime = DISTANCE_FROM_START_MS; // Avoid the first 10 seconds
-    let startTime = Math.floor(Math.random() * (maxStartTime - minStartTime + 1)) + minStartTime;
+
+    const r = seed ? seededRandom(seed) : Math.random();
+
+    let startTime = Math.floor(r * (maxStartTime - minStartTime + 1)) + minStartTime;
     startTime = Math.floor(startTime / 1000);
 
     let clipLength = CLIP_LENGTH_MS; // Always 8 seconds
@@ -45,7 +48,7 @@ function selectRandomClip (durationMs) {
 
 }
 
-async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token) {
+async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, seed, offset) {
 
     const allTracks = [];
     let nextUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
@@ -75,14 +78,14 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token) {
         }
 
         // Randomly select the specified number of songs
-        const randomSongs = getRandomSubset(allTracks, numberOfSongs);
+        const randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
 
         return randomSongs.map(item => {
 
             const track = item.track;
             const durationMs = track.duration_ms; // Track duration in milliseconds
 
-            const randomClip = selectRandomClip(durationMs);
+            const randomClip = selectRandomClip(durationMs, seed);
 
             // Specific remasters seem to break the search
             const trackName = track.name.split(' - ')[0];
@@ -108,11 +111,63 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token) {
 
 }
 
-// Helper function to get a random subset of an array
-function getRandomSubset (array, size) {
+function shuffleArray (array, seed) {
 
-    const shuffled = array.slice().sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, size);
+    const shuffledArray = array.slice();
+
+    if (seed === undefined) {
+
+        // If no seed is provided, shuffle randomly
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+
+        }
+
+    } else {
+
+        // Shuffle deterministically using the seed
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+
+            const j = Math.floor(seededRandom(seed + i) * (i + 1));
+
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+
+        }
+
+    }
+
+    return shuffledArray;
+
+}
+
+function getRandomSubset (array, size, seed, offset) {
+
+    // Shuffle the array, either with the seed or randomly
+    const shuffledArray = shuffleArray(array, seed);
+
+    // Use offset 0 if not provided
+    offset = offset !== undefined ? offset : 0;
+
+    // Ensure size does not exceed the array length
+    size = Math.min(size, array.length);
+
+    // Multiply offset by size to ensure no quiz overlap
+    offset = offset * size;
+
+    const result = [];
+
+    for (let i = 0; i < size; i++) {
+
+        // Calculate the index with wrapping
+        const index = (offset + i) % shuffledArray.length;
+
+        result.push(shuffledArray[index]);
+
+    }
+
+    return result;
 
 }
 
@@ -220,7 +275,7 @@ function createSongUI () {
 
 }
 
-async function loadClipListFromFile (songCount) {
+async function loadClipListFromFile (songCount, seed, offset) {
 
     // TODO: Accept seed and number
 
@@ -240,7 +295,7 @@ async function loadClipListFromFile (songCount) {
 
         songCount = Math.min(songCount, allTracks.length);
 
-        const randomSongs = getRandomSubset(allTracks, songCount);
+        const randomSongs = getRandomSubset(allTracks, songCount, seed, offset);
 
         // Process songs (add URI and index)
 
@@ -269,8 +324,6 @@ async function loadClipListFromFile (songCount) {
 
         songClips = randomSongs;
 
-        console.log(songClips);
-
         createSongUI();
 
         prepareUI();
@@ -283,7 +336,7 @@ async function loadClipListFromFile (songCount) {
 
 }
 
-async function populateClipList (playlistIdArray, songCount) {
+async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
     console.log('Populating clip list...');
 
@@ -304,7 +357,12 @@ async function populateClipList (playlistIdArray, songCount) {
 
         const remainder = songCount - (baseValue * playListCount);
 
-        trackCounts[playListCount - 1] += remainder;
+        // Assign the remaining tracks to a random playlist
+
+        // TODO: Seed?
+        const remainderIndex = Math.floor(Math.random() * (playListCount - 1));
+
+        trackCounts[remainderIndex] += remainder;
 
     }
 
@@ -315,7 +373,7 @@ async function populateClipList (playlistIdArray, songCount) {
         const playlistId = playlistIdArray[i];
         const trackCount = trackCounts[i];
 
-        const newSongs = await getRandomSongsFromPlaylist(playlistId, trackCount, token);
+        const newSongs = await getRandomSongsFromPlaylist(playlistId, trackCount, token, seed, offset);
 
         // Process songs (add URI and index)
 
@@ -346,7 +404,7 @@ async function populateClipList (playlistIdArray, songCount) {
 
     // Shuffle
 
-    songClips = songClips.slice().sort(() => 0.5 - Math.random());
+    songClips = getRandomSubset(songClips, songClips.length, seed, offset);
 
     // Add index value
 
