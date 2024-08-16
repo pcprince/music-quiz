@@ -76,6 +76,14 @@ function endGame () {
 
     remakeButton.disabled = false;
 
+    const playAllButtons = document.getElementsByClassName('play-all-button');
+
+    for (let i = 0; i < playAllButtons.length; i++) {
+
+        playAllButtons[i].style.display = '';
+
+    }
+
 }
 
 async function prepareGame () {

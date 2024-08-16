@@ -658,9 +658,7 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Disallow duplicate artists
-
-// TODO: Display error when failed to add playlist URL
+// TODO: Ungrey skip
 
 // TODO: Load sporacle quizzes
 

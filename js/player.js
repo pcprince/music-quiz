@@ -6,7 +6,7 @@
 
 /* global Spotify */
 /* global updateGuessUI, formatTimeMs */
-/* global token, songClips, gameStarted */
+/* global token, songClips, unguessedClips, gameStarted */
 /* global helpButton */
 
 // Define browser elements at the top of the script
@@ -17,6 +17,9 @@ const prevButton = document.getElementById('prev-button');
 const nextButton = document.getElementById('next-button');
 
 const clipInfo = document.getElementById('clip-info');
+
+const skipGuessCheckbox = document.getElementById('skip-guessed-checkbox');
+const skipGuessCheckboxLabel = document.getElementById('skip-guessed-checkbox-label');
 
 let currentClipIndex = 0;
 let clipTimeout;
@@ -34,6 +37,14 @@ function playSpecificClip (index) {
 
     currentClipIndex = index;
     playCurrentClip();
+    updateClipInfo();
+
+}
+
+function playSpecificSong (index) {
+
+    currentClipIndex = index;
+    playAllSong();
     updateClipInfo();
 
 }
@@ -139,8 +150,20 @@ function playClip (trackUri, startTime, clipLength) {
     resumeButton.disabled = true;
     setStopResumeShown(true);
 
-    const endTime = startTime + clipLength;
-    console.log('Playing clip ' + currentClipIndex + ' (' + formatTimeMs(startTime * 1000) + ' - ' + formatTimeMs(endTime * 1000) + ')');
+    startTime = startTime === undefined ? 0 : startTime;
+
+    console.log(startTime);
+
+    const songName = songClips[currentClipIndex].songName;
+    const artistNames = songClips[currentClipIndex].artists.map(artist => artist.name).join(', ');
+
+    let playingStr = 'Playing ';
+    playingStr += clipLength ? 'clip ' : '';
+    playingStr += currentClipIndex + ' : ' + songName + ' - ' + artistNames + ' (' + formatTimeMs(startTime * 1000) + ' - ';
+    playingStr += clipLength ? formatTimeMs(startTime + clipLength * 1000) : 'End';
+    playingStr += ')';
+
+    console.log(playingStr);
 
     updateClipInfo();
 
@@ -166,7 +189,11 @@ function playClip (trackUri, startTime, clipLength) {
 
                 isStopped = false;
 
-                clipTimeout = setTimeout(nextClip, clipLength * 1000);
+                if (clipLength) {
+
+                    clipTimeout = setTimeout(nextClip, clipLength * 1000);
+
+                }
 
             } else {
 
@@ -197,6 +224,24 @@ function playCurrentClip () {
     } else {
 
         console.error('Unable to play clip');
+
+    }
+
+}
+
+function playAllSong () {
+
+    const song = songClips[currentClipIndex];
+
+    if (song.uri) {
+
+        updateGuessUI(currentClipIndex);
+
+        playClip(song.uri);
+
+    } else {
+
+        console.error('Unable to play full song');
 
     }
 
@@ -279,7 +324,32 @@ function nextClip () {
     if (currentClipIndex < songClips.length - 1) {
 
         currentClipIndex++;
-        playCurrentClip();
+
+        if (skipGuessCheckbox.checked) {
+
+            while (currentClipIndex < songClips.length) {
+
+                if (unguessedClips.some(obj => obj.index === currentClipIndex)) {
+
+                    playCurrentClip();
+                    return;
+
+                }
+
+                console.log('Skipping clip', currentClipIndex);
+
+                currentClipIndex++;
+
+            }
+
+            stopClip();
+            resetUI();
+
+        } else {
+
+            playCurrentClip();
+
+        }
 
     } else {
 
@@ -325,3 +395,9 @@ function resetUI () {
     helpButton.disabled = true;
 
 }
+
+skipGuessCheckbox.addEventListener('change', () => {
+
+    skipGuessCheckboxLabel.style.color = skipGuessCheckbox.checked ? '' : 'grey';
+
+});

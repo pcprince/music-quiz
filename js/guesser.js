@@ -68,7 +68,10 @@ function cleanString (input) {
     // Step 6: Remove all instances of "the"
     cleaned = cleaned.replace(/\bthe\b/g, '');
 
-    // Step 7: Strip out all spaces
+    // Step 8: Replace "part" with "pt"
+    cleaned = cleaned.replace(/\bpart\b/g, 'pt');
+
+    // Step 9: Strip out all spaces
     cleaned = cleaned.replace(/\s+/g, '');
 
     return cleaned;
@@ -113,7 +116,7 @@ function updateGuessUI (playingIndex) {
 
 function prepareUI () {
 
-    playClipButtons = document.getElementsByClassName('play-button');
+    playClipButtons = document.getElementsByClassName('play-clip-button');
     songNameSpans = document.getElementsByClassName('song-name-span');
     hyphenSpans = document.getElementsByClassName('hyphen-span');
     artistSpans = document.getElementsByClassName('artist-span');

@@ -9,7 +9,7 @@
 /* global bootstrap */
 /* global token, currentClipIndex */
 /* global stopButton, resumeButton, prevButton, nextButton */
-/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, seededRandom */
+/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom */
 
 const CLIP_LENGTH_MS = 8000;
 
@@ -63,7 +63,7 @@ function removeDuplicateArtists (songArray) {
 
         if (hasDuplicate) {
 
-            console.log('Removed', song.songName, '-', song.artists[0].name);
+            // console.log('Removed', song.songName, '-', song.artists[0].name);
             return false;
 
         } else {
@@ -75,8 +75,8 @@ function removeDuplicateArtists (songArray) {
 
     });
 
-    const diff = songArray.length - uniqueArray.length;
-    console.log('Removed ' + diff + ' tracks due to duplicate artists');
+    // const diff = songArray.length - uniqueArray.length;
+    // console.log('Removed ' + diff + ' tracks due to duplicate artists');
 
     return uniqueArray;
 
@@ -260,7 +260,7 @@ function createSongUI () {
 
         const playClipButton = document.createElement('button');
         playClipButton.textContent = `Play ${index + 1}`;
-        playClipButton.classList.add('play-button', 'btn', 'btn-secondary');
+        playClipButton.classList.add('play-clip-button', 'btn', 'btn-secondary');
         playClipButton.id = `play-clip-button${index}`;
         playClipButton.disabled = true;
 
@@ -276,6 +276,27 @@ function createSongUI () {
         });
 
         songUiContainer.appendChild(playClipButton);
+
+        // Add hidden play all button
+
+        const playAllButton = document.createElement('button');
+        playAllButton.textContent = `Play All ${index + 1}`;
+        playAllButton.classList.add('play-all-button', 'btn', 'btn-primary');
+        playAllButton.id = `play-all-button${index}`;
+        playAllButton.style.display = 'none';
+
+        playAllButton.addEventListener('click', () => {
+
+            stopButton.style.display = '';
+            resumeButton.style.display = 'none';
+            prevButton.disabled = false;
+            nextButton.disabled = false;
+
+            playSpecificSong(index);
+
+        });
+
+        songUiContainer.appendChild(playAllButton);
 
         // Add song name
 
