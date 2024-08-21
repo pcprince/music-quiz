@@ -7,7 +7,7 @@
 // https://open.spotify.com/playlist/5Rrf7mqN8uus2AaQQQNdc1
 
 /* global bootstrap */
-/* global token, currentClipIndex */
+/* global token, currentClipIndex, preselectedClips */
 /* global stopButton, resumeButton, prevButton, nextButton */
 /* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom */
 
@@ -340,15 +340,7 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
     try {
 
-        const response = await fetch('../preselectedClips.json');
-
-        if (!response.ok) {
-
-            throw new Error(`HTTP error! status: ${response.status}`);
-
-        }
-
-        let allTracks = await response.json();
+        let allTracks = preselectedClips;
 
         allTracks = removeDuplicateArtists(allTracks);
 

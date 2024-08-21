@@ -658,8 +658,6 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 // https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Ungrey skip
-
 // TODO: Load sporacle quizzes
 
 // TODO: Table
@@ -667,9 +665,3 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // TODO: Artist score/custom scoring
 // TODO: Album mode
-
-// TODO: "Guessed at x:xx"
-
-// TODO: Add "Play all song" button when quiz is over
-
-// TODO: Checkbox for skipping correct guesses on playback

@@ -152,8 +152,6 @@ function playClip (trackUri, startTime, clipLength) {
 
     startTime = startTime === undefined ? 0 : startTime;
 
-    console.log(startTime);
-
     const songName = songClips[currentClipIndex].songName;
     const artistNames = songClips[currentClipIndex].artists.map(artist => artist.name).join(', ');
 
