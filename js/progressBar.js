@@ -141,6 +141,18 @@ function updateProgressBarUI () {
 
 }
 
+function fillAllBars () {
+
+    for (let i = 0; i < progressBars.length; i++) {
+
+        progressBars[i].style.width = '100%';
+        progressBars[i].classList.remove('progress-bar-animated', 'bg-current');
+        colourProgressBar(i);
+
+    }
+
+}
+
 function fillBar (percentage) {
 
     progressBars[currentClipIndex].style.width = percentage + '%';

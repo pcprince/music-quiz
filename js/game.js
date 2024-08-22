@@ -6,8 +6,8 @@
 
 /* global connectToPlayer, endTimer, playAll, stopClip */
 /* global playClipButtons, startTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
-/* global unguessedClips, unguessedArtistClips, revealSong, revealArtist, resetStartModal, isArtistMode */
-/* global songClips */
+/* global revealSong, revealArtist, resetStartModal, isArtistMode, fillAllBars */
+/* global unguessedClips, unguessedArtistClips, songClips */
 
 const scoreSpan = document.getElementById('score-span');
 const maxScoreSpan = document.getElementById('max-score-span');
@@ -98,6 +98,8 @@ function endGame () {
         }
 
     }
+
+    fillAllBars();
 
     stopClip();
 
