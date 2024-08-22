@@ -28,6 +28,10 @@ const startModalContentUrl = document.getElementById('start-modal-content-url');
 // Quickplay UI
 
 const quickplaySongCountInput = document.getElementById('quickplay-song-count-input');
+
+const quickplayArtistModeCheckbox = document.getElementById('quickplay-artist-mode-checkbox');
+const quickplayArtistModeCheckboxLabel = document.getElementById('quickplay-artist-mode-checkbox-label');
+
 const quickplaySeededCheckbox = document.getElementById('quickplay-seeded-checkbox');
 const quickplaySeededCheckboxLabel = document.getElementById('quickplay-seeded-checkbox-label');
 const quickplaySeededSeedInput = document.getElementById('quickplay-seeded-seed-input');
@@ -41,6 +45,10 @@ const playlistChooseCancelButton = document.getElementById('cancel-playlist-choo
 const playlistChoosePlayButton = document.getElementById('play-playlist-choose-button');
 
 const playlistChooseSongCountInput = document.getElementById('playlist-choose-song-count-input');
+
+const playlistChooseArtistModeCheckbox = document.getElementById('playlist-choose-artist-mode-checkbox');
+const playlistChooseArtistModeCheckboxLabel = document.getElementById('playlist-choose-artist-mode-checkbox-label');
+
 const playlistChooseSeededCheckbox = document.getElementById('playlist-choose-seeded-checkbox');
 const playlistChooseSeededCheckboxLabel = document.getElementById('playlist-choose-seeded-checkbox-label');
 const playlistChooseSeededSeedInput = document.getElementById('playlist-choose-seeded-seed-input');
@@ -49,6 +57,10 @@ const playlistChooseSeededNumberInput = document.getElementById('playlist-choose
 // Playlist enter URL UI
 
 const playlistUrlSongCountInput = document.getElementById('playlist-url-song-count-input');
+
+const playlistUrlArtistModeCheckbox = document.getElementById('playlist-url-artist-mode-checkbox');
+const playlistUrlArtistModeCheckboxLabel = document.getElementById('playlist-url-artist-mode-checkbox-label');
+
 const playlistUrlSeededCheckbox = document.getElementById('playlist-url-seeded-checkbox');
 const playlistUrlSeededCheckboxLabel = document.getElementById('playlist-url-seeded-checkbox-label');
 const playlistUrlSeededSeedInput = document.getElementById('playlist-url-seeded-seed-input');
@@ -614,6 +626,29 @@ playlistUrlSeededSeedInput.addEventListener('change', matchSeedValues);
 quickplaySeededNumberInput.addEventListener('change', matchSeedValues);
 playlistChooseSeededNumberInput.addEventListener('change', matchSeedValues);
 playlistUrlSeededNumberInput.addEventListener('change', matchSeedValues);
+
+function isArtistMode () {
+
+    return quickplayArtistModeCheckbox.checked;
+
+}
+
+function updateArtistModeUI (e) {
+
+    const input = e.target;
+    quickplayArtistModeCheckbox.checked = input.checked;
+    playlistChooseArtistModeCheckbox.checked = input.checked;
+    playlistUrlArtistModeCheckbox.checked = input.checked;
+
+    quickplayArtistModeCheckboxLabel.style.color = input.checked ? '' : 'gray';
+    playlistChooseArtistModeCheckboxLabel.style.color = input.checked ? '' : 'gray';
+    playlistUrlArtistModeCheckboxLabel.style.color = input.checked ? '' : 'gray';
+
+}
+
+quickplayArtistModeCheckbox.addEventListener('change', updateArtistModeUI);
+playlistChooseArtistModeCheckbox.addEventListener('change', updateArtistModeUI);
+playlistUrlArtistModeCheckbox.addEventListener('change', updateArtistModeUI);
 
 function matchSongCounts (e) {
 

@@ -9,7 +9,7 @@
 /* global bootstrap */
 /* global token, currentClipIndex, preselectedClips */
 /* global stopButton, resumeButton, prevButton, nextButton */
-/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom, generateWaveform, createProgressBars */
+/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom, isArtistMode, createProgressBars */
 
 const CLIP_LENGTH_MS = 8000;
 
@@ -118,8 +118,11 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
 
         }
 
-        // TODO: Only disable duplicates if artist scoring is enabled
-        allTracks = removeDuplicateArtists(allTracks);
+        if (isArtistMode()) {
+
+            allTracks = removeDuplicateArtists(allTracks);
+
+        }
 
         const randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
 

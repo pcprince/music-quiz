@@ -28,5 +28,21 @@
 }
 
 .progress.guessed {
-    background-color: #87daea !important;
+    background-color: #a4f0a5 !important;
+}
+
+.progress.half-guessed {
+    background-color: #fbc19d !important;
+}
+
+.progress-bar.bg-current {
+    background-color: #d23939 !important;
+}
+
+.progress-bar.bg-correct {
+    background-color: #36a853 !important;
+}
+
+.progress-bar.bg-half {
+    background-color: #f0820d !important;
 }

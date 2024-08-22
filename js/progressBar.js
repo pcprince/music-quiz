@@ -4,8 +4,8 @@
  * August 2024
  *****************************************************************************/
 
-/* global songClips */
-/* global isGuessed */
+/* global songClips, currentClipIndex */
+/* global isGuessed, isArtistGuessed, isArtistMode */
 
 const progressBarHolder = document.getElementById('progress-bar-holder');
 let progressBars = [];
@@ -50,45 +50,108 @@ function createProgressBars (onClick) {
 
 }
 
-function fillBar (barIndex, percentage) {
+function colourProgressBar (i) {
 
-    for (let i = 0; i < progressBars.length; i++) {
+    if (isArtistMode()) {
 
-        if (i < barIndex || (i === barIndex && percentage === 100)) {
+        if (isGuessed(i) && isArtistGuessed(i)) {
 
-            progressBars[i].style.width = '100%';
-            progressBars[i].classList.remove('progress-bar-animated', 'bg-success');
+            progressBars[i].classList.remove('progress-bar-animated', 'bg-current');
 
-            if (isGuessed(i)) {
+            progressBars[i].classList.add('bg-correct');
+            progressBars[i].classList.remove('bg-half');
 
-                progressBars[i].classList.add('bg-info');
+        } else if (isGuessed(i) !== isArtistGuessed(i)) {
 
-            }
+            progressBars[i].classList.remove('progress-bar-animated', 'bg-current');
 
-        } else if (i === barIndex) {
-
-            progressBars[i].style.width = percentage + '%';
-            progressBars[i].classList.add('progress-bar-animated', 'bg-success');
+            progressBars[i].classList.add('bg-half');
 
         } else {
 
+            progressBars[i].classList.remove('bg-correct', 'bg-half');
+
+        }
+
+    } else {
+
+        if (isGuessed(i)) {
+
+            progressBars[i].classList.remove('progress-bar-animated', 'bg-current');
+
+            progressBars[i].classList.add('bg-correct');
+
+        }
+
+    }
+
+}
+
+function updateProgressBarUI () {
+
+    for (let i = 0; i < progressBars.length; i++) {
+
+        if (i < currentClipIndex) {
+
+            progressBars[i].style.width = '100%';
+            colourProgressBar(i);
+
+        } else if (i > currentClipIndex) {
+
             progressBars[i].style.width = '0%';
-            progressBars[i].classList.remove('progress-bar-animated', 'bg-success');
+            progressBars[i].classList.remove('progress-bar-animated', 'bg-current');
 
         }
 
         const parent = progressBars[i].parentElement;
 
-        if (isGuessed(i)) {
+        if (isArtistMode()) {
 
-            parent.classList.add('guessed');
+            if (isArtistGuessed(i) && isGuessed(i)) {
+
+                parent.classList.add('guessed');
+                parent.classList.remove('half-guessed');
+
+            } else if (isArtistGuessed(i) !== isGuessed(i)) {
+
+                parent.classList.add('half-guessed');
+
+            } else {
+
+                parent.classList.remove('guessed');
+                parent.classList.remove('half-guessed');
+
+            }
 
         } else {
 
-            parent.classList.remove('guessed');
+            if (isGuessed(i)) {
+
+                parent.classList.add('guessed');
+
+            } else {
+
+                parent.classList.remove('guessed');
+
+            }
 
         }
 
     }
+
+}
+
+function fillBar (percentage) {
+
+    progressBars[currentClipIndex].style.width = percentage + '%';
+    progressBars[currentClipIndex].classList.add('progress-bar-animated', 'bg-current');
+
+    if (percentage >= 100) {
+
+        progressBars[currentClipIndex].style.width = '100%';
+
+    }
+
+    colourProgressBar(currentClipIndex);
 
 }

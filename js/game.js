@@ -6,11 +6,15 @@
 
 /* global connectToPlayer, endTimer, playAll, stopClip */
 /* global playClipButtons, startTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
-/* global unguessedClips, revealSong, resetStartModal */
+/* global unguessedClips, unguessedArtistClips, revealSong, revealArtist, resetStartModal, isArtistMode */
 /* global songClips */
 
 const scoreSpan = document.getElementById('score-span');
 const maxScoreSpan = document.getElementById('max-score-span');
+
+const artistScoreHolder = document.getElementById('artist-score-holder');
+const artistScoreSpan = document.getElementById('artist-score-span');
+const maxArtistScoreSpan = document.getElementById('max-artist-score-span');
 
 let gameStarted = false;
 
@@ -18,9 +22,23 @@ function updateScore () {
 
     scoreSpan.innerText = songClips.length - unguessedClips.length;
 
-    if (unguessedClips.length === 0) {
+    if (isArtistMode()) {
 
-        endGame();
+        artistScoreSpan.innerText = songClips.length - unguessedArtistClips.length;
+
+        if (unguessedClips.length === 0 && unguessedArtistClips.length === 0) {
+
+            endGame();
+
+        }
+
+    } else {
+
+        if (unguessedClips.length === 0) {
+
+            endGame();
+
+        }
 
     }
 
@@ -30,6 +48,9 @@ function initialiseScore () {
 
     scoreSpan.innerText = '0';
     maxScoreSpan.innerText = songClips.length;
+    maxArtistScoreSpan.innerText = songClips.length;
+
+    artistScoreHolder.style.display = isArtistMode() ? '' : 'none';
 
 }
 
@@ -37,6 +58,7 @@ function resetScore () {
 
     scoreSpan.innerText = '-';
     maxScoreSpan.innerText = '-';
+    maxArtistScoreSpan.innerText = '-';
 
 }
 
@@ -64,6 +86,16 @@ function endGame () {
     for (let i = 0; i < unguessedClips.length; i++) {
 
         revealSong(i, 'red');
+
+    }
+
+    if (isArtistMode()) {
+
+        for (let i = 0; i < unguessedArtistClips.length; i++) {
+
+            revealArtist(i, 'red');
+
+        }
 
     }
 

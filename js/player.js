@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global Spotify */
-/* global updateGuessUI, formatTimeMs, fillBar */
+/* global updateGuessUI, formatTimeMs, fillBar, updateProgressBarUI */
 /* global token, songClips, unguessedClips, gameStarted */
 /* global helpButton */
 
@@ -166,7 +166,7 @@ function startProgressBarLoop () {
 
     }
 
-    fillBar(currentClipIndex, 0);
+    fillBar(0);
 
     animationInterval = setInterval(() => {
 
@@ -181,7 +181,7 @@ function startProgressBarLoop () {
 
             }
 
-            fillBar(currentClipIndex, currentPercentage);
+            fillBar(currentPercentage);
 
         }
 
@@ -199,7 +199,7 @@ function endProgressBarLoop (newBarPercentage) {
 
     if (newBarPercentage) {
 
-        fillBar(currentClipIndex, newBarPercentage);
+        fillBar(newBarPercentage);
 
     }
 
@@ -210,6 +210,8 @@ function playClip (trackUri, startTime, clipLength) {
     stopButton.disabled = false;
     resumeButton.disabled = true;
     setStopResumeShown(true);
+
+    updateProgressBarUI();
 
     startTime = startTime === undefined ? 0 : startTime;
 

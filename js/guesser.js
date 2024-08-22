@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global songClips */
-/* global endGame, updateScore */
+/* global endGame, updateScore, isArtistMode, updateProgressBarUI */
 
 const MAX_DISTANCE = 1;
 
@@ -14,7 +14,7 @@ let playClipButtons, songNameSpans, hyphenSpans, artistSpans;
 const guessInput = document.getElementById('guess-input');
 const giveUpButton = document.getElementById('give-up-button');
 
-let unguessedClips;
+let unguessedClips, unguessedArtistClips;
 
 function levenshtein (a, b) {
 
@@ -78,13 +78,22 @@ function cleanString (input) {
 
 }
 
-function isCloseMatch (userGuess, actualTitle) {
+function isCloseMatch (userGuess, actualName) {
 
     const cleanedUserGuess = cleanString(userGuess);
-    const cleanedActualTitle = cleanString(actualTitle);
-    const distance = levenshtein(cleanedUserGuess, cleanedActualTitle);
+    const cleanedActualName = cleanString(actualName);
+    const distance = levenshtein(cleanedUserGuess, cleanedActualName);
 
     return distance <= MAX_DISTANCE;
+
+}
+
+function revealArtist (index, colour) {
+
+    const clip = unguessedArtistClips[index];
+
+    artistSpans[clip.index].innerText = clip.artists.map(artist => artist.name).join(', ');
+    artistSpans[clip.index].style.color = colour;
 
 }
 
@@ -94,11 +103,15 @@ function revealSong (index, colour) {
 
     songNameSpans[clip.index].innerText = clip.songName;
 
-    artistSpans[clip.index].innerText = clip.artists.map(artist => artist.name).join(', ');
-
     songNameSpans[clip.index].style.color = colour;
     hyphenSpans[clip.index].style.color = colour;
-    artistSpans[clip.index].style.color = colour;
+
+    if (!isArtistMode()) {
+
+        artistSpans[clip.index].innerText = clip.artists.map(artist => artist.name).join(', ');
+        artistSpans[clip.index].style.color = colour;
+
+    }
 
 }
 
@@ -122,6 +135,7 @@ async function prepareUI () {
     artistSpans = document.getElementsByClassName('artist-span');
 
     unguessedClips = JSON.parse(JSON.stringify(songClips));
+    unguessedArtistClips = JSON.parse(JSON.stringify(songClips));
 
 }
 
@@ -133,6 +147,13 @@ function resetUI () {
     artistSpans = [];
 
     unguessedClips = [];
+    unguessedArtistClips = [];
+
+}
+
+function isArtistGuessed (i) {
+
+    return !unguessedArtistClips.some(obj => obj.index === i);
 
 }
 
@@ -142,9 +163,64 @@ function isGuessed (i) {
 
 }
 
-guessInput.addEventListener('keyup', () => {
+function checkArtistGuess (guess) {
 
-    const guess = guessInput.value;
+    let matchIndex = -1;
+
+    unguessedArtistClips.forEach((clip, index) => {
+
+        const artists = clip.artists;
+
+        for (let i = 0; i < artists.length; i++) {
+
+            const isMatch = isCloseMatch(guess, artists[i].name);
+
+            if (isMatch) {
+
+                matchIndex = index;
+
+            }
+
+        }
+
+    });
+
+    if (matchIndex !== -1) {
+
+        const artists = unguessedArtistClips[matchIndex].artists;
+
+        // Let user type final letter if that is the only difference
+
+        for (let i = 0; i < artists.length; i++) {
+
+            const artist = artists[i].name;
+
+            const likelyArtistName = cleanString(artist);
+
+            if (likelyArtistName.substring(0, likelyArtistName.length - 1) === cleanString(guess)) {
+
+                return;
+
+            }
+        }
+
+        console.log('Matched with', matchIndex);
+
+        guessInput.value = '';
+
+        revealArtist(matchIndex, 'green');
+
+        unguessedArtistClips.splice(matchIndex, 1);
+
+        updateScore();
+
+        updateProgressBarUI();
+
+    }
+
+}
+
+function checkSongGuess (guess) {
 
     let matchIndex = -1;
 
@@ -181,6 +257,22 @@ guessInput.addEventListener('keyup', () => {
         unguessedClips.splice(matchIndex, 1);
 
         updateScore();
+
+        updateProgressBarUI();
+
+    }
+
+}
+
+guessInput.addEventListener('keyup', () => {
+
+    const guess = guessInput.value;
+
+    checkSongGuess(guess);
+
+    if (isArtistMode()) {
+
+        checkArtistGuess(guess);
 
     }
 
