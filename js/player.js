@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global Spotify */
-/* global updateGuessUI, formatTimeMs */
+/* global updateGuessUI, formatTimeMs, fillBar */
 /* global token, songClips, unguessedClips, gameStarted */
 /* global helpButton */
 
@@ -34,6 +34,14 @@ let retryPlaybackCount = 0;
 const MAX_PLAYBACK_ATTEMPTS = 3;
 
 function playSpecificClip (index) {
+
+    if (!gameStarted) {
+
+        return;
+
+    }
+
+    endProgressBarLoop();
 
     currentClipIndex = index;
     playCurrentClip();
@@ -144,6 +152,59 @@ function connectToPlayer (readyCallback) {
 
 }
 
+let animationInterval;
+
+function startProgressBarLoop () {
+
+    const clipLengthMs = songClips[currentClipIndex].clipLength * 1000;
+
+    const startTime = Date.now();
+
+    if (animationInterval) {
+
+        clearInterval(animationInterval);
+
+    }
+
+    fillBar(currentClipIndex, 0);
+
+    animationInterval = setInterval(() => {
+
+        if (!isStopped) {
+
+            const elapsedTime = Date.now() - startTime;
+            const currentPercentage = (elapsedTime / clipLengthMs) * 100;
+
+            if (currentPercentage >= 100) {
+
+                clearInterval(animationInterval);
+
+            }
+
+            fillBar(currentClipIndex, currentPercentage);
+
+        }
+
+    }, 10);
+
+}
+
+function endProgressBarLoop (newBarPercentage) {
+
+    if (animationInterval) {
+
+        clearInterval(animationInterval);
+
+    }
+
+    if (newBarPercentage) {
+
+        fillBar(currentClipIndex, newBarPercentage);
+
+    }
+
+}
+
 function playClip (trackUri, startTime, clipLength) {
 
     stopButton.disabled = false;
@@ -189,6 +250,7 @@ function playClip (trackUri, startTime, clipLength) {
 
                 if (clipLength) {
 
+                    startProgressBarLoop();
                     clipTimeout = setTimeout(nextClip, clipLength * 1000);
 
                 }
@@ -210,6 +272,8 @@ function playClip (trackUri, startTime, clipLength) {
 }
 
 function playCurrentClip () {
+
+    currentClipIndex = currentClipIndex === -1 ? 0 : currentClipIndex;
 
     const clip = songClips[currentClipIndex];
 
@@ -268,6 +332,8 @@ function stopClip () {
 
     clearTimeout(clipTimeout);
 
+    endProgressBarLoop();
+
     fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
         method: 'PUT',
         headers: {
@@ -321,6 +387,8 @@ function nextClip () {
 
     if (currentClipIndex < songClips.length - 1) {
 
+        endProgressBarLoop(100);
+
         currentClipIndex++;
 
         if (skipGuessCheckbox.checked) {
@@ -352,7 +420,10 @@ function nextClip () {
     } else {
 
         stopClip();
+        endProgressBarLoop(100);
         resetUI(); // Reset UI when the last clip finishes
+
+        resumeButton.disabled = false;
 
     }
 

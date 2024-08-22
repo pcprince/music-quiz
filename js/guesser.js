@@ -114,7 +114,7 @@ function updateGuessUI (playingIndex) {
 
 }
 
-function prepareUI () {
+async function prepareUI () {
 
     playClipButtons = document.getElementsByClassName('play-clip-button');
     songNameSpans = document.getElementsByClassName('song-name-span');
@@ -133,6 +133,12 @@ function resetUI () {
     artistSpans = [];
 
     unguessedClips = [];
+
+}
+
+function isGuessed (i) {
+
+    return !unguessedClips.some(obj => obj.index === i);
 
 }
 

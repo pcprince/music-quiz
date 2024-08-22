@@ -324,7 +324,7 @@ const preselectedClips = [
         'clipLength': 8
     },
     {
-        'songName': 'Living on a Prayer',
+        'songName': 'Livin\' on a Prayer',
         'artists': [{'name': 'Bon Jovi'}],
         'startTime': 64,
         'clipLength': 8

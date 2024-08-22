@@ -9,7 +9,7 @@
 /* global bootstrap */
 /* global token, currentClipIndex, preselectedClips */
 /* global stopButton, resumeButton, prevButton, nextButton */
-/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom */
+/* global prepareUI, resetUI, resumeClip, stopClip, pauseTimer, resumeTimer, addSecondsToTimer, playSpecificClip, playSpecificSong, seededRandom, generateWaveform, createProgressBars */
 
 const CLIP_LENGTH_MS = 8000;
 
@@ -350,32 +350,50 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         // Process songs (add URI and index)
 
-        for (let i = 0; i < randomSongs.length; i++) {
+        const tracksToBeRemoved = [];
 
-            randomSongs[i].index = i + songClips.length;
+        for (let i = 0; i < randomSongs.length; i++) {
 
             const clip = randomSongs[i];
 
             if (!clip.uri) {
 
-                searchTrack(clip.songName, clip.artists[0].name).then(track => {
+                const track = await searchTrack(clip.songName, clip.artists[0].name);
 
-                    if (track) {
+                if (track) {
 
-                        randomSongs[i].uri = track.uri;
-                        randomSongs[i].durationMs = track.durationMs;
+                    randomSongs[i].uri = track.uri;
+                    randomSongs[i].durationMs = track.durationMs;
 
-                    }
+                } else {
 
-                });
+                    // If track can't be found, remove it from the list
+                    tracksToBeRemoved.push(i);
+
+                }
 
             }
+
+        }
+
+        for (let i = 0; i < tracksToBeRemoved.length; i++) {
+
+            console.error('Removing', randomSongs[tracksToBeRemoved[i]]);
+            randomSongs.splice(tracksToBeRemoved[i], 1);
+
+        }
+
+        for (let i = 0; i < randomSongs.length; i++) {
+
+            randomSongs[i].index = i;
 
         }
 
         songClips = randomSongs;
 
         createSongUI();
+
+        createProgressBars(playSpecificClip);
 
         prepareUI();
 
@@ -428,24 +446,36 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
         // Process songs (add URI and index)
 
+        const tracksToBeRemoved = [];
+
         for (let i = 0; i < newSongs.length; i++) {
 
             const clip = newSongs[i];
 
             if (!clip.uri) {
 
-                searchTrack(clip.songName, clip.artists[0].name).then(track => {
+                const track = await searchTrack(clip.songName, clip.artists[0].name);
 
-                    if (track) {
+                if (track) {
 
-                        newSongs[i].uri = track.uri;
-                        newSongs[i].durationMs = track.durationMs;
+                    newSongs[i].uri = track.uri;
+                    newSongs[i].durationMs = track.durationMs;
 
-                    }
+                } else {
 
-                });
+                    // Remove song from list
+                    tracksToBeRemoved.push(i);
+
+                }
 
             }
+
+        }
+
+        for (let i = 0; i < tracksToBeRemoved.length; i++) {
+
+            console.error('Removing', newSongs[tracksToBeRemoved[i]]);
+            newSongs.splice(tracksToBeRemoved[i], 1);
 
         }
 
@@ -466,6 +496,8 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
     });
 
     createSongUI();
+
+    createProgressBars(playSpecificClip);
 
     prepareUI();
 
