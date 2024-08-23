@@ -9,12 +9,10 @@
 
 const progressBarHolder = document.getElementById('progress-bar-holder');
 let progressBars = [];
-let currentProgressBars = [];
 
 function createProgressBars (onClick) {
 
     progressBars = [];
-    currentProgressBars = [];
     progressBarHolder.innerHTML = '';
 
     const w = progressBarHolder.offsetWidth / songClips.length;
@@ -32,13 +30,6 @@ function createProgressBars (onClick) {
 
         progressBars.push(progressBar);
         progressBarOuter.appendChild(progressBar);
-
-        const currentProgressBar = document.createElement('div');
-        currentProgressBar.classList.add('progress-bar', 'progress-bar-striped', 'progress-bar-animated', 'bg-current');
-        currentProgressBar.style = 'width: 0%; transition: none; display: none;';
-
-        currentProgressBars.push(currentProgressBar);
-        progressBarOuter.appendChild(currentProgressBar);
 
         const progressBarLabel = document.createElement('small');
         progressBarLabel.classList.add('justify-content-center', 'd-flex', 'position-absolute');
@@ -60,6 +51,12 @@ function createProgressBars (onClick) {
 }
 
 function colourProgressBar (i) {
+
+    if (i !== currentClipIndex) {
+
+        progressBars[i].classList.remove('progress-bar-animated');
+
+    }
 
     if (isArtistMode()) {
 
@@ -97,24 +94,15 @@ function updateProgressBarUI () {
 
     for (let i = 0; i < progressBars.length; i++) {
 
+        colourProgressBar(i);
+
         if (i < currentClipIndex) {
 
-            currentProgressBars[i].style.display = 'none';
-
-            progressBars[i].style.display = '';
             progressBars[i].style.width = '100%';
-            colourProgressBar(i);
 
         } else if (i > currentClipIndex) {
 
-            currentProgressBars[i].style.display = 'none';
-
-            progressBars[i].style.display = '';
             progressBars[i].style.width = '0%';
-
-        } else {
-
-            progressBars[i].style.display = 'none';
 
         }
 
@@ -163,8 +151,6 @@ function fillAllBars () {
 
     for (let i = 0; i < progressBars.length; i++) {
 
-        currentProgressBars[i].style.display = 'none';
-
         progressBars[i].style.display = '';
         progressBars[i].style.width = '100%';
         colourProgressBar(i);
@@ -175,17 +161,16 @@ function fillAllBars () {
 
 function fillBar (percentage) {
 
-    currentProgressBars[currentClipIndex].style.width = percentage + '%';
+    progressBars[currentClipIndex].style.width = percentage + '%';
 
     if (percentage >= 100) {
 
-        currentProgressBars[currentClipIndex].style.width = '100%';
+        progressBars[currentClipIndex].style.width = '100%';
 
     }
 
-    currentProgressBars[currentClipIndex].style.display = '';
-    progressBars[currentClipIndex].style.display = 'none';
-
-    colourProgressBar(currentClipIndex);
+    progressBars[currentClipIndex].classList.add('progress-bar-animated');
 
 }
+
+// TODO: Change it so current bar is the same colour but animates

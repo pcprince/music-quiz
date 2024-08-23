@@ -50,7 +50,3 @@
 .progress-bar.bg-unguessed {
     background-color: #d23939 !important;
 }
-
-.progress-bar.bg-current {
-    background-color: #0382b9 !important;
-}
