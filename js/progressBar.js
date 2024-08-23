@@ -181,5 +181,3 @@ function fillBar (percentage) {
     progressBars[currentClipIndex].classList.add('progress-bar-animated');
 
 }
-
-// TODO: Change it so current bar is the same colour but animates

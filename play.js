@@ -691,12 +691,5 @@ window.onload = async () => {
 window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // https://developer.spotify.com/dashboard
-// https://developer.spotify.com/documentation/web-playback-sdk/tutorials/getting-started
 
-// TODO: Load sporacle quizzes
-
-// TODO: Table
-// TODO: Interface
-
-// TODO: Artist score/custom scoring
 // TODO: Album mode
