@@ -151,7 +151,7 @@ function fillAllBars () {
 
     for (let i = 0; i < progressBars.length; i++) {
 
-        progressBars[i].style.display = '';
+        progressBars[i].classList.remove('progress-bar-animated');
         progressBars[i].style.width = '100%';
         colourProgressBar(i);
 

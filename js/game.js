@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global connectToPlayer, endTimer, playAll, stopClip */
-/* global playClipButtons, startTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
+/* global playClipButtons, startTimerButton, pauseTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
 /* global revealSong, revealArtist, resetStartModal, isArtistMode, fillAllBars */
 /* global unguessedClips, unguessedArtistClips, songClips */
 
@@ -131,6 +131,12 @@ async function prepareGame () {
         resetStartModal();
 
         startTimerButton.disabled = false;
+
+        startTimerButton.style.display = '';
+        pauseTimerButton.style.display = 'none';
+
+        giveUpButton.style.display = '';
+        remakeButton.style.display = 'none';
 
     });
 

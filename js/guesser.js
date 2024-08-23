@@ -6,6 +6,7 @@
 
 /* global songClips */
 /* global endGame, updateScore, isArtistMode, updateProgressBarUI */
+/* global remakeButton */
 
 const MAX_DISTANCE = 1;
 
@@ -281,6 +282,9 @@ guessInput.addEventListener('keyup', () => {
 giveUpButton.addEventListener('click', () => {
 
     console.log('Giving up');
+
+    giveUpButton.style.display = 'none';
+    remakeButton.style.display = '';
 
     endGame();
 

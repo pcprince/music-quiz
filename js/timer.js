@@ -86,8 +86,8 @@ function endTimer () {
 
     clearInterval(timerInterval);
 
-    pauseTimerButton.disabled = true;
     resumeTimerButton.disabled = true;
+    pauseTimerButton.disabled = true;
 
 }
 
@@ -100,9 +100,12 @@ function startTimer () {
 
     isPaused = false;
 
-    pauseTimerButton.disabled = false;
     resumeTimerButton.disabled = false;
     startTimerButton.disabled = true;
+    pauseTimerButton.disabled = false;
+
+    startTimerButton.style.display = 'none';
+    pauseTimerButton.style.display = '';
 
     startGame();
 

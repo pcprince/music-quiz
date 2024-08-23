@@ -14,10 +14,6 @@
     margin-left: 5px;
 }
 
-#stop-button, #resume-button {
-    width: 82px;
-}
-
 .start-modal-btn {
     width: 150px;
 }
@@ -49,4 +45,15 @@
 
 .progress-bar.bg-unguessed {
     background-color: #d23939 !important;
+}
+
+.button-icon {
+    width: 15px;
+    height: 15px;
+    vertical-align: initial;
+}
+
+.playback-button {
+    width: 40px;
+    height: 35px;
 }

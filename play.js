@@ -700,5 +700,3 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // TODO: Artist score/custom scoring
 // TODO: Album mode
-
-// FIXME: Show and hide current progress bar to prevent confusion
