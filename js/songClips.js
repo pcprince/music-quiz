@@ -305,7 +305,7 @@ function createSongUI () {
         // Add hidden play all button
 
         const playAllButton = document.createElement('button');
-        playAllButton.innerHTML = '<img class="button-icon" src="../images/play-fill.svg" alt="Bootstrap">';
+        playAllButton.innerHTML = '<img class="button-icon" src="./images/play-fill.svg" alt="Bootstrap">';
         playAllButton.classList.add('play-all-button', 'btn', 'btn-primary', 'playback-button');
         playAllButton.id = `play-all-button${index}`;
         playAllButton.style.display = 'none';
