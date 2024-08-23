@@ -13,6 +13,8 @@
 
 const CLIP_LENGTH_MS = 8000;
 
+const MAX_ROWS = 15;
+
 const songUiContainer = document.getElementById('song-ui-container');
 
 const helpButton = document.getElementById('help-button');
@@ -259,7 +261,27 @@ async function searchTrack (songName, artist) {
 
 function createSongUI () {
 
+    const columns = [];
+    const columnCount = Math.ceil(songClips.length / MAX_ROWS);
+
+    for (let i = 0; i < columnCount; i++) {
+
+        const c = document.createElement('div');
+        c.classList.add('col');
+
+        columns.push(c);
+
+        songUiContainer.appendChild(c);
+
+    }
+
     songClips.forEach((clip, index) => {
+
+        const clipRow = document.createElement('div');
+        clipRow.classList.add('row');
+
+        const clipCol = document.createElement('div');
+        clipCol.classList.add('col');
 
         const playClipButton = document.createElement('button');
         playClipButton.textContent = `Play ${index + 1}`;
@@ -278,13 +300,13 @@ function createSongUI () {
 
         });
 
-        songUiContainer.appendChild(playClipButton);
+        clipCol.appendChild(playClipButton);
 
         // Add hidden play all button
 
         const playAllButton = document.createElement('button');
-        playAllButton.textContent = `Play All ${index + 1}`;
-        playAllButton.classList.add('play-all-button', 'btn', 'btn-primary');
+        playAllButton.innerHTML = '<img class="button-icon" src="../images/play-fill.svg" alt="Bootstrap">';
+        playAllButton.classList.add('play-all-button', 'btn', 'btn-primary', 'playback-button');
         playAllButton.id = `play-all-button${index}`;
         playAllButton.style.display = 'none';
 
@@ -299,39 +321,38 @@ function createSongUI () {
 
         });
 
-        songUiContainer.appendChild(playAllButton);
+        clipCol.appendChild(playAllButton);
 
         // Add song name
 
         const songNameSpan = document.createElement('span');
         songNameSpan.textContent = '???????';
-        songNameSpan.classList.add('song-name-span');
+        songNameSpan.classList.add('song-name-span', 'song-span');
         songNameSpan.style.marginLeft = '5px';
 
-        songUiContainer.appendChild(songNameSpan);
+        clipCol.appendChild(songNameSpan);
 
         // Add hyphen between song name and artist
 
         const hyphenSpan = document.createElement('span');
         hyphenSpan.textContent = '-';
         hyphenSpan.style.marginLeft = '5px';
-        hyphenSpan.classList.add('hyphen-span');
+        hyphenSpan.classList.add('hyphen-span', 'song-span');
 
-        songUiContainer.appendChild(hyphenSpan);
+        clipCol.appendChild(hyphenSpan);
 
         // Add artist
 
         const artistSpan = document.createElement('span');
         artistSpan.textContent = '???????';
-        artistSpan.classList.add('artist-span');
+        artistSpan.classList.add('artist-span', 'song-span');
         artistSpan.style.marginLeft = '5px';
 
-        songUiContainer.appendChild(artistSpan);
+        clipCol.appendChild(artistSpan);
 
-        // Add newline
+        clipRow.appendChild(clipCol);
 
-        // TODO: Make this a row
-        songUiContainer.appendChild(document.createElement('br'));
+        columns[Math.floor(index / MAX_ROWS)].appendChild(clipRow);
 
     });
 

@@ -12,8 +12,9 @@
 const scoreSpan = document.getElementById('score-span');
 const maxScoreSpan = document.getElementById('max-score-span');
 
-const artistScoreHolder = document.getElementById('artist-score-holder');
+const artistScoreLabel = document.getElementById('artist-score-label');
 const artistScoreSpan = document.getElementById('artist-score-span');
+const artistSlashSpan = document.getElementById('artist-slash-span');
 const maxArtistScoreSpan = document.getElementById('max-artist-score-span');
 
 let gameStarted = false;
@@ -48,9 +49,14 @@ function initialiseScore () {
 
     scoreSpan.innerText = '0';
     maxScoreSpan.innerText = songClips.length;
+
+    artistScoreSpan.innerText = '0';
     maxArtistScoreSpan.innerText = songClips.length;
 
-    artistScoreHolder.style.display = isArtistMode() ? '' : 'none';
+    artistScoreLabel.style.display = isArtistMode() ? 'inline-block' : 'none';
+    artistScoreSpan.style.display = isArtistMode() ? 'inline-block' : 'none';
+    artistSlashSpan.style.display = isArtistMode() ? 'inline-block' : 'none';
+    maxArtistScoreSpan.style.display = isArtistMode() ? 'inline-block' : 'none';
 
 }
 

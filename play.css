@@ -5,13 +5,8 @@
 
 .play-clip-button {
     width: 75px;
+    height: 33px;
     font-size: small !important;
-}
-
-.play-all-button {
-    width: 90px;
-    font-size: small !important;
-    margin-left: 5px;
 }
 
 .start-modal-btn {
@@ -55,5 +50,18 @@
 
 .playback-button {
     width: 40px;
-    height: 35px;
+    height: 33px;
+    padding-top: 4px !important;
+}
+
+.playing-span {
+    font-size: large;
+}
+
+.score-span {
+    font-size: large;
+}
+
+.song-span {
+    font-size: small;
 }

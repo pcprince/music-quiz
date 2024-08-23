@@ -8,9 +8,12 @@
 /* global isGuessed, isArtistGuessed, isArtistMode */
 
 const progressBarHolder = document.getElementById('progress-bar-holder');
+const emptyProgressBarHolder = document.getElementById('empty-progress-bar-holder');
 let progressBars = [];
 
 function createProgressBars (onClick) {
+
+    emptyProgressBarHolder.style.display = 'none';
 
     progressBars = [];
     progressBarHolder.innerHTML = '';
@@ -160,6 +163,12 @@ function fillAllBars () {
 }
 
 function fillBar (percentage) {
+
+    if (currentClipIndex < 0) {
+
+        return;
+
+    }
 
     progressBars[currentClipIndex].style.width = percentage + '%';
 

@@ -16,7 +16,8 @@ const resumeButton = document.getElementById('resume-button');
 const prevButton = document.getElementById('prev-button');
 const nextButton = document.getElementById('next-button');
 
-const clipInfo = document.getElementById('clip-info');
+const clipNumberSpan = document.getElementById('clip-number-span');
+const clipTotalSpan = document.getElementById('clip-total-span');
 
 const skipGuessCheckbox = document.getElementById('skip-guessed-checkbox');
 const skipGuessCheckboxLabel = document.getElementById('skip-guessed-checkbox-label');
@@ -42,6 +43,7 @@ function playSpecificClip (index) {
     }
 
     endProgressBarLoop();
+    fillBar(0);
 
     currentClipIndex = index;
     playCurrentClip();
@@ -189,17 +191,11 @@ function startProgressBarLoop () {
 
 }
 
-function endProgressBarLoop (newBarPercentage) {
+function endProgressBarLoop () {
 
     if (animationInterval) {
 
         clearInterval(animationInterval);
-
-    }
-
-    if (newBarPercentage) {
-
-        fillBar(newBarPercentage);
 
     }
 
@@ -221,7 +217,7 @@ function playClip (trackUri, startTime, clipLength) {
     let playingStr = 'Playing ';
     playingStr += clipLength ? 'clip ' : '';
     playingStr += currentClipIndex + ' : ' + songName + ' - ' + artistNames + ' (' + formatTimeMs(startTime * 1000) + ' - ';
-    playingStr += clipLength ? formatTimeMs(startTime + clipLength * 1000) : 'End';
+    playingStr += clipLength ? formatTimeMs((startTime + clipLength) * 1000) : 'End';
     playingStr += ')';
 
     console.log(playingStr);
@@ -375,9 +371,15 @@ function resumeClip () {
 
 function previousClip () {
 
+    clearTimeout(clipTimeout);
+
     if (currentClipIndex > 0) {
 
         currentClipIndex--;
+
+        endProgressBarLoop();
+        fillBar(0);
+
         stopClip();
         playCurrentClip();
 
@@ -387,9 +389,12 @@ function previousClip () {
 
 function nextClip () {
 
+    clearTimeout(clipTimeout);
+
     if (currentClipIndex < songClips.length - 1) {
 
-        endProgressBarLoop(100);
+        endProgressBarLoop();
+        fillBar(0);
 
         currentClipIndex++;
 
@@ -422,7 +427,8 @@ function nextClip () {
     } else {
 
         stopClip();
-        endProgressBarLoop(100);
+        endProgressBarLoop();
+        fillBar(0);
         resetUI(); // Reset UI when the last clip finishes
 
         resumeButton.disabled = false;
@@ -435,11 +441,13 @@ function updateClipInfo () {
 
     if (currentClipIndex === -1) {
 
-        clipInfo.textContent = '- / -';
+        clipNumberSpan.textContent = '-';
+        clipTotalSpan.textContent = '-';
 
     } else {
 
-        clipInfo.textContent = `${currentClipIndex + 1} / ${songClips.length}`;
+        clipNumberSpan.textContent = (currentClipIndex + 1);
+        clipTotalSpan.textContent = songClips.length;
 
     }
 

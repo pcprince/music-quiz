@@ -171,51 +171,91 @@
         </div>
     </div>
 
-    <span id="timer-span">00:00</span>
+    <div class="container-fluid">
 
-    <button class="btn btn-success btn-timer" id="start-timer-button" disabled>Start</button>
-    <button class="btn btn-secondary btn-timer" id="pause-timer-button" disabled style="display: none;">Pause</button>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col" style="text-align: center;">
+                <button class="btn btn-success btn-timer" id="start-timer-button" disabled>Start</button>
+                <button class="btn btn-secondary btn-timer" id="pause-timer-button" disabled style="display: none;">Pause</button>
 
-    <button class="btn btn-danger" id="give-up-button" disabled>Give Up</button>
-    <button class="btn btn-primary" id="remake-button" disabled style="display: none;">Remake</button>
+                <button class="btn btn-danger" id="give-up-button" disabled>Give Up</button>
+                <button class="btn btn-primary" id="remake-button" disabled style="display: none;">Remake</button>
+            </div>
+        </div>
 
-    <br><br>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col" style="text-align: center;">
+                <span id="timer-span" style="font-size: xx-large;">00:00</span>
+            </div>
+        </div>
 
-    <div id="progress-bar-holder" class="d-flex" style="max-width: 75%;"></div>
+        <div class="row" style="margin-top: 2px;">
+            <div class="col" style="text-align: center;">
+                <div id="empty-progress-bar-holder" class="progress" role="progressbar">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+                <div id="progress-bar-holder" class="d-flex justify-content-center" style="min-width: 100%;"></div>
+            </div>
+        </div>
 
-    <br><br>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col score-span" style="text-align: center;">
+                <span style="font-weight: bold;">Song Score: </span>
+                <span id="score-span" style="width: 26px; display: inline-block; text-align: center;">-</span>
+                <span style="display: inline-block;">/</span>
+                <span id="max-score-span" style="width: 26px; display: inline-block; text-align: center;">-</span>
 
-    <span>Playing: </span><span id="clip-info">- / -</span>
+                <span id="artist-score-label" style="display: none; margin-left: 30px; font-weight: bold;">Artist Score: </span>
+                <span id="artist-score-span" style="display: none; width: 26px; text-align: center;">-</span>
+                <span id="artist-slash-span" style="display: none;">/</span>
+                <span id="max-artist-score-span" style="display: none; width: 26px; text-align: center;">-</span>
+            </div>
+        </div>
 
-    <button class="btn btn-primary playback-button" id="prev-button" disabled>
-        <img class="button-icon" src="../images/chevron-left.svg" alt="Bootstrap">
-    </button>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col" style="text-align: center;">
+                <span class="playing-span" style="font-weight: bold;">Playing: </span>
+                <span id="clip-number-span" class="playing-span" style="width: 26px; display: inline-block; text-align: center;">-</span>
+                <span class="playing-span" style="display: inline-block;"> / </span>
+                <span id="clip-total-span" class="playing-span" style="width: 26px; display: inline-block; text-align: center;">-</span>
+            </div>
+        </div>
 
-    <button class="btn btn-secondary playback-button" id="stop-button" disabled>
-        <img class="button-icon" src="../images/pause.svg" alt="Bootstrap">
-    </button>
-    <button class="btn btn-secondary playback-button" id="resume-button" style="display: none;">
-        <img class="button-icon" src="../images/play-fill.svg" alt="Bootstrap">
-    </button>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col" style="text-align: center;">
+                <button class="btn btn-primary playback-button" id="prev-button" disabled>
+                    <img class="button-icon" src="../images/chevron-left.svg" alt="Bootstrap">
+                </button>
+            
+                <button class="btn btn-secondary playback-button" id="stop-button" disabled>
+                    <img class="button-icon" src="../images/pause.svg" alt="Bootstrap">
+                </button>
+                <button class="btn btn-secondary playback-button" id="resume-button" style="display: none;">
+                    <img class="button-icon" src="../images/play-fill.svg" alt="Bootstrap">
+                </button>
+            
+                <button class="btn btn-primary playback-button" id="next-button" disabled>
+                    <img class="button-icon" src="../images/chevron-right.svg" alt="Bootstrap">
+                </button>
+            </div>
+        </div>
 
-    <button class="btn btn-primary playback-button" id="next-button" disabled>
-        <img class="button-icon" src="../images/chevron-right.svg" alt="Bootstrap">
-    </button>
+        <div class="row" style="margin-top: 7px;">
+            <div class="col" style="text-align: center;">
+                <input type="checkbox" id="skip-guessed-checkbox"><label id="skip-guessed-checkbox-label" for="skip-guessed-checkbox" style="margin-left: 5px; color: grey; font-size: small;">Skip correct guesses</label>
+            </div>
+        </div>
 
-    <input type="checkbox" id="skip-guessed-checkbox"><label id="skip-guessed-checkbox-label" for="skip-guessed-checkbox" style="margin-left: 5px; color: grey;">Skip correct guesses</label>
-    <br><br>
+        <div class="row" style="margin-top: 7px;">
+            <div class="col" style="text-align: center;">
+                <input id="guess-input" style="width: 500px; font-size: large;" disabled>
+                <button class="btn btn-danger" id="help-button" disabled style="height: 33px; padding-top: 3px; vertical-align: top;">Help</button>
+            </div>
+        </div>
 
-    <input id="guess-input" disabled>
-    <br>
-    <span>Song Score: </span><span id="score-span">-</span>/<span id="max-score-span">-</span>
-    <br>
-    <div id="artist-score-holder" style="display: none;">
-        <span>Artist Score: </span><span id="artist-score-span">-</span>/<span id="max-artist-score-span">-</span>
+        <div class="row" style="margin-top: 7px;" id="song-ui-container"></div>
+
     </div>
-    <br>
-    <button class="btn btn-danger" id="help-button" disabled>Help</button>
-    <br><br>
-    <div id="song-ui-container"></div>
 
 </body>
 
