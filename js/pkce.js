@@ -45,6 +45,14 @@ function generateRandomString (length) {
 
 async function redirect () {
 
+    if (location.protocol !== 'https:') {
+
+        console.error('App only runs on HTTPS');
+
+        return;
+
+    }
+
     const codeVerifier = generateRandomString(64);
     const hashed = await sha256(codeVerifier);
     const codeChallenge = base64encode(hashed);
