@@ -282,10 +282,12 @@ function createSongUI () {
 
         const clipCol = document.createElement('div');
         clipCol.classList.add('col');
+        clipCol.style.paddingLeft = '30%';
 
         const playClipButton = document.createElement('button');
-        playClipButton.textContent = `Play ${index + 1}`;
-        playClipButton.classList.add('play-clip-button', 'btn', 'btn-secondary');
+        // playClipButton.textContent = `Play ${index + 1}`;
+        playClipButton.innerHTML = '<img class="button-icon" src="./images/play-fill.svg" alt="Bootstrap">';
+        playClipButton.classList.add('playback-button', 'btn', 'btn-secondary', 'play-clip-button');
         playClipButton.id = `play-clip-button${index}`;
         playClipButton.disabled = true;
 
@@ -323,6 +325,15 @@ function createSongUI () {
 
         clipCol.appendChild(playAllButton);
 
+        // Add song number
+
+        const songNumSpan = document.createElement('span');
+        songNumSpan.textContent = `${index + 1}.`;
+        songNumSpan.classList.add('song-span');
+        songNumSpan.style.marginLeft = '5px';
+
+        clipCol.appendChild(songNumSpan);
+
         // Add song name
 
         const songNameSpan = document.createElement('span');
@@ -336,7 +347,7 @@ function createSongUI () {
 
         const hyphenSpan = document.createElement('span');
         hyphenSpan.textContent = '-';
-        hyphenSpan.style.marginLeft = '5px';
+        hyphenSpan.style.marginLeft = '3px';
         hyphenSpan.classList.add('hyphen-span', 'song-span');
 
         clipCol.appendChild(hyphenSpan);

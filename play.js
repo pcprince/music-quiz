@@ -735,8 +735,4 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // https://developer.spotify.com/dashboard
 
-// TODO: Allow custom time
-
-// TODO: Mobile UI
-
 // TODO: Album mode
