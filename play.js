@@ -694,4 +694,10 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 
 // TODO: Allow custom time
 
+// TODO: Mobile UI
+
+// TODO: Remove Github link
+
+// FIXME: Move next only if stopped
+
 // TODO: Album mode
