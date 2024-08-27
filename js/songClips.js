@@ -13,7 +13,7 @@
 
 const CLIP_LENGTH_MS = 8000;
 
-const MAX_ROWS = 15;
+const MAX_ROWS = 17;
 
 const songUiContainer = document.getElementById('song-ui-container');
 
