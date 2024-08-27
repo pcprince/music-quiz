@@ -5,7 +5,7 @@
  *****************************************************************************/
 
 /* global bootstrap */
-/* global authorise, populateClipList, loadClipListFromFile, prepareGame, clearClipList, resetScore, stopClip */
+/* global authorise, populateClipList, loadClipListFromFile, prepareGame, clearClipList, resetScore, stopClip, resetGameLength, showEmptyProgressBar */
 /* global token, spotifyReady */
 
 const startModal = new bootstrap.Modal(document.getElementById('start-modal'), {
@@ -28,6 +28,7 @@ const startModalContentUrl = document.getElementById('start-modal-content-url');
 // Quickplay UI
 
 const quickplaySongCountInput = document.getElementById('quickplay-song-count-input');
+const quickplayTimeInput = document.getElementById('quickplay-time-input');
 
 const quickplayArtistModeCheckbox = document.getElementById('quickplay-artist-mode-checkbox');
 const quickplayArtistModeCheckboxLabel = document.getElementById('quickplay-artist-mode-checkbox-label');
@@ -45,6 +46,7 @@ const playlistChooseCancelButton = document.getElementById('cancel-playlist-choo
 const playlistChoosePlayButton = document.getElementById('play-playlist-choose-button');
 
 const playlistChooseSongCountInput = document.getElementById('playlist-choose-song-count-input');
+const playlistChooseTimeInput = document.getElementById('playlist-choose-time-input');
 
 const playlistChooseArtistModeCheckbox = document.getElementById('playlist-choose-artist-mode-checkbox');
 const playlistChooseArtistModeCheckboxLabel = document.getElementById('playlist-choose-artist-mode-checkbox-label');
@@ -57,6 +59,7 @@ const playlistChooseSeededNumberInput = document.getElementById('playlist-choose
 // Playlist enter URL UI
 
 const playlistUrlSongCountInput = document.getElementById('playlist-url-song-count-input');
+const playlistUrlTimeInput = document.getElementById('playlist-url-time-input');
 
 const playlistUrlArtistModeCheckbox = document.getElementById('playlist-url-artist-mode-checkbox');
 const playlistUrlArtistModeCheckboxLabel = document.getElementById('playlist-url-artist-mode-checkbox-label');
@@ -344,7 +347,9 @@ quickplayButton.addEventListener('click', async () => {
 
         await loadClipListFromFile(songCount, seed, offset);
 
-        prepareGame();
+        const quizLength = Math.max(quickplayTimeInput.value, 1);
+
+        prepareGame(quizLength);
 
     }
 
@@ -415,7 +420,9 @@ playlistChoosePlayButton.addEventListener('click', async () => {
 
         await populateClipList(playlistIds, songCount, seed, offset);
 
-        prepareGame();
+        const quizLength = Math.max(playlistChooseTimeInput.value, 1);
+
+        prepareGame(quizLength);
 
     }
 
@@ -459,7 +466,9 @@ playlistUrlPlayButton.addEventListener('click', async () => {
 
         await populateClipList(playlistIdArray, songCount, seed, offset);
 
-        prepareGame();
+        const quizLength = Math.max(playlistUrlTimeInput.value, 1);
+
+        prepareGame(quizLength);
 
     }
 
@@ -484,6 +493,13 @@ async function showStartModalChoose () {
         playlistUrlButton.disabled = true;
 
         quickplaySongCountInput.disabled = true;
+        quickplayTimeInput.disabled = true;
+
+        playlistChooseSongCountInput.disabled = true;
+        playlistChooseTimeInput.disabled = true;
+
+        playlistUrlSongCountInput.disabled = true;
+        playlistUrlTimeInput.disabled = true;
 
         chooseOpened = true;
 
@@ -524,6 +540,13 @@ async function showStartModalChoose () {
         playlistUrlButton.disabled = false;
 
         quickplaySongCountInput.disabled = false;
+        quickplayTimeInput.disabled = false;
+
+        playlistChooseSongCountInput.disabled = false;
+        playlistChooseTimeInput.disabled = false;
+
+        playlistUrlSongCountInput.disabled = false;
+        playlistUrlTimeInput.disabled = false;
 
     }
 
@@ -666,6 +689,22 @@ quickplaySongCountInput.addEventListener('change', matchSongCounts);
 playlistChooseSongCountInput.addEventListener('change', matchSongCounts);
 playlistUrlSongCountInput.addEventListener('change', matchSongCounts);
 
+function matchTimes (e) {
+
+    const input = e.target;
+    input.value = Math.min(input.value, 30);
+    input.value = Math.max(input.value, 1);
+
+    quickplayTimeInput.value = input.value;
+    playlistChooseTimeInput.value = input.value;
+    playlistUrlTimeInput.value = input.value;
+
+}
+
+quickplayTimeInput.addEventListener('change', matchTimes);
+playlistChooseTimeInput.addEventListener('change', matchTimes);
+playlistUrlTimeInput.addEventListener('change', matchTimes);
+
 remakeButton.addEventListener('click', () => {
 
     stopClip();
@@ -675,6 +714,10 @@ remakeButton.addEventListener('click', () => {
     clearClipList();
 
     resetScore();
+
+    resetGameLength();
+
+    showEmptyProgressBar();
 
     startModal.show();
 
@@ -695,9 +738,5 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // TODO: Allow custom time
 
 // TODO: Mobile UI
-
-// TODO: Remove Github link
-
-// FIXME: Move next only if stopped
 
 // TODO: Album mode

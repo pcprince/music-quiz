@@ -6,7 +6,7 @@
 
 /* global connectToPlayer, endTimer, playAll, stopClip */
 /* global playClipButtons, startTimerButton, pauseTimerButton, helpButton, guessInput, giveUpButton, remakeButton */
-/* global revealSong, revealArtist, resetStartModal, isArtistMode, fillAllBars */
+/* global revealSong, revealArtist, resetStartModal, isArtistMode, fillAllBars, setGameLength */
 /* global unguessedClips, unguessedArtistClips, songClips */
 
 const scoreSpan = document.getElementById('score-span');
@@ -126,7 +126,7 @@ function endGame () {
 
 }
 
-async function prepareGame () {
+async function prepareGame (quizLength) {
 
     connectToPlayer(() => {
 
@@ -135,6 +135,8 @@ async function prepareGame () {
         console.log('Game is ready');
 
         resetStartModal();
+
+        setGameLength(quizLength);
 
         startTimerButton.disabled = false;
 

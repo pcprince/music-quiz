@@ -11,6 +11,13 @@ const progressBarHolder = document.getElementById('progress-bar-holder');
 const emptyProgressBarHolder = document.getElementById('empty-progress-bar-holder');
 let progressBars = [];
 
+function showEmptyProgressBar () {
+
+    emptyProgressBarHolder.style.display = '';
+    progressBarHolder.innerHTML = '';
+
+}
+
 function createProgressBars (onClick) {
 
     emptyProgressBarHolder.style.display = 'none';

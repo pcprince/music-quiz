@@ -17,7 +17,8 @@ const pauseModal = new bootstrap.Modal(document.getElementById('pause-modal'), {
     keyboard: false
 });
 
-const GAME_LENGTH = 15 * 60 * 1000;
+const DEFAULT_GAME_LENGTH = 15 * 60 * 1000;
+let gameLength = DEFAULT_GAME_LENGTH;
 
 let timeRemaining = 0;
 let timerInterval;
@@ -93,7 +94,7 @@ function endTimer () {
 
 function startTimer () {
 
-    timeRemaining = GAME_LENGTH;
+    timeRemaining = gameLength;
 
     lastUpdateTime = Date.now();
     timerInterval = setInterval(updateTimer, 100);
@@ -114,6 +115,22 @@ function startTimer () {
 function addSecondsToTimer (t) {
 
     timeRemaining += t * 1000;
+
+}
+
+function resetGameLength () {
+
+    gameLength = DEFAULT_GAME_LENGTH;
+
+    timerSpan.textContent = '0:00';
+
+}
+
+function setGameLength (gameLengthMins) {
+
+    gameLength = gameLengthMins * 60 * 1000;
+
+    timerSpan.textContent = formatTimeMs(gameLength);
 
 }
 
