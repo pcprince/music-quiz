@@ -45,7 +45,7 @@ function generateRandomString (length) {
 
 async function redirect () {
 
-    if (location.protocol !== 'https:') {
+    if (location.protocol !== 'https:' && !(location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
 
         console.error('App only runs on HTTPS');
 
