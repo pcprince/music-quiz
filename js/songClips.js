@@ -439,10 +439,6 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         let allTracks = preselectedClips;
 
-        // FIXME: If no clip start/length is provided, add them.
-
-        allTracks = addMissingClipTimes(allTracks, seed);
-
         if (isArtistMode()) {
 
             allTracks = removeDuplicateArtists(allTracks);
@@ -451,28 +447,22 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         allTracks = removeDuplicateTitles(allTracks);
 
-        songCount = Math.min(songCount, allTracks.length);
-
-        console.log(allTracks);
-
-        const randomSongs = getRandomSubset(allTracks, songCount, seed, offset);
-
-        // Process songs (add URI and index)
+        // Add URI and duration if missing
 
         const tracksToBeRemoved = [];
 
-        for (let i = 0; i < randomSongs.length; i++) {
+        for (let i = 0; i < allTracks.length; i++) {
 
-            const clip = randomSongs[i];
+            const clip = allTracks[i];
 
-            if (!clip.uri) {
+            if (!clip.uri || !clip.duration_ms) {
 
                 const track = await searchTrack(clip.name, clip.artists[0].name);
 
                 if (track) {
 
-                    randomSongs[i].uri = track.uri;
-                    randomSongs[i].duration_ms = track.duration_ms;
+                    allTracks[i].uri = track.uri;
+                    allTracks[i].duration_ms = track.duration_ms;
 
                 } else {
 
@@ -487,10 +477,22 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         for (let i = 0; i < tracksToBeRemoved.length; i++) {
 
-            console.error('Removing', randomSongs[tracksToBeRemoved[i]]);
-            randomSongs.splice(tracksToBeRemoved[i], 1);
+            console.error('Removing', allTracks[tracksToBeRemoved[i]]);
+            allTracks.splice(tracksToBeRemoved[i], 1);
 
         }
+
+        allTracks = addMissingClipTimes(allTracks, seed);
+
+        songCount = Math.min(songCount, allTracks.length);
+
+        console.log(allTracks);
+
+        // Extract a random subset of the songs
+
+        const randomSongs = getRandomSubset(allTracks, songCount, seed, offset);
+
+        // Add an index to each
 
         for (let i = 0; i < randomSongs.length; i++) {
 
