@@ -299,10 +299,8 @@ function createSongUI () {
 
         const clipCol = document.createElement('div');
         clipCol.classList.add('col');
-        clipCol.style.paddingLeft = '10%';
 
         const playClipButton = document.createElement('button');
-        // playClipButton.textContent = `Play ${index + 1}`;
         playClipButton.innerHTML = '<img class="button-icon" src="./images/play-fill.svg" alt="Bootstrap">';
         playClipButton.classList.add('playback-button', 'btn', 'btn-secondary', 'play-clip-button');
         playClipButton.id = `play-clip-button${index}`;
