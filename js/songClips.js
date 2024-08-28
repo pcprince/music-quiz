@@ -135,11 +135,26 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
             const randomClip = selectRandomClip(durationMs, seed);
 
             // Specific remasters seem to break the search
+
             const trackName = track.name.split(' - ')[0];
+
+            // Extract just the relevant artist information
+
+            const artists = [];
+
+            for (let i = 0; i < track.artists.length; i++) {
+
+                const artist = track.artists[i];
+
+                artists.push({
+                    name: artist.name
+                });
+
+            }
 
             return {
                 songName: trackName,
-                artists: track.artists,
+                artists,
                 durationMs: track.duration_ms,
                 uri: track.uri,
                 startTime: randomClip.startTime,
@@ -517,6 +532,8 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
         songClips = songClips.concat(newSongs);
 
     }
+
+    console.log(songClips);
 
     // Shuffle
 
