@@ -84,6 +84,37 @@ function removeDuplicateArtists (songArray) {
 
 }
 
+function removeDuplicateTitles (songArray) {
+
+    // Create an empty set to store unique song names
+    const seenNames = new Set();
+
+    // Filter the array, only keeping songs where title hasn't been seen before
+    const uniqueArray = songArray.filter(song => {
+
+        const hasDuplicate = seenNames.has(song.name);
+
+        if (hasDuplicate) {
+
+            // console.log('Removed', song.name);
+            return false;
+
+        } else {
+
+            seenNames.add(song.name);
+            return true;
+
+        }
+
+    });
+
+    // const diff = songArray.length - uniqueArray.length;
+    // console.log('Removed ' + diff + ' tracks due to duplicate names');
+
+    return uniqueArray;
+
+}
+
 async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, seed, offset) {
 
     let allTracks = [];
@@ -125,6 +156,8 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
             allTracks = removeDuplicateArtists(allTracks);
 
         }
+
+        allTracks = removeDuplicateTitles(allTracks);
 
         let randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
 
@@ -415,6 +448,8 @@ async function loadClipListFromFile (songCount, seed, offset) {
             allTracks = removeDuplicateArtists(allTracks);
 
         }
+
+        allTracks = removeDuplicateTitles(allTracks);
 
         songCount = Math.min(songCount, allTracks.length);
 
