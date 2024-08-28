@@ -65,7 +65,7 @@ function removeDuplicateArtists (songArray) {
 
         if (hasDuplicate) {
 
-            // console.log('Removed', song.songName, '-', song.artists[0].name);
+            // console.log('Removed', song.name, '-', song.artists[0].name);
             return false;
 
         } else {
@@ -126,42 +126,11 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
 
         }
 
-        const randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
+        let randomSongs = getRandomSubset(allTracks, numberOfSongs, seed, offset);
 
-        return randomSongs.map(track => {
+        randomSongs = addMissingClipTimes(randomSongs, seed);
 
-            const durationMs = track.duration_ms;
-
-            const randomClip = selectRandomClip(durationMs, seed);
-
-            // Specific remasters seem to break the search
-
-            const trackName = track.name.split(' - ')[0];
-
-            // Extract just the relevant artist information
-
-            const artists = [];
-
-            for (let i = 0; i < track.artists.length; i++) {
-
-                const artist = track.artists[i];
-
-                artists.push({
-                    name: artist.name
-                });
-
-            }
-
-            return {
-                songName: trackName,
-                artists,
-                durationMs: track.duration_ms,
-                uri: track.uri,
-                startTime: randomClip.startTime,
-                clipLength: randomClip.clipLength
-            };
-
-        });
+        return randomSongs;
 
     } catch (error) {
 
@@ -229,9 +198,9 @@ function getRandomSubset (array, size, seed, offset) {
 
 }
 
-async function searchTrack (songName, artist) {
+async function searchTrack (name, artist) {
 
-    const query = encodeURIComponent(`track:${songName} artist:${artist}`);
+    const query = encodeURIComponent(`track:${name} artist:${artist}`);
 
     try {
 
@@ -297,7 +266,7 @@ function createSongUI () {
 
         const clipCol = document.createElement('div');
         clipCol.classList.add('col');
-        clipCol.style.paddingLeft = '30%';
+        clipCol.style.paddingLeft = '10%';
 
         const playClipButton = document.createElement('button');
         // playClipButton.textContent = `Play ${index + 1}`;
@@ -384,6 +353,51 @@ function createSongUI () {
 
 }
 
+function addMissingClipTimes (clips, seed) {
+
+    return clips.map(track => {
+
+        const durationMs = track.duration_ms;
+
+        let randomClip;
+
+        if (!track.startTime || !track.clipLength) {
+
+            randomClip = selectRandomClip(durationMs, seed);
+
+        }
+
+        // Specific remasters seem to break the search
+
+        const trackName = track.name.split(' - ')[0];
+
+        // Extract just the relevant artist information
+
+        const artists = [];
+
+        for (let i = 0; i < track.artists.length; i++) {
+
+            const artist = track.artists[i];
+
+            artists.push({
+                name: artist.name
+            });
+
+        }
+
+        return {
+            name: trackName,
+            artists,
+            duration_ms: track.duration_ms,
+            uri: track.uri,
+            startTime: !track.startTime ? randomClip.startTime : track.startTime,
+            clipLength: !track.clipLength ? randomClip.clipLength : track.clipLength
+        };
+
+    });
+
+}
+
 async function loadClipListFromFile (songCount, seed, offset) {
 
     console.log('Populating clip list from preselected playlist...');
@@ -392,9 +406,19 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         let allTracks = preselectedClips;
 
-        allTracks = removeDuplicateArtists(allTracks);
+        // FIXME: If no clip start/length is provided, add them.
+
+        allTracks = addMissingClipTimes(allTracks, seed);
+
+        if (isArtistMode()) {
+
+            allTracks = removeDuplicateArtists(allTracks);
+
+        }
 
         songCount = Math.min(songCount, allTracks.length);
+
+        console.log(allTracks);
 
         const randomSongs = getRandomSubset(allTracks, songCount, seed, offset);
 
@@ -408,12 +432,12 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
             if (!clip.uri) {
 
-                const track = await searchTrack(clip.songName, clip.artists[0].name);
+                const track = await searchTrack(clip.name, clip.artists[0].name);
 
                 if (track) {
 
                     randomSongs[i].uri = track.uri;
-                    randomSongs[i].durationMs = track.durationMs;
+                    randomSongs[i].duration_ms = track.duration_ms;
 
                 } else {
 
@@ -504,12 +528,12 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
             if (!clip.uri) {
 
-                const track = await searchTrack(clip.songName, clip.artists[0].name);
+                const track = await searchTrack(clip.name, clip.artists[0].name);
 
                 if (track) {
 
                     newSongs[i].uri = track.uri;
-                    newSongs[i].durationMs = track.durationMs;
+                    newSongs[i].duration_ms = track.duration_ms;
 
                 } else {
 
@@ -587,7 +611,7 @@ cancelReselectButton.addEventListener('click', () => {
 
 reselectButton.addEventListener('click', () => {
 
-    const newRandomClip = selectRandomClip(songClips[currentClipIndex].durationMs);
+    const newRandomClip = selectRandomClip(songClips[currentClipIndex].duration_ms);
 
     console.log('Updated clip ' + currentClipIndex + '. ' + songClips[currentClipIndex].startTime + ' -> ' + newRandomClip.startTime);
 

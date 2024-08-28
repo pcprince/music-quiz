@@ -6,55 +6,47 @@
 
 const preselectedClips = [
     {
-        'songName': 'Rebel Rebel',
+        'name': 'Rebel Rebel',
         'artists': [
             {
                 'name': 'David Bowie'
             }
         ],
-        'startTime': 30,
-        'clipLength': 8,
-        'durationMs': 274746,
+        'duration_ms': 274746,
         'uri': 'spotify:track:2EC9IJj7g0mN1Q5VrZkiYY'
     },
     {
-        'songName': 'Sweet Emotion',
+        'name': 'Sweet Emotion',
         'artists': [
             {
                 'name': 'Aerosmith'
             }
         ],
-        'startTime': 50,
-        'clipLength': 8,
-        'durationMs': 274088,
+        'duration_ms': 274088,
         'uri': 'spotify:track:73TxYZd0lBCVRrHawrAglA'
     },
     {
-        'songName': 'Karma Police',
+        'name': 'Karma Police',
         'artists': [
             {
                 'name': 'Radiohead'
             }
         ],
-        'startTime': 55,
-        'clipLength': 8,
-        'durationMs': 264066,
+        'duration_ms': 264066,
         'uri': 'spotify:track:63OQupATfueTdZMWTxW03A'
     },
     {
-        'songName': 'Once in a Lifetime',
+        'name': 'Once in a Lifetime',
         'artists': [
             {
                 'name': 'Talking Heads'
             }
         ],
-        'startTime': 42,
-        'clipLength': 8,
-        'durationMs': 259906,
+        'duration_ms': 259906,
         'uri': 'spotify:track:38Ngied9rBORlAbLYNCl4k'
     },
     {
-        'songName': 'Criminal',
+        'name': 'Criminal',
         'artists': [
             {
                 'name': 'Fiona Apple'
@@ -62,11 +54,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 341533,
+        'duration_ms': 341533,
         'uri': 'spotify:track:6PNvv1dmDbOWrAYwEcuKBX'
     },
     {
-        'songName': 'The Boys Are Back in Town',
+        'name': 'The Boys Are Back in Town',
         'artists': [
             {
                 'name': 'Thin Lizzy'
@@ -74,11 +66,11 @@ const preselectedClips = [
         ],
         'startTime': 62,
         'clipLength': 8,
-        'durationMs': 266720,
+        'duration_ms': 266720,
         'uri': 'spotify:track:43DeSV93pJPT4lCZaWZ6b1'
     },
     {
-        'songName': 'Everlong',
+        'name': 'Everlong',
         'artists': [
             {
                 'name': 'Foo Fighters'
@@ -86,11 +78,11 @@ const preselectedClips = [
         ],
         'startTime': 85,
         'clipLength': 8,
-        'durationMs': 250546,
+        'duration_ms': 250546,
         'uri': 'spotify:track:5UWwZ5lm5PKu6eKsHAGxOk'
     },
     {
-        'songName': 'Landslide',
+        'name': 'Landslide',
         'artists': [
             {
                 'name': 'Fleetwood Mac'
@@ -98,11 +90,11 @@ const preselectedClips = [
         ],
         'startTime': 44,
         'clipLength': 8,
-        'durationMs': 199493,
+        'duration_ms': 199493,
         'uri': 'spotify:track:5ihS6UUlyQAfmp48eSkxuQ'
     },
     {
-        'songName': 'Walk on the Wild Side',
+        'name': 'Walk on the Wild Side',
         'artists': [
             {
                 'name': 'Lou Reed'
@@ -110,11 +102,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 254173,
+        'duration_ms': 254173,
         'uri': 'spotify:track:5p3JunprHCxClJjOmcLV8G'
     },
     {
-        'songName': 'Barracuda',
+        'name': 'Barracuda',
         'artists': [
             {
                 'name': 'Heart'
@@ -122,11 +114,11 @@ const preselectedClips = [
         ],
         'startTime': 70,
         'clipLength': 8,
-        'durationMs': 261933,
+        'duration_ms': 261933,
         'uri': 'spotify:track:4KfSdst7rW39C0sfhArdrz'
     },
     {
-        'songName': "What's Up?",
+        'name': "What's Up?",
         'artists': [
             {
                 'name': '4 Non Blondes'
@@ -134,11 +126,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 295533,
+        'duration_ms': 295533,
         'uri': 'spotify:track:0jWgAnTrNZmOGmqgvHhZEm'
     },
     {
-        'songName': 'Tainted Love',
+        'name': 'Tainted Love',
         'artists': [
             {
                 'name': 'Soft Cell'
@@ -146,11 +138,11 @@ const preselectedClips = [
         ],
         'startTime': 28,
         'clipLength': 8,
-        'durationMs': 153800,
+        'duration_ms': 153800,
         'uri': 'spotify:track:0cGG2EouYCEEC3xfa0tDFV'
     },
     {
-        'songName': 'Drive',
+        'name': 'Drive',
         'artists': [
             {
                 'name': 'The Cars'
@@ -158,11 +150,11 @@ const preselectedClips = [
         ],
         'startTime': 36,
         'clipLength': 8,
-        'durationMs': 234332,
+        'duration_ms': 234332,
         'uri': 'spotify:track:2lFFiNm0XtgJ6wkdncTB4k'
     },
     {
-        'songName': 'Linger',
+        'name': 'Linger',
         'artists': [
             {
                 'name': 'The Cranberries'
@@ -170,11 +162,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 274706,
+        'duration_ms': 274706,
         'uri': 'spotify:track:0gEyKnHvgkrkBM6fbeHdwK'
     },
     {
-        'songName': 'Midnight City',
+        'name': 'Midnight City',
         'artists': [
             {
                 'name': 'M83'
@@ -182,11 +174,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 243960,
+        'duration_ms': 243960,
         'uri': 'spotify:track:6GyFP1nfCDB8lbD2bG0Hq9'
     },
     {
-        'songName': 'I Want You to Want Me',
+        'name': 'I Want You to Want Me',
         'artists': [
             {
                 'name': 'Cheap Trick'
@@ -194,11 +186,11 @@ const preselectedClips = [
         ],
         'startTime': 54,
         'clipLength': 8,
-        'durationMs': 191226,
+        'duration_ms': 191226,
         'uri': 'spotify:track:1JkZg3eMQTmTn93E8Yd3UL'
     },
     {
-        'songName': 'Kids',
+        'name': 'Kids',
         'artists': [
             {
                 'name': 'MGMT'
@@ -206,11 +198,11 @@ const preselectedClips = [
         ],
         'startTime': 63,
         'clipLength': 8,
-        'durationMs': 302840,
+        'duration_ms': 302840,
         'uri': 'spotify:track:1jJci4qxiYcOHhQR247rEU'
     },
     {
-        'songName': 'Gold on the Ceiling',
+        'name': 'Gold on the Ceiling',
         'artists': [
             {
                 'name': 'The Black Keys'
@@ -218,11 +210,11 @@ const preselectedClips = [
         ],
         'startTime': 34,
         'clipLength': 8,
-        'durationMs': 224333,
+        'duration_ms': 224333,
         'uri': 'spotify:track:5lN1EH25gdiqT1SFALMAq1'
     },
     {
-        'songName': 'Vienna',
+        'name': 'Vienna',
         'artists': [
             {
                 'name': 'Billy Joel'
@@ -230,11 +222,11 @@ const preselectedClips = [
         ],
         'startTime': 76,
         'clipLength': 8,
-        'durationMs': 214240,
+        'duration_ms': 214240,
         'uri': 'spotify:track:4U45aEWtQhrm8A5mxPaFZ7'
     },
     {
-        'songName': 'Time to Pretend',
+        'name': 'Time to Pretend',
         'artists': [
             {
                 'name': 'MGMT'
@@ -242,11 +234,11 @@ const preselectedClips = [
         ],
         'startTime': 92,
         'clipLength': 8,
-        'durationMs': 261000,
+        'duration_ms': 261000,
         'uri': 'spotify:track:4iG2gAwKXsOcijVaVXzRPW'
     },
     {
-        'songName': 'Bad Moon Rising',
+        'name': 'Bad Moon Rising',
         'artists': [
             {
                 'name': 'Creedence Clearwater Revival'
@@ -254,11 +246,11 @@ const preselectedClips = [
         ],
         'startTime': 15,
         'clipLength': 8,
-        'durationMs': 141600,
+        'duration_ms': 141600,
         'uri': 'spotify:track:20OFwXhEXf12DzwXmaV7fj'
     },
     {
-        'songName': 'Come As You Are',
+        'name': 'Come As You Are',
         'artists': [
             {
                 'name': 'Nirvana'
@@ -266,11 +258,11 @@ const preselectedClips = [
         ],
         'startTime': 33,
         'clipLength': 8,
-        'durationMs': 218920,
+        'duration_ms': 218920,
         'uri': 'spotify:track:2RsAajgo0g7bMCHxwH3Sk0'
     },
     {
-        'songName': 'No One Knows',
+        'name': 'No One Knows',
         'artists': [
             {
                 'name': 'Queens of the Stone Age'
@@ -278,11 +270,11 @@ const preselectedClips = [
         ],
         'startTime': 47,
         'clipLength': 8,
-        'durationMs': 278746,
+        'duration_ms': 278746,
         'uri': 'spotify:track:6y20BV5L33R8YXM0YuI38N'
     },
     {
-        'songName': 'Under Pressure',
+        'name': 'Under Pressure',
         'artists': [
             {
                 'name': 'Queen & David Bowie'
@@ -290,11 +282,11 @@ const preselectedClips = [
         ],
         'startTime': 78,
         'clipLength': 8,
-        'durationMs': 248440,
+        'duration_ms': 248440,
         'uri': 'spotify:track:2fuCquhmrzHpu5xcA1ci9x'
     },
     {
-        'songName': "Baba O'Riley",
+        'name': "Baba O'Riley",
         'artists': [
             {
                 'name': 'The Who'
@@ -302,11 +294,11 @@ const preselectedClips = [
         ],
         'startTime': 63,
         'clipLength': 8,
-        'durationMs': 300400,
+        'duration_ms': 300400,
         'uri': 'spotify:track:3qiyyUfYe7CRYLucrPmulD'
     },
     {
-        'songName': 'Rhiannon',
+        'name': 'Rhiannon',
         'artists': [
             {
                 'name': 'Fleetwood Mac'
@@ -314,11 +306,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 252773,
+        'duration_ms': 252773,
         'uri': 'spotify:track:05oETzWbd4SI33qK2gbJfR'
     },
     {
-        'songName': 'Sympathy for the Devil',
+        'name': 'Sympathy for the Devil',
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -326,11 +318,11 @@ const preselectedClips = [
         ],
         'startTime': 100,
         'clipLength': 8,
-        'durationMs': 378146,
+        'duration_ms': 378146,
         'uri': 'spotify:track:1Ud6moTC0KyXMq1Oxfien0'
     },
     {
-        'songName': 'Fortunate Son',
+        'name': 'Fortunate Son',
         'artists': [
             {
                 'name': 'Creedence Clearwater Revival'
@@ -338,11 +330,11 @@ const preselectedClips = [
         ],
         'startTime': 28,
         'clipLength': 8,
-        'durationMs': 140773,
+        'duration_ms': 140773,
         'uri': 'spotify:track:4BP3uh0hFLFRb5cjsgLqDh'
     },
     {
-        'songName': 'You Really Got Me',
+        'name': 'You Really Got Me',
         'artists': [
             {
                 'name': 'The Kinks'
@@ -350,11 +342,11 @@ const preselectedClips = [
         ],
         'startTime': 18,
         'clipLength': 8,
-        'durationMs': 133933,
+        'duration_ms': 133933,
         'uri': 'spotify:track:6tZdL3Zp8JgrfDbsSeSV1S'
     },
     {
-        'songName': 'Take Me Out',
+        'name': 'Take Me Out',
         'artists': [
             {
                 'name': 'Franz Ferdinand'
@@ -362,11 +354,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 237026,
+        'duration_ms': 237026,
         'uri': 'spotify:track:20I8RduZC2PWMWTDCZuuAN'
     },
     {
-        'songName': 'Are You Gonna Go My Way',
+        'name': 'Are You Gonna Go My Way',
         'artists': [
             {
                 'name': 'Lenny Kravitz'
@@ -374,11 +366,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 211933,
+        'duration_ms': 211933,
         'uri': 'spotify:track:45Ia1U4KtIjAPPU7Wv1Sea'
     },
     {
-        'songName': 'Viva La Vida',
+        'name': 'Viva La Vida',
         'artists': [
             {
                 'name': 'Coldplay'
@@ -386,11 +378,11 @@ const preselectedClips = [
         ],
         'startTime': 30,
         'clipLength': 8,
-        'durationMs': 242373,
+        'duration_ms': 242373,
         'uri': 'spotify:track:4zOfy9kqJlG0ZXvcaSh4gv'
     },
     {
-        'songName': 'Just Like Heaven',
+        'name': 'Just Like Heaven',
         'artists': [
             {
                 'name': 'The Cure'
@@ -398,11 +390,11 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 212013,
+        'duration_ms': 212013,
         'uri': 'spotify:track:4NnWuGQujzWUEg0uZokO5M'
     },
     {
-        'songName': 'Seven Nation Army',
+        'name': 'Seven Nation Army',
         'artists': [
             {
                 'name': 'The White Stripes'
@@ -410,11 +402,11 @@ const preselectedClips = [
         ],
         'startTime': 20,
         'clipLength': 8,
-        'durationMs': 232106,
+        'duration_ms': 232106,
         'uri': 'spotify:track:3dPQuX8Gs42Y7b454ybpMR'
     },
     {
-        'songName': 'Reptilia',
+        'name': 'Reptilia',
         'artists': [
             {
                 'name': 'The Strokes'
@@ -422,11 +414,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 219826,
+        'duration_ms': 219826,
         'uri': 'spotify:track:57Xjny5yNzAcsxnusKmAfA'
     },
     {
-        'songName': 'Radioactive',
+        'name': 'Radioactive',
         'artists': [
             {
                 'name': 'Imagine Dragons'
@@ -434,11 +426,11 @@ const preselectedClips = [
         ],
         'startTime': 40,
         'clipLength': 8,
-        'durationMs': 186813,
+        'duration_ms': 186813,
         'uri': 'spotify:track:62yJjFtgkhUrXktIoSjgP2'
     },
     {
-        'songName': 'Dreams',
+        'name': 'Dreams',
         'artists': [
             {
                 'name': 'Fleetwood Mac'
@@ -446,11 +438,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 257800,
+        'duration_ms': 257800,
         'uri': 'spotify:track:0ofHAoxe9vBkTCp2UQIavz'
     },
     {
-        'songName': 'House of the Rising Sun',
+        'name': 'House of the Rising Sun',
         'artists': [
             {
                 'name': 'The Animals'
@@ -458,11 +450,11 @@ const preselectedClips = [
         ],
         'startTime': 76,
         'clipLength': 8,
-        'durationMs': 269906,
+        'duration_ms': 269906,
         'uri': 'spotify:track:4mn2kNTqiGLwaUR8JdhJ1l'
     },
     {
-        'songName': 'Personal Jesus',
+        'name': 'Personal Jesus',
         'artists': [
             {
                 'name': 'Depeche Mode'
@@ -470,11 +462,11 @@ const preselectedClips = [
         ],
         'startTime': 38,
         'clipLength': 8,
-        'durationMs': 224933,
+        'duration_ms': 224933,
         'uri': 'spotify:track:4UCTgh5jvtqoaMX6MAhUNn'
     },
     {
-        'songName': 'Paint It Black',
+        'name': 'Paint It Black',
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -482,11 +474,11 @@ const preselectedClips = [
         ],
         'startTime': 47,
         'clipLength': 8,
-        'durationMs': 202266,
+        'duration_ms': 202266,
         'uri': 'spotify:track:63T7DJ1AFDD6Bn8VzG6JE8'
     },
     {
-        'songName': "Can't Stop",
+        'name': "Can't Stop",
         'artists': [
             {
                 'name': 'Red Hot Chili Peppers'
@@ -494,11 +486,11 @@ const preselectedClips = [
         ],
         'startTime': 22,
         'clipLength': 8,
-        'durationMs': 269000,
+        'duration_ms': 269000,
         'uri': 'spotify:track:3ZOEytgrvLwQaqXreDs2Jx'
     },
     {
-        'songName': 'One Way or Another',
+        'name': 'One Way or Another',
         'artists': [
             {
                 'name': 'Blondie'
@@ -506,11 +498,11 @@ const preselectedClips = [
         ],
         'startTime': 40,
         'clipLength': 8,
-        'durationMs': 215106,
+        'duration_ms': 215106,
         'uri': 'spotify:track:4cQJ27R11K634x5qCOwKW5'
     },
     {
-        'songName': 'Enjoy the Silence',
+        'name': 'Enjoy the Silence',
         'artists': [
             {
                 'name': 'Depeche Mode'
@@ -518,11 +510,11 @@ const preselectedClips = [
         ],
         'startTime': 68,
         'clipLength': 8,
-        'durationMs': 257630,
+        'duration_ms': 257630,
         'uri': 'spotify:track:0yp3TvJNlG50Q4tAHWNCRm'
     },
     {
-        'songName': "Sweet Child O' Mine",
+        'name': "Sweet Child O' Mine",
         'artists': [
             {
                 'name': "Guns N' Roses"
@@ -530,11 +522,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 356066,
+        'duration_ms': 356066,
         'uri': 'spotify:track:7snQQk1zcKl8gZ92AnueZW'
     },
     {
-        'songName': 'Dancing in the Moonlight',
+        'name': 'Dancing in the Moonlight',
         'artists': [
             {
                 'name': 'Toploader'
@@ -542,11 +534,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 232693,
+        'duration_ms': 232693,
         'uri': 'spotify:track:3Fzlg5r1IjhLk2qRw667od'
     },
     {
-        'songName': 'Feel Good Inc.',
+        'name': 'Feel Good Inc.',
         'artists': [
             {
                 'name': 'Gorillaz'
@@ -554,11 +546,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 222640,
+        'duration_ms': 222640,
         'uri': 'spotify:track:0d28khcov6AiegSCpG5TuT'
     },
     {
-        'songName': 'Take It Easy',
+        'name': 'Take It Easy',
         'artists': [
             {
                 'name': 'Eagles'
@@ -566,11 +558,11 @@ const preselectedClips = [
         ],
         'startTime': 15,
         'clipLength': 8,
-        'durationMs': 211577,
+        'duration_ms': 211577,
         'uri': 'spotify:track:4yugZvBYaoREkJKtbG08Qr'
     },
     {
-        'songName': "Summer of '69",
+        'name': "Summer of '69",
         'artists': [
             {
                 'name': 'Bryan Adams'
@@ -578,11 +570,11 @@ const preselectedClips = [
         ],
         'startTime': 78,
         'clipLength': 8,
-        'durationMs': 216053,
+        'duration_ms': 216053,
         'uri': 'spotify:track:0GONea6G2XdnHWjNZd6zt3'
     },
     {
-        'songName': 'Sweet Disposition',
+        'name': 'Sweet Disposition',
         'artists': [
             {
                 'name': 'The Temper Trap'
@@ -590,11 +582,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 234360,
+        'duration_ms': 234360,
         'uri': 'spotify:track:1jUkHIMc7UaJQuzWe5Iop2'
     },
     {
-        'songName': 'Learning to Fly',
+        'name': 'Learning to Fly',
         'artists': [
             {
                 'name': 'Tom Petty and the Heartbreakers'
@@ -602,11 +594,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 242106,
+        'duration_ms': 242106,
         'uri': 'spotify:track:17S4XrLvF5jlGvGCJHgF51'
     },
     {
-        'songName': "Ain't No Sunshine",
+        'name': "Ain't No Sunshine",
         'artists': [
             {
                 'name': 'Bill Withers'
@@ -614,11 +606,11 @@ const preselectedClips = [
         ],
         'startTime': 24,
         'clipLength': 8,
-        'durationMs': 125093,
+        'duration_ms': 125093,
         'uri': 'spotify:track:1k1Bqnv2R0uJXQN4u6LKYt'
     },
     {
-        'songName': 'Africa',
+        'name': 'Africa',
         'artists': [
             {
                 'name': 'Toto'
@@ -626,11 +618,11 @@ const preselectedClips = [
         ],
         'startTime': 70,
         'clipLength': 8,
-        'durationMs': 295893,
+        'duration_ms': 295893,
         'uri': 'spotify:track:2374M0fQpWi3dLnB54qaLX'
     },
     {
-        'songName': 'Come Together',
+        'name': 'Come Together',
         'artists': [
             {
                 'name': 'The Beatles'
@@ -638,11 +630,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 259946,
+        'duration_ms': 259946,
         'uri': 'spotify:track:2EqlS6tkEnglzr7tkKAAYD'
     },
     {
-        'songName': "Livin' on a Prayer",
+        'name': "Livin' on a Prayer",
         'artists': [
             {
                 'name': 'Bon Jovi'
@@ -650,11 +642,11 @@ const preselectedClips = [
         ],
         'startTime': 64,
         'clipLength': 8,
-        'durationMs': 249293,
+        'duration_ms': 249293,
         'uri': 'spotify:track:37ZJ0p5Jm13JPevGcx4SkF'
     },
     {
-        'songName': 'Mr. Brightside',
+        'name': 'Mr. Brightside',
         'artists': [
             {
                 'name': 'The Killers'
@@ -662,11 +654,11 @@ const preselectedClips = [
         ],
         'startTime': 43,
         'clipLength': 8,
-        'durationMs': 222973,
+        'duration_ms': 222973,
         'uri': 'spotify:track:003vvx7Niy0yvhvHt4a68B'
     },
     {
-        'songName': 'Creep',
+        'name': 'Creep',
         'artists': [
             {
                 'name': 'Radiohead'
@@ -674,11 +666,11 @@ const preselectedClips = [
         ],
         'startTime': 70,
         'clipLength': 8,
-        'durationMs': 238640,
+        'duration_ms': 238640,
         'uri': 'spotify:track:70LcF31zb1H0PyJoS1Sx1r'
     },
     {
-        'songName': 'Paranoid',
+        'name': 'Paranoid',
         'artists': [
             {
                 'name': 'Black Sabbath'
@@ -686,11 +678,11 @@ const preselectedClips = [
         ],
         'startTime': 30,
         'clipLength': 8,
-        'durationMs': 167720,
+        'duration_ms': 167720,
         'uri': 'spotify:track:3Jnxngdff0lVu2rza1GVx6'
     },
     {
-        'songName': 'Pumped Up Kicks',
+        'name': 'Pumped Up Kicks',
         'artists': [
             {
                 'name': 'Foster the People'
@@ -698,11 +690,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 239600,
+        'duration_ms': 239600,
         'uri': 'spotify:track:7w87IxuO7BDcJ3YUqCyMTT'
     },
     {
-        'songName': 'The Chain',
+        'name': 'The Chain',
         'artists': [
             {
                 'name': 'Fleetwood Mac'
@@ -710,11 +702,11 @@ const preselectedClips = [
         ],
         'startTime': 102,
         'clipLength': 8,
-        'durationMs': 270213,
+        'duration_ms': 270213,
         'uri': 'spotify:track:5e9TFTbltYBg2xThimr0rU'
     },
     {
-        'songName': 'Ever Fallen in Love',
+        'name': 'Ever Fallen in Love',
         'artists': [
             {
                 'name': 'Buzzcocks'
@@ -722,11 +714,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 163693,
+        'duration_ms': 163693,
         'uri': 'spotify:track:5YUJMvTg4AWHKjqQidTsGK'
     },
     {
-        'songName': 'Where Is My Mind?',
+        'name': 'Where Is My Mind?',
         'artists': [
             {
                 'name': 'Pixies'
@@ -734,11 +726,11 @@ const preselectedClips = [
         ],
         'startTime': 66,
         'clipLength': 8,
-        'durationMs': 234973,
+        'duration_ms': 234973,
         'uri': 'spotify:track:7wCmS9TTVUcIhRalDYFgPy'
     },
     {
-        'songName': 'Sweet Home Alabama',
+        'name': 'Sweet Home Alabama',
         'artists': [
             {
                 'name': 'Lynyrd Skynyrd'
@@ -746,11 +738,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 283800,
+        'duration_ms': 283800,
         'uri': 'spotify:track:7e89621JPkKaeDSTQ3avtg'
     },
     {
-        'songName': 'Jailhouse Rock',
+        'name': 'Jailhouse Rock',
         'artists': [
             {
                 'name': 'Elvis Presley'
@@ -758,11 +750,11 @@ const preselectedClips = [
         ],
         'startTime': 20,
         'clipLength': 8,
-        'durationMs': 146933,
+        'duration_ms': 146933,
         'uri': 'spotify:track:452KBpASS5lZLeJWX9Ixub'
     },
     {
-        'songName': 'Sunshine of Your Love',
+        'name': 'Sunshine of Your Love',
         'artists': [
             {
                 'name': 'Cream'
@@ -770,11 +762,11 @@ const preselectedClips = [
         ],
         'startTime': 40,
         'clipLength': 8,
-        'durationMs': 250400,
+        'duration_ms': 250400,
         'uri': 'spotify:track:2K2M0TcglCRLLpFOzKeFZA'
     },
     {
-        'songName': 'Should I Stay or Should I Go',
+        'name': 'Should I Stay or Should I Go',
         'artists': [
             {
                 'name': 'The Clash'
@@ -782,11 +774,11 @@ const preselectedClips = [
         ],
         'startTime': 35,
         'clipLength': 8,
-        'durationMs': 188986,
+        'duration_ms': 188986,
         'uri': 'spotify:track:39shmbIHICJ2Wxnk1fPSdz'
     },
     {
-        'songName': 'Somebody to Love',
+        'name': 'Somebody to Love',
         'artists': [
             {
                 'name': 'Jefferson Airplane'
@@ -794,11 +786,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 174840,
+        'duration_ms': 174840,
         'uri': 'spotify:track:4uGIJG1jYFonGc4LGp5uQL'
     },
     {
-        'songName': 'Losing My Religion',
+        'name': 'Losing My Religion',
         'artists': [
             {
                 'name': 'R.E.M.'
@@ -806,11 +798,11 @@ const preselectedClips = [
         ],
         'startTime': 70,
         'clipLength': 8,
-        'durationMs': 268426,
+        'duration_ms': 268426,
         'uri': 'spotify:track:31AOj9sFz2gM0O3hMARRBx'
     },
     {
-        'songName': 'Blitzkrieg Bop',
+        'name': 'Blitzkrieg Bop',
         'artists': [
             {
                 'name': 'Ramones'
@@ -818,11 +810,11 @@ const preselectedClips = [
         ],
         'startTime': 25,
         'clipLength': 8,
-        'durationMs': 134466,
+        'duration_ms': 134466,
         'uri': 'spotify:track:4KcH1ZRV2W1q7Flq0QqC76'
     },
     {
-        'songName': 'My Sharona',
+        'name': 'My Sharona',
         'artists': [
             {
                 'name': 'The Knack'
@@ -830,11 +822,11 @@ const preselectedClips = [
         ],
         'startTime': 44,
         'clipLength': 8,
-        'durationMs': 295400,
+        'duration_ms': 295400,
         'uri': 'spotify:track:1HOMkjp0nHMaTnfAkslCQj'
     },
     {
-        'songName': "Let's Dance",
+        'name': "Let's Dance",
         'artists': [
             {
                 'name': 'David Bowie'
@@ -842,11 +834,11 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 457675,
+        'duration_ms': 457675,
         'uri': 'spotify:track:3ix6K4wZY29bCujrSznwFZ'
     },
     {
-        'songName': "Don't Stop Believin'",
+        'name': "Don't Stop Believin'",
         'artists': [
             {
                 'name': 'Journey'
@@ -854,11 +846,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 249600,
+        'duration_ms': 249600,
         'uri': 'spotify:track:5RKQ5NdjSh2QzD4MaunT91'
     },
     {
-        'songName': 'Crazy',
+        'name': 'Crazy',
         'artists': [
             {
                 'name': 'Gnarls Barkley'
@@ -866,11 +858,11 @@ const preselectedClips = [
         ],
         'startTime': 40,
         'clipLength': 8,
-        'durationMs': 177933,
+        'duration_ms': 177933,
         'uri': 'spotify:track:1vxw6aYJls2oq3gW0DujAo'
     },
     {
-        'songName': "I Still Haven't Found What I'm Looking For",
+        'name': "I Still Haven't Found What I'm Looking For",
         'artists': [
             {
                 'name': 'U2'
@@ -878,11 +870,11 @@ const preselectedClips = [
         ],
         'startTime': 85,
         'clipLength': 8,
-        'durationMs': 277476,
+        'duration_ms': 277476,
         'uri': 'spotify:track:6wpGqhRvJGNNXwWlPmkMyO'
     },
     {
-        'songName': 'Somebody Told Me',
+        'name': 'Somebody Told Me',
         'artists': [
             {
                 'name': 'The Killers'
@@ -890,11 +882,11 @@ const preselectedClips = [
         ],
         'startTime': 54,
         'clipLength': 8,
-        'durationMs': 197200,
+        'duration_ms': 197200,
         'uri': 'spotify:track:6PwjJ58I4t7Mae9xfZ9l9v'
     },
     {
-        'songName': 'What a Wonderful World',
+        'name': 'What a Wonderful World',
         'artists': [
             {
                 'name': 'Louis Armstrong'
@@ -902,11 +894,11 @@ const preselectedClips = [
         ],
         'startTime': 32,
         'clipLength': 8,
-        'durationMs': 139226,
+        'duration_ms': 139226,
         'uri': 'spotify:track:29U7stRjqHU6rMiS8BfaI9'
     },
     {
-        'songName': 'Use Somebody',
+        'name': 'Use Somebody',
         'artists': [
             {
                 'name': 'Kings of Leon'
@@ -914,11 +906,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 230760,
+        'duration_ms': 230760,
         'uri': 'spotify:track:2TYC9SaRhYypUQzB1ZVTG2'
     },
     {
-        'songName': 'Heart of Gold',
+        'name': 'Heart of Gold',
         'artists': [
             {
                 'name': 'Neil Young'
@@ -926,11 +918,11 @@ const preselectedClips = [
         ],
         'startTime': 30,
         'clipLength': 8,
-        'durationMs': 187110,
+        'duration_ms': 187110,
         'uri': 'spotify:track:26QKxvjlCo2fSd3T4c8Zpb'
     },
     {
-        'songName': 'Bad Guy',
+        'name': 'Bad Guy',
         'artists': [
             {
                 'name': 'Billie Eilish'
@@ -938,11 +930,11 @@ const preselectedClips = [
         ],
         'startTime': 24,
         'clipLength': 8,
-        'durationMs': 194087,
+        'duration_ms': 194087,
         'uri': 'spotify:track:2Fxmhks0bxGSBdJ92vM42m'
     },
     {
-        'songName': 'Basket Case',
+        'name': 'Basket Case',
         'artists': [
             {
                 'name': 'Green Day'
@@ -950,11 +942,11 @@ const preselectedClips = [
         ],
         'startTime': 35,
         'clipLength': 8,
-        'durationMs': 181533,
+        'duration_ms': 181533,
         'uri': 'spotify:track:6L89mwZXSOwYl76YXfX13s'
     },
     {
-        'songName': "Don't Stop 'Til You Get Enough",
+        'name': "Don't Stop 'Til You Get Enough",
         'artists': [
             {
                 'name': 'Michael Jackson'
@@ -962,11 +954,11 @@ const preselectedClips = [
         ],
         'startTime': 95,
         'clipLength': 8,
-        'durationMs': 365466,
+        'duration_ms': 365466,
         'uri': 'spotify:track:46eu3SBuFCXWsPT39Yg3tJ'
     },
     {
-        'songName': 'Under the Bridge',
+        'name': 'Under the Bridge',
         'artists': [
             {
                 'name': 'Red Hot Chili Peppers'
@@ -974,11 +966,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 264306,
+        'duration_ms': 264306,
         'uri': 'spotify:track:3d9DChrdc6BOeFsbrZ3Is0'
     },
     {
-        'songName': 'The Less I Know the Better',
+        'name': 'The Less I Know the Better',
         'artists': [
             {
                 'name': 'Tame Impala'
@@ -986,11 +978,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 216320,
+        'duration_ms': 216320,
         'uri': 'spotify:track:6K4t31amVTZDgR3sKmwUJJ'
     },
     {
-        'songName': "You Can't Always Get What You Want",
+        'name': "You Can't Always Get What You Want",
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -998,11 +990,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 448720,
+        'duration_ms': 448720,
         'uri': 'spotify:track:6lFZbCc7pn6Lme1NP7qQqQ'
     },
     {
-        'songName': 'Hey Joe',
+        'name': 'Hey Joe',
         'artists': [
             {
                 'name': 'Jimi Hendrix'
@@ -1010,11 +1002,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 210160,
+        'duration_ms': 210160,
         'uri': 'spotify:track:0NWPxcsf5vdjdiFUI8NgkP'
     },
     {
-        'songName': 'Sex on Fire',
+        'name': 'Sex on Fire',
         'artists': [
             {
                 'name': 'Kings of Leon'
@@ -1022,11 +1014,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 203346,
+        'duration_ms': 203346,
         'uri': 'spotify:track:5A1FmxbYVRZKy4nc16MAue'
     },
     {
-        'songName': 'I Want to Hold Your Hand',
+        'name': 'I Want to Hold Your Hand',
         'artists': [
             {
                 'name': 'The Beatles'
@@ -1034,11 +1026,11 @@ const preselectedClips = [
         ],
         'startTime': 22,
         'clipLength': 8,
-        'durationMs': 146720,
+        'duration_ms': 146720,
         'uri': 'spotify:track:5Qe7NHxeLAn8KoLTNLSdwe'
     },
     {
-        'songName': "Can't Feel My Face",
+        'name': "Can't Feel My Face",
         'artists': [
             {
                 'name': 'The Weeknd'
@@ -1046,11 +1038,11 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 213520,
+        'duration_ms': 213520,
         'uri': 'spotify:track:22VdIZQfgXJea34mQxlt81'
     },
     {
-        'songName': 'Heroes',
+        'name': 'Heroes',
         'artists': [
             {
                 'name': 'David Bowie'
@@ -1058,11 +1050,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 371413,
+        'duration_ms': 371413,
         'uri': 'spotify:track:7Jh1bpe76CNTCgdgAdBw4Z'
     },
     {
-        'songName': 'Piano Man',
+        'name': 'Piano Man',
         'artists': [
             {
                 'name': 'Billy Joel'
@@ -1070,11 +1062,11 @@ const preselectedClips = [
         ],
         'startTime': 76,
         'clipLength': 8,
-        'durationMs': 339000,
+        'duration_ms': 339000,
         'uri': 'spotify:track:70C4NyhjD5OZUMzvWZ3njJ'
     },
     {
-        'songName': 'I Want to Break Free',
+        'name': 'I Want to Break Free',
         'artists': [
             {
                 'name': 'Queen'
@@ -1082,11 +1074,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 258013,
+        'duration_ms': 258013,
         'uri': 'spotify:track:2AkmdLbVKS1steeZdy8H1l'
     },
     {
-        'songName': 'Life on Mars?',
+        'name': 'Life on Mars?',
         'artists': [
             {
                 'name': 'David Bowie'
@@ -1094,11 +1086,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 235986,
+        'duration_ms': 235986,
         'uri': 'spotify:track:3ZE3wv8V3w2T2f7nOCjV0N'
     },
     {
-        'songName': 'Electric Feel',
+        'name': 'Electric Feel',
         'artists': [
             {
                 'name': 'MGMT'
@@ -1106,11 +1098,11 @@ const preselectedClips = [
         ],
         'startTime': 66,
         'clipLength': 8,
-        'durationMs': 229640,
+        'duration_ms': 229640,
         'uri': 'spotify:track:3FtYbEfBqAlGO46NUDQSAt'
     },
     {
-        'songName': 'Bitter Sweet Symphony',
+        'name': 'Bitter Sweet Symphony',
         'artists': [
             {
                 'name': 'The Verve'
@@ -1118,11 +1110,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 357266,
+        'duration_ms': 357266,
         'uri': 'spotify:track:57iDDD9N9tTWe75x6qhStw'
     },
     {
-        'songName': 'Scar Tissue',
+        'name': 'Scar Tissue',
         'artists': [
             {
                 'name': 'Red Hot Chili Peppers'
@@ -1130,11 +1122,11 @@ const preselectedClips = [
         ],
         'startTime': 38,
         'clipLength': 8,
-        'durationMs': 215906,
+        'duration_ms': 215906,
         'uri': 'spotify:track:1G391cbiT3v3Cywg8T7DM1'
     },
     {
-        'songName': 'Proud Mary',
+        'name': 'Proud Mary',
         'artists': [
             {
                 'name': 'Creedence Clearwater Revival'
@@ -1142,11 +1134,11 @@ const preselectedClips = [
         ],
         'startTime': 54,
         'clipLength': 8,
-        'durationMs': 187213,
+        'duration_ms': 187213,
         'uri': 'spotify:track:6pxWv6GV35VGmcPf5dh6CH'
     },
     {
-        'songName': 'Hotel California',
+        'name': 'Hotel California',
         'artists': [
             {
                 'name': 'Eagles'
@@ -1154,11 +1146,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 391376,
+        'duration_ms': 391376,
         'uri': 'spotify:track:40riOy7x9W7GXjyGp4pjAv'
     },
     {
-        'songName': 'Purple Haze',
+        'name': 'Purple Haze',
         'artists': [
             {
                 'name': 'Jimi Hendrix'
@@ -1166,11 +1158,11 @@ const preselectedClips = [
         ],
         'startTime': 72,
         'clipLength': 8,
-        'durationMs': 170813,
+        'duration_ms': 170813,
         'uri': 'spotify:track:0wJoRiX5K5BxlqZTolB2LD'
     },
     {
-        'songName': 'The Sound of Silence',
+        'name': 'The Sound of Silence',
         'artists': [
             {
                 'name': 'Simon & Garfunkel'
@@ -1178,11 +1170,11 @@ const preselectedClips = [
         ],
         'startTime': 34,
         'clipLength': 8,
-        'durationMs': 185413,
+        'duration_ms': 185413,
         'uri': 'spotify:track:5y788ya4NvwhBznoDIcXwK'
     },
     {
-        'songName': 'Wake Me Up',
+        'name': 'Wake Me Up',
         'artists': [
             {
                 'name': 'Avicii'
@@ -1190,11 +1182,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 247426,
+        'duration_ms': 247426,
         'uri': 'spotify:track:0nrRP2bk19rLc0orkWPQk2'
     },
     {
-        'songName': 'The Man Who Sold the World',
+        'name': 'The Man Who Sold the World',
         'artists': [
             {
                 'name': 'Nirvana'
@@ -1202,11 +1194,11 @@ const preselectedClips = [
         ],
         'startTime': 40,
         'clipLength': 8,
-        'durationMs': 261093,
+        'duration_ms': 261093,
         'uri': 'spotify:track:15VRO9CQwMpbqUYA7e6Hwg'
     },
     {
-        'songName': 'No Woman, No Cry',
+        'name': 'No Woman, No Cry',
         'artists': [
             {
                 'name': 'Bob Marley & The Wailers'
@@ -1214,11 +1206,11 @@ const preselectedClips = [
         ],
         'startTime': 100,
         'clipLength': 8,
-        'durationMs': 427800,
+        'duration_ms': 427800,
         'uri': 'spotify:track:423hwXFgoN8RYmqLoLuVvY'
     },
     {
-        'songName': 'Tears in Heaven',
+        'name': 'Tears in Heaven',
         'artists': [
             {
                 'name': 'Eric Clapton'
@@ -1226,11 +1218,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 271760,
+        'duration_ms': 271760,
         'uri': 'spotify:track:1kgdslQYmeTR4thk9whoRw'
     },
     {
-        'songName': 'Brown Eyed Girl',
+        'name': 'Brown Eyed Girl',
         'artists': [
             {
                 'name': 'Van Morrison'
@@ -1238,11 +1230,11 @@ const preselectedClips = [
         ],
         'startTime': 34,
         'clipLength': 8,
-        'durationMs': 183306,
+        'duration_ms': 183306,
         'uri': 'spotify:track:3yrSvpt2l1xhsV9Em88Pul'
     },
     {
-        'songName': 'Billie Jean',
+        'name': 'Billie Jean',
         'artists': [
             {
                 'name': 'Michael Jackson'
@@ -1250,11 +1242,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 294226,
+        'duration_ms': 294226,
         'uri': 'spotify:track:7J1uxwnxfQLu4APicE5Rnj'
     },
     {
-        'songName': 'Born to Be Wild',
+        'name': 'Born to Be Wild',
         'artists': [
             {
                 'name': 'Steppenwolf'
@@ -1262,11 +1254,11 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 210373,
+        'duration_ms': 210373,
         'uri': 'spotify:track:63OFKbMaZSDZ4wtesuuq6f'
     },
     {
-        'songName': 'Iris',
+        'name': 'Iris',
         'artists': [
             {
                 'name': 'Goo Goo Dolls'
@@ -1274,11 +1266,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 289533,
+        'duration_ms': 289533,
         'uri': 'spotify:track:6Qyc6fS4DsZjB2mRW9DsQs'
     },
     {
-        'songName': 'Take On Me',
+        'name': 'Take On Me',
         'artists': [
             {
                 'name': 'a-ha'
@@ -1286,11 +1278,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 225280,
+        'duration_ms': 225280,
         'uri': 'spotify:track:2WfaOiMkCvy7F5fcp2zZ8L'
     },
     {
-        'songName': 'Enter Sandman',
+        'name': 'Enter Sandman',
         'artists': [
             {
                 'name': 'Metallica'
@@ -1298,11 +1290,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 331266,
+        'duration_ms': 331266,
         'uri': 'spotify:track:5sICkBXVmaCQk5aISGR3x1'
     },
     {
-        'songName': 'Eye of the Tiger',
+        'name': 'Eye of the Tiger',
         'artists': [
             {
                 'name': 'Survivor'
@@ -1310,11 +1302,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 243773,
+        'duration_ms': 243773,
         'uri': 'spotify:track:2HHtWyy5CgaQbC7XSoOb0e'
     },
     {
-        'songName': 'Take Me to Church',
+        'name': 'Take Me to Church',
         'artists': [
             {
                 'name': 'Hozier'
@@ -1322,11 +1314,11 @@ const preselectedClips = [
         ],
         'startTime': 74,
         'clipLength': 8,
-        'durationMs': 241688,
+        'duration_ms': 241688,
         'uri': 'spotify:track:3dYD57lRAUcMHufyqn9GcI'
     },
     {
-        'songName': 'Blue Monday',
+        'name': 'Blue Monday',
         'artists': [
             {
                 'name': 'New Order'
@@ -1334,11 +1326,11 @@ const preselectedClips = [
         ],
         'startTime': 88,
         'clipLength': 8,
-        'durationMs': 449160,
+        'duration_ms': 449160,
         'uri': 'spotify:track:6hHc7Pks7wtBIW8Z6A0iFq'
     },
     {
-        'songName': 'Money for Nothing',
+        'name': 'Money for Nothing',
         'artists': [
             {
                 'name': 'Dire Straits'
@@ -1346,11 +1338,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 504333,
+        'duration_ms': 504333,
         'uri': 'spotify:track:4bO6DljpuAeQh6HS20i0I5'
     },
     {
-        'songName': 'Rocket Man',
+        'name': 'Rocket Man',
         'artists': [
             {
                 'name': 'Elton John'
@@ -1358,11 +1350,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 281613,
+        'duration_ms': 281613,
         'uri': 'spotify:track:3gdewACMIVMEWVbyb8O9sY'
     },
     {
-        'songName': 'Born in the U.S.A.',
+        'name': 'Born in the U.S.A.',
         'artists': [
             {
                 'name': 'Bruce Springsteen'
@@ -1370,11 +1362,11 @@ const preselectedClips = [
         ],
         'startTime': 30,
         'clipLength': 8,
-        'durationMs': 278680,
+        'duration_ms': 278680,
         'uri': 'spotify:track:0dOg1ySSI7NkpAe89Zo0b9'
     },
     {
-        'songName': 'Red Red Wine',
+        'name': 'Red Red Wine',
         'artists': [
             {
                 'name': 'UB40'
@@ -1382,11 +1374,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 178333,
+        'duration_ms': 178333,
         'uri': 'spotify:track:3sFEGvMPkY8Ti97K94Pwp9'
     },
     {
-        'songName': 'Another One Bites the Dust',
+        'name': 'Another One Bites the Dust',
         'artists': [
             {
                 'name': 'Queen'
@@ -1394,11 +1386,11 @@ const preselectedClips = [
         ],
         'startTime': 44,
         'clipLength': 8,
-        'durationMs': 214653,
+        'duration_ms': 214653,
         'uri': 'spotify:track:5vdp5UmvTsnMEMESIF2Ym7'
     },
     {
-        'songName': 'Good Vibrations',
+        'name': 'Good Vibrations',
         'artists': [
             {
                 'name': 'The Beach Boys'
@@ -1406,11 +1398,11 @@ const preselectedClips = [
         ],
         'startTime': 68,
         'clipLength': 8,
-        'durationMs': 219026,
+        'duration_ms': 219026,
         'uri': 'spotify:track:5t9KYe0Fhd5cW6UYT4qP8f'
     },
     {
-        'songName': 'Crazy Train',
+        'name': 'Crazy Train',
         'artists': [
             {
                 'name': 'Ozzy Osbourne'
@@ -1418,11 +1410,11 @@ const preselectedClips = [
         ],
         'startTime': 66,
         'clipLength': 8,
-        'durationMs': 293183,
+        'duration_ms': 293183,
         'uri': 'spotify:track:7ACxUo21jtTHzy7ZEV56vU'
     },
     {
-        'songName': 'Take It to the Limit',
+        'name': 'Take It to the Limit',
         'artists': [
             {
                 'name': 'Eagles'
@@ -1430,11 +1422,11 @@ const preselectedClips = [
         ],
         'startTime': 72,
         'clipLength': 8,
-        'durationMs': 287090,
+        'duration_ms': 287090,
         'uri': 'spotify:track:2cWHN0WK52RGAWHgaDamUA'
     },
     {
-        'songName': 'Imagine',
+        'name': 'Imagine',
         'artists': [
             {
                 'name': 'John Lennon'
@@ -1442,11 +1434,11 @@ const preselectedClips = [
         ],
         'startTime': 32,
         'clipLength': 8,
-        'durationMs': 187866,
+        'duration_ms': 187866,
         'uri': 'spotify:track:7pKfPomDEeI4TPT6EOYjn9'
     },
     {
-        'songName': 'Tiny Dancer',
+        'name': 'Tiny Dancer',
         'artists': [
             {
                 'name': 'Elton John'
@@ -1454,11 +1446,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 377093,
+        'duration_ms': 377093,
         'uri': 'spotify:track:2TVxnKdb3tqe1nhQWwwZCO'
     },
     {
-        'songName': 'Come Together',
+        'name': 'Come Together',
         'artists': [
             {
                 'name': 'The Beatles'
@@ -1466,11 +1458,11 @@ const preselectedClips = [
         ],
         'startTime': 22,
         'clipLength': 8,
-        'durationMs': 259946,
+        'duration_ms': 259946,
         'uri': 'spotify:track:2EqlS6tkEnglzr7tkKAAYD'
     },
     {
-        'songName': 'Purple Rain',
+        'name': 'Purple Rain',
         'artists': [
             {
                 'name': 'Prince'
@@ -1478,11 +1470,11 @@ const preselectedClips = [
         ],
         'startTime': 120,
         'clipLength': 8,
-        'durationMs': 521866,
+        'duration_ms': 521866,
         'uri': 'spotify:track:1uvyZBs4IZYRebHIB1747m'
     },
     {
-        'songName': 'Stairway to Heaven',
+        'name': 'Stairway to Heaven',
         'artists': [
             {
                 'name': 'Led Zeppelin'
@@ -1490,11 +1482,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 482830,
+        'duration_ms': 482830,
         'uri': 'spotify:track:5CQ30WqJwcep0pYcV4AMNc'
     },
     {
-        'songName': 'Like a Rolling Stone',
+        'name': 'Like a Rolling Stone',
         'artists': [
             {
                 'name': 'Bob Dylan'
@@ -1502,11 +1494,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 369600,
+        'duration_ms': 369600,
         'uri': 'spotify:track:3AhXZa8sUQht0UEdBJgpGc'
     },
     {
-        'songName': 'Bohemian Rhapsody',
+        'name': 'Bohemian Rhapsody',
         'artists': [
             {
                 'name': 'Queen'
@@ -1514,11 +1506,11 @@ const preselectedClips = [
         ],
         'startTime': 110,
         'clipLength': 8,
-        'durationMs': 354320,
+        'duration_ms': 354320,
         'uri': 'spotify:track:4u7EnebtmKWzUH433cf5Qv'
     },
     {
-        'songName': 'Walk This Way',
+        'name': 'Walk This Way',
         'artists': [
             {
                 'name': 'Aerosmith'
@@ -1526,11 +1518,11 @@ const preselectedClips = [
         ],
         'startTime': 38,
         'clipLength': 8,
-        'durationMs': 220310,
+        'duration_ms': 220310,
         'uri': 'spotify:track:4JfuiOWlWCkjP6OKurHjSn'
     },
     {
-        'songName': 'Rock You Like a Hurricane',
+        'name': 'Rock You Like a Hurricane',
         'artists': [
             {
                 'name': 'Scorpions'
@@ -1538,11 +1530,11 @@ const preselectedClips = [
         ],
         'startTime': 58,
         'clipLength': 8,
-        'durationMs': 253666,
+        'duration_ms': 253666,
         'uri': 'spotify:track:58dBJivB6lbAY5irCuAxJX'
     },
     {
-        'songName': "Don't Fear the Reaper",
+        'name': "Don't Fear the Reaper",
         'artists': [
             {
                 'name': 'Blue Öyster Cult'
@@ -1550,11 +1542,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 308120,
+        'duration_ms': 308120,
         'uri': 'spotify:track:5QTxFnGygVM4jFQiBovmRo'
     },
     {
-        'songName': 'Under the Bridge',
+        'name': 'Under the Bridge',
         'artists': [
             {
                 'name': 'Red Hot Chili Peppers'
@@ -1562,11 +1554,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 264306,
+        'duration_ms': 264306,
         'uri': 'spotify:track:3d9DChrdc6BOeFsbrZ3Is0'
     },
     {
-        'songName': 'Goodbye Yellow Brick Road',
+        'name': 'Goodbye Yellow Brick Road',
         'artists': [
             {
                 'name': 'Elton John'
@@ -1574,11 +1566,11 @@ const preselectedClips = [
         ],
         'startTime': 54,
         'clipLength': 8,
-        'durationMs': 192826,
+        'duration_ms': 192826,
         'uri': 'spotify:track:4IRHwIZHzlHT1FQpRa5RdE'
     },
     {
-        'songName': 'Lola',
+        'name': 'Lola',
         'artists': [
             {
                 'name': 'The Kinks'
@@ -1586,11 +1578,11 @@ const preselectedClips = [
         ],
         'startTime': 70,
         'clipLength': 8,
-        'durationMs': 241991,
+        'duration_ms': 241991,
         'uri': 'spotify:track:4Tjs8b6jL1s18sjURJtswp'
     },
     {
-        'songName': 'Jump',
+        'name': 'Jump',
         'artists': [
             {
                 'name': 'Van Halen'
@@ -1598,11 +1590,11 @@ const preselectedClips = [
         ],
         'startTime': 68,
         'clipLength': 8,
-        'durationMs': 241599,
+        'duration_ms': 241599,
         'uri': 'spotify:track:7N3PAbqfTjSEU1edb2tY8j'
     },
     {
-        'songName': "I'm Still Standing",
+        'name': "I'm Still Standing",
         'artists': [
             {
                 'name': 'Elton John'
@@ -1610,11 +1602,11 @@ const preselectedClips = [
         ],
         'startTime': 62,
         'clipLength': 8,
-        'durationMs': 183440,
+        'duration_ms': 183440,
         'uri': 'spotify:track:1jDJFeK9x3OZboIAHsY9k2'
     },
     {
-        'songName': 'Shout',
+        'name': 'Shout',
         'artists': [
             {
                 'name': 'Tears for Fears'
@@ -1622,11 +1614,11 @@ const preselectedClips = [
         ],
         'startTime': 75,
         'clipLength': 8,
-        'durationMs': 393666,
+        'duration_ms': 393666,
         'uri': 'spotify:track:2gQaQUhDCNGfBVXTvxAmXQ'
     },
     {
-        'songName': 'We Will Rock You',
+        'name': 'We Will Rock You',
         'artists': [
             {
                 'name': 'Queen'
@@ -1634,11 +1626,11 @@ const preselectedClips = [
         ],
         'startTime': 24,
         'clipLength': 8,
-        'durationMs': 122066,
+        'duration_ms': 122066,
         'uri': 'spotify:track:4pbJqGIASGPr0ZpGpnWkDn'
     },
     {
-        'songName': 'All Along the Watchtower',
+        'name': 'All Along the Watchtower',
         'artists': [
             {
                 'name': 'Jimi Hendrix'
@@ -1646,11 +1638,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 240800,
+        'duration_ms': 240800,
         'uri': 'spotify:track:2aoo2jlRnM3A0NyLQqMN2f'
     },
     {
-        'songName': 'Back in Black',
+        'name': 'Back in Black',
         'artists': [
             {
                 'name': 'AC/DC'
@@ -1658,11 +1650,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 255493,
+        'duration_ms': 255493,
         'uri': 'spotify:track:08mG3Y1vljYA6bvDt4Wqkj'
     },
     {
-        'songName': 'Barracuda',
+        'name': 'Barracuda',
         'artists': [
             {
                 'name': 'Heart'
@@ -1670,11 +1662,11 @@ const preselectedClips = [
         ],
         'startTime': 72,
         'clipLength': 8,
-        'durationMs': 261933,
+        'duration_ms': 261933,
         'uri': 'spotify:track:4KfSdst7rW39C0sfhArdrz'
     },
     {
-        'songName': 'Paranoid Android',
+        'name': 'Paranoid Android',
         'artists': [
             {
                 'name': 'Radiohead'
@@ -1682,11 +1674,11 @@ const preselectedClips = [
         ],
         'startTime': 80,
         'clipLength': 8,
-        'durationMs': 387213,
+        'duration_ms': 387213,
         'uri': 'spotify:track:6LgJvl0Xdtc73RJ1mmpotq'
     },
     {
-        'songName': 'You Shook Me All Night Long',
+        'name': 'You Shook Me All Night Long',
         'artists': [
             {
                 'name': 'AC/DC'
@@ -1694,11 +1686,11 @@ const preselectedClips = [
         ],
         'startTime': 66,
         'clipLength': 8,
-        'durationMs': 210173,
+        'duration_ms': 210173,
         'uri': 'spotify:track:2SiXAy7TuUkycRVbbWDEpo'
     },
     {
-        'songName': "Don't Speak",
+        'name': "Don't Speak",
         'artists': [
             {
                 'name': 'No Doubt'
@@ -1706,11 +1698,11 @@ const preselectedClips = [
         ],
         'startTime': 54,
         'clipLength': 8,
-        'durationMs': 263560,
+        'duration_ms': 263560,
         'uri': 'spotify:track:6urCAbunOQI4bLhmGpX7iS'
     },
     {
-        'songName': 'You Give Love a Bad Name',
+        'name': 'You Give Love a Bad Name',
         'artists': [
             {
                 'name': 'Bon Jovi'
@@ -1718,11 +1710,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 222706,
+        'duration_ms': 222706,
         'uri': 'spotify:track:0rmGAIH9LNJewFw7nKzZnc'
     },
     {
-        'songName': "It's My Life",
+        'name': "It's My Life",
         'artists': [
             {
                 'name': 'Bon Jovi'
@@ -1730,11 +1722,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 224493,
+        'duration_ms': 224493,
         'uri': 'spotify:track:0v1XpBHnsbkCn7iJ9Ucr1l'
     },
     {
-        'songName': 'November Rain',
+        'name': 'November Rain',
         'artists': [
             {
                 'name': "Guns N' Roses"
@@ -1742,11 +1734,11 @@ const preselectedClips = [
         ],
         'startTime': 120,
         'clipLength': 8,
-        'durationMs': 536066,
+        'duration_ms': 536066,
         'uri': 'spotify:track:3YRCqOhFifThpSRFJ1VWFM'
     },
     {
-        'songName': 'Highway to Hell',
+        'name': 'Highway to Hell',
         'artists': [
             {
                 'name': 'AC/DC'
@@ -1754,11 +1746,11 @@ const preselectedClips = [
         ],
         'startTime': 75,
         'clipLength': 8,
-        'durationMs': 208400,
+        'duration_ms': 208400,
         'uri': 'spotify:track:2zYzyRzz6pRmhPzyfMEC8s'
     },
     {
-        'songName': 'Dream On',
+        'name': 'Dream On',
         'artists': [
             {
                 'name': 'Aerosmith'
@@ -1766,11 +1758,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 267596,
+        'duration_ms': 267596,
         'uri': 'spotify:track:1xsYj84j7hUDDnTTerGWlH'
     },
     {
-        'songName': 'In the Air Tonight',
+        'name': 'In the Air Tonight',
         'artists': [
             {
                 'name': 'Phil Collins'
@@ -1778,11 +1770,11 @@ const preselectedClips = [
         ],
         'startTime': 120,
         'clipLength': 8,
-        'durationMs': 336453,
+        'duration_ms': 336453,
         'uri': 'spotify:track:18AXbzPzBS8Y3AkgSxzJPb'
     },
     {
-        'songName': 'With or Without You',
+        'name': 'With or Without You',
         'artists': [
             {
                 'name': 'U2'
@@ -1790,11 +1782,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 295515,
+        'duration_ms': 295515,
         'uri': 'spotify:track:6ADSaE87h8Y3lccZlBJdXH'
     },
     {
-        'songName': 'Here Comes the Sun',
+        'name': 'Here Comes the Sun',
         'artists': [
             {
                 'name': 'The Beatles'
@@ -1802,11 +1794,11 @@ const preselectedClips = [
         ],
         'startTime': 38,
         'clipLength': 8,
-        'durationMs': 185733,
+        'duration_ms': 185733,
         'uri': 'spotify:track:6dGnYIeXmHdcikdzNNDMm2'
     },
     {
-        'songName': 'Kashmir',
+        'name': 'Kashmir',
         'artists': [
             {
                 'name': 'Led Zeppelin'
@@ -1814,11 +1806,11 @@ const preselectedClips = [
         ],
         'startTime': 105,
         'clipLength': 8,
-        'durationMs': 517125,
+        'duration_ms': 517125,
         'uri': 'spotify:track:6Vjk8MNXpQpi0F4BefdTyq'
     },
     {
-        'songName': 'Sharp Dressed Man',
+        'name': 'Sharp Dressed Man',
         'artists': [
             {
                 'name': 'ZZ Top'
@@ -1826,11 +1818,11 @@ const preselectedClips = [
         ],
         'startTime': 66,
         'clipLength': 8,
-        'durationMs': 258026,
+        'duration_ms': 258026,
         'uri': 'spotify:track:0bRNszTbTFLNlunAeh7eom'
     },
     {
-        'songName': "Jumpin' Jack Flash",
+        'name': "Jumpin' Jack Flash",
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -1838,11 +1830,11 @@ const preselectedClips = [
         ],
         'startTime': 45,
         'clipLength': 8,
-        'durationMs': 223289,
+        'duration_ms': 223289,
         'uri': 'spotify:track:1GOdYykgw2W0OcjPANvwgE'
     },
     {
-        'songName': 'Rock and Roll All Nite',
+        'name': 'Rock and Roll All Nite',
         'artists': [
             {
                 'name': 'Kiss'
@@ -1850,11 +1842,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 168840,
+        'duration_ms': 168840,
         'uri': 'spotify:track:6KTv0Z8BmVqM7DPxbGzpVC'
     },
     {
-        'songName': "Livin' on a Prayer",
+        'name': "Livin' on a Prayer",
         'artists': [
             {
                 'name': 'Bon Jovi'
@@ -1862,11 +1854,11 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 249293,
+        'duration_ms': 249293,
         'uri': 'spotify:track:37ZJ0p5Jm13JPevGcx4SkF'
     },
     {
-        'songName': 'Paint It, Black',
+        'name': 'Paint It, Black',
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -1874,11 +1866,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 202266,
+        'duration_ms': 202266,
         'uri': 'spotify:track:63T7DJ1AFDD6Bn8VzG6JE8'
     },
     {
-        'songName': 'Shook Ones, Pt. II',
+        'name': 'Shook Ones, Pt. II',
         'artists': [
             {
                 'name': 'Mobb Deep'
@@ -1886,11 +1878,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 325506,
+        'duration_ms': 325506,
         'uri': 'spotify:track:33ZXjLCpiINn8eQIDYEPTD'
     },
     {
-        'songName': 'Whole Lotta Love',
+        'name': 'Whole Lotta Love',
         'artists': [
             {
                 'name': 'Led Zeppelin'
@@ -1898,11 +1890,11 @@ const preselectedClips = [
         ],
         'startTime': 60,
         'clipLength': 8,
-        'durationMs': 333893,
+        'duration_ms': 333893,
         'uri': 'spotify:track:0hCB0YR03f6AmQaHbwWDe8'
     },
     {
-        'songName': 'Born to Run',
+        'name': 'Born to Run',
         'artists': [
             {
                 'name': 'Bruce Springsteen'
@@ -1910,11 +1902,11 @@ const preselectedClips = [
         ],
         'startTime': 100,
         'clipLength': 8,
-        'durationMs': 269920,
+        'duration_ms': 269920,
         'uri': 'spotify:track:6hTcuIQa0sxrrByu9wTD7s'
     },
     {
-        'songName': 'Layla',
+        'name': 'Layla',
         'artists': [
             {
                 'name': 'Derek & The Dominos'
@@ -1922,11 +1914,11 @@ const preselectedClips = [
         ],
         'startTime': 110,
         'clipLength': 8,
-        'durationMs': 423840,
+        'duration_ms': 423840,
         'uri': 'spotify:track:2kkvB3RNRzwjFdGhaUA0tz'
     },
     {
-        'songName': 'Superstition',
+        'name': 'Superstition',
         'artists': [
             {
                 'name': 'Stevie Wonder'
@@ -1934,11 +1926,11 @@ const preselectedClips = [
         ],
         'startTime': 48,
         'clipLength': 8,
-        'durationMs': 245493,
+        'duration_ms': 245493,
         'uri': 'spotify:track:1h2xVEoJORqrg71HocgqXd'
     },
     {
-        'songName': "Can't Help Falling in Love",
+        'name': "Can't Help Falling in Love",
         'artists': [
             {
                 'name': 'Elvis Presley'
@@ -1946,11 +1938,11 @@ const preselectedClips = [
         ],
         'startTime': 50,
         'clipLength': 8,
-        'durationMs': 182360,
+        'duration_ms': 182360,
         'uri': 'spotify:track:44AyOl4qVkzS48vBsbNXaC'
     },
     {
-        'songName': "Sweet Child O' Mine",
+        'name': "Sweet Child O' Mine",
         'artists': [
             {
                 'name': "Guns N' Roses"
@@ -1958,11 +1950,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 356066,
+        'duration_ms': 356066,
         'uri': 'spotify:track:7snQQk1zcKl8gZ92AnueZW'
     },
     {
-        'songName': 'American Pie',
+        'name': 'American Pie',
         'artists': [
             {
                 'name': 'Don McLean'
@@ -1970,11 +1962,11 @@ const preselectedClips = [
         ],
         'startTime': 98,
         'clipLength': 8,
-        'durationMs': 516893,
+        'duration_ms': 516893,
         'uri': 'spotify:track:1fDsrQ23eTAVFElUMaf38X'
     },
     {
-        'songName': "Baba O'Riley",
+        'name': "Baba O'Riley",
         'artists': [
             {
                 'name': 'The Who'
@@ -1982,11 +1974,11 @@ const preselectedClips = [
         ],
         'startTime': 90,
         'clipLength': 8,
-        'durationMs': 300400,
+        'duration_ms': 300400,
         'uri': 'spotify:track:3qiyyUfYe7CRYLucrPmulD'
     },
     {
-        'songName': 'The Boys Are Back in Town',
+        'name': 'The Boys Are Back in Town',
         'artists': [
             {
                 'name': 'Thin Lizzy'
@@ -1994,11 +1986,11 @@ const preselectedClips = [
         ],
         'startTime': 52,
         'clipLength': 8,
-        'durationMs': 266720,
+        'duration_ms': 266720,
         'uri': 'spotify:track:43DeSV93pJPT4lCZaWZ6b1'
     },
     {
-        'songName': 'Start Me Up',
+        'name': 'Start Me Up',
         'artists': [
             {
                 'name': 'The Rolling Stones'
@@ -2006,11 +1998,11 @@ const preselectedClips = [
         ],
         'startTime': 38,
         'clipLength': 8,
-        'durationMs': 213066,
+        'duration_ms': 213066,
         'uri': 'spotify:track:7HKez549fwJQDzx3zLjHKC'
     },
     {
-        'songName': 'We Are the Champions',
+        'name': 'We Are the Champions',
         'artists': [
             {
                 'name': 'Queen'
@@ -2018,11 +2010,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 179200,
+        'duration_ms': 179200,
         'uri': 'spotify:track:1lCRw5FEZ1gPDNPzy1K4zW'
     },
     {
-        'songName': "For What It's Worth",
+        'name': "For What It's Worth",
         'artists': [
             {
                 'name': 'Buffalo Springfield'
@@ -2030,11 +2022,11 @@ const preselectedClips = [
         ],
         'startTime': 35,
         'clipLength': 8,
-        'durationMs': 153693,
+        'duration_ms': 153693,
         'uri': 'spotify:track:1qRA5BS78u3gME0loMl9AA'
     },
     {
-        'songName': 'Proud Mary',
+        'name': 'Proud Mary',
         'artists': [
             {
                 'name': 'Creedence Clearwater Revival'
@@ -2042,11 +2034,11 @@ const preselectedClips = [
         ],
         'startTime': 55,
         'clipLength': 8,
-        'durationMs': 187213,
+        'duration_ms': 187213,
         'uri': 'spotify:track:6pxWv6GV35VGmcPf5dh6CH'
     },
     {
-        'songName': 'Layla',
+        'name': 'Layla',
         'artists': [
             {
                 'name': 'Derek & The Dominos'
@@ -2054,11 +2046,11 @@ const preselectedClips = [
         ],
         'startTime': 110,
         'clipLength': 8,
-        'durationMs': 423840,
+        'duration_ms': 423840,
         'uri': 'spotify:track:2kkvB3RNRzwjFdGhaUA0tz'
     },
     {
-        'songName': "Livin' on a Prayer",
+        'name': "Livin' on a Prayer",
         'artists': [
             {
                 'name': 'Bon Jovi'
@@ -2066,7 +2058,7 @@ const preselectedClips = [
         ],
         'startTime': 65,
         'clipLength': 8,
-        'durationMs': 249293,
+        'duration_ms': 249293,
         'uri': 'spotify:track:37ZJ0p5Jm13JPevGcx4SkF'
     }
 ];

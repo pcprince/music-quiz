@@ -102,7 +102,7 @@ function revealSong (index, colour) {
 
     const clip = unguessedClips[index];
 
-    songNameSpans[clip.index].innerText = clip.songName;
+    songNameSpans[clip.index].innerText = clip.name;
 
     songNameSpans[clip.index].style.color = colour;
     hyphenSpans[clip.index].style.color = colour;
@@ -227,7 +227,7 @@ function checkSongGuess (guess) {
 
     unguessedClips.forEach((clip, index) => {
 
-        const isMatch = isCloseMatch(guess, clip.songName);
+        const isMatch = isCloseMatch(guess, clip.name);
 
         if (isMatch) {
 
@@ -241,7 +241,7 @@ function checkSongGuess (guess) {
 
         // Let user type final letter if that is the only difference
 
-        const likelyClipName = cleanString(unguessedClips[matchIndex].songName);
+        const likelyClipName = cleanString(unguessedClips[matchIndex].name);
 
         if (likelyClipName.substring(0, likelyClipName.length - 1) === cleanString(guess)) {
 

@@ -736,3 +736,5 @@ window.onSpotifyWebPlaybackSDKReady = authorise;
 // https://developer.spotify.com/dashboard
 
 // TODO: Album mode
+
+// FIXME: Remove duplicate songs
