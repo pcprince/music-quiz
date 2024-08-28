@@ -12,6 +12,8 @@ const preselectedClips = [
                 'name': 'David Bowie'
             }
         ],
+        'startTime': 30,
+        'clipLength': 8,
         'duration_ms': 274746,
         'uri': 'spotify:track:2EC9IJj7g0mN1Q5VrZkiYY'
     },
@@ -22,6 +24,8 @@ const preselectedClips = [
                 'name': 'Aerosmith'
             }
         ],
+        'startTime': 50,
+        'clipLength': 8,
         'duration_ms': 274088,
         'uri': 'spotify:track:73TxYZd0lBCVRrHawrAglA'
     },
@@ -32,6 +36,8 @@ const preselectedClips = [
                 'name': 'Radiohead'
             }
         ],
+        'startTime': 55,
+        'clipLength': 8,
         'duration_ms': 264066,
         'uri': 'spotify:track:63OQupATfueTdZMWTxW03A'
     },
@@ -42,6 +48,8 @@ const preselectedClips = [
                 'name': 'Talking Heads'
             }
         ],
+        'startTime': 42,
+        'clipLength': 8,
         'duration_ms': 259906,
         'uri': 'spotify:track:38Ngied9rBORlAbLYNCl4k'
     },
