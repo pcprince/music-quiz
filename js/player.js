@@ -201,6 +201,48 @@ function endProgressBarLoop () {
 
 }
 
+function stopCurrentClipAndRun(callback) {
+
+    // Clear any existing timeouts
+    clearTimeout(clipTimeout);
+
+    // Stop the playback using the Spotify API
+    fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(response => {
+
+        if (response.ok) {
+
+            console.log(response);
+
+            // Ensure playback is stopped
+            isStopped = true;
+
+            // Run the provided callback function
+            if (typeof callback === 'function') {
+
+                callback();
+
+            }
+
+        } else {
+
+            throw new Error('Error stopping track');
+
+        }
+
+    }).catch(error => {
+
+        console.error(error);
+
+    });
+
+}
+
 function playClip (trackUri, startTime, clipLength) {
 
     stopButton.disabled = false;
@@ -249,7 +291,16 @@ function playClip (trackUri, startTime, clipLength) {
                 if (clipLength) {
 
                     startProgressBarLoop();
-                    clipTimeout = setTimeout(nextClip, clipLength * 1000);
+                    clipTimeout = setTimeout(() => {
+
+                        stopCurrentClipAndRun(() => {
+
+                            console.log('Clip timed out. Moving to next clip.');
+                            nextClip();
+
+                        });
+
+                    }, clipLength * 1000);
 
                 }
 
@@ -388,8 +439,6 @@ function previousClip () {
 }
 
 function nextClip () {
-
-    clearTimeout(clipTimeout);
 
     if (currentClipIndex < songClips.length - 1) {
 
