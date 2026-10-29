@@ -9,7 +9,6 @@
 /* global token, songClips, unguessedClips, gameStarted */
 /* global helpButton */
 
-// Define browser elements at the top of the script
 const stopButton = document.getElementById('stop-button');
 const resumeButton = document.getElementById('resume-button');
 
@@ -27,12 +26,17 @@ let clipTimeout;
 let isStopped = false;
 let player;
 let deviceId;
-
-let retryStopCount = 0;
-const MAX_STOP_ATTEMPTS = 3;
+let controlsBound = false;
 
 let retryPlaybackCount = 0;
 const MAX_PLAYBACK_ATTEMPTS = 3;
+const MAX_STOP_ATTEMPTS = 3;
+
+function sleep (ms) {
+
+    return new Promise(resolve => setTimeout(resolve, ms));
+
+}
 
 function playSpecificClip (index) {
 
@@ -82,6 +86,12 @@ function playAll () {
 
 function connectToPlayer (readyCallback) {
 
+    if (player) {
+
+        player.disconnect();
+
+    }
+
     player = new Spotify.Player({
         name: 'Spotify Clip Player',
         getOAuthToken: cb => {
@@ -91,8 +101,6 @@ function connectToPlayer (readyCallback) {
         },
         volume: 0.5
     });
-
-    // Error handling
 
     /* eslint-disable padded-blocks, block-spacing */
     player.addListener('initialization_error', ({message}) => {console.error(message);});
@@ -110,12 +118,10 @@ function connectToPlayer (readyCallback) {
 
         if (retryPlaybackCount < MAX_PLAYBACK_ATTEMPTS) {
 
-            // If track fails to play, try again a couple of times with a 1 second delay between each attempt
-
             retryPlaybackCount++;
             console.log('Retrying...');
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await sleep(1000);
 
             playSpecificClip(currentClipIndex);
 
@@ -123,15 +129,13 @@ function connectToPlayer (readyCallback) {
 
             console.error('Max retries reached. Giving up.');
             retryPlaybackCount = 0;
-
             nextClip();
 
         }
 
     });
-    /* eslint-disable padded-blocks, block-spacing */
+    /* eslint-enable padded-blocks, block-spacing */
 
-    // Ready
     player.addListener('ready', ({device_id: id}) => {
 
         deviceId = id;
@@ -140,11 +144,15 @@ function connectToPlayer (readyCallback) {
 
         resetUI();
 
-        stopButton.addEventListener('click', stopClip);
-        resumeButton.addEventListener('click', resumeClip);
+        if (!controlsBound) {
 
-        prevButton.addEventListener('click', previousClip);
-        nextButton.addEventListener('click', nextClip);
+            stopButton.addEventListener('click', stopClip);
+            resumeButton.addEventListener('click', resumeClip);
+            prevButton.addEventListener('click', previousClip);
+            nextButton.addEventListener('click', nextClip);
+            controlsBound = true;
+
+        }
 
         readyCallback();
 
@@ -201,45 +209,66 @@ function endProgressBarLoop () {
 
 }
 
-function stopCurrentClipAndRun(callback) {
+async function pausePlaybackWithRetry () {
 
-    // Clear any existing timeouts
-    clearTimeout(clipTimeout);
+    if (!deviceId || !token) {
 
-    // Stop the playback using the Spotify API
-    fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    }).then(response => {
+        isStopped = true;
+        return true;
 
-        if (response.ok) {
+    }
 
-            console.log(response);
+    for (let attempt = 0; attempt < MAX_STOP_ATTEMPTS; attempt++) {
 
-            // Ensure playback is stopped
-            isStopped = true;
+        try {
 
-            // Run the provided callback function
-            if (typeof callback === 'function') {
+            const response = await fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-                callback();
+            if (response.ok) {
+
+                isStopped = true;
+                return true;
 
             }
 
-        } else {
+        } catch (error) {
 
-            throw new Error('Error stopping track');
+            console.error('Error stopping playback:', error);
 
         }
 
-    }).catch(error => {
+        await sleep(250);
 
-        console.error(error);
+    }
 
-    });
+    return false;
+
+}
+
+async function stopCurrentClipAndRun (callback) {
+
+    clearTimeout(clipTimeout);
+
+    const stopped = await pausePlaybackWithRetry();
+
+    if (!stopped) {
+
+        console.error('Unable to pause playback after maximum retries.');
+        return;
+
+    }
+
+    if (typeof callback === 'function') {
+
+        callback();
+
+    }
 
 }
 
@@ -285,7 +314,6 @@ function playClip (trackUri, startTime, clipLength) {
             if (response.ok) {
 
                 retryPlaybackCount = 0;
-
                 isStopped = false;
 
                 if (clipLength) {
@@ -306,7 +334,7 @@ function playClip (trackUri, startTime, clipLength) {
 
             } else {
 
-                throw new Error('Error playing track', currentClipIndex);
+                throw new Error('Error playing track');
 
             }
 
@@ -315,6 +343,7 @@ function playClip (trackUri, startTime, clipLength) {
     } catch (error) {
 
         console.error(error);
+        return Promise.resolve();
 
     }
 
@@ -326,10 +355,9 @@ function playCurrentClip () {
 
     const clip = songClips[currentClipIndex];
 
-    if (clip.uri) {
+    if (clip && clip.uri) {
 
         updateGuessUI(currentClipIndex);
-
         playClip(clip.uri, clip.startTime, clip.clipLength);
 
     } else {
@@ -344,10 +372,9 @@ function playAllSong () {
 
     const song = songClips[currentClipIndex];
 
-    if (song.uri) {
+    if (song && song.uri) {
 
         updateGuessUI(currentClipIndex);
-
         playClip(song.uri);
 
     } else {
@@ -358,16 +385,7 @@ function playAllSong () {
 
 }
 
-function stopClip () {
-
-    retryStopCount++;
-
-    if (retryStopCount > MAX_STOP_ATTEMPTS) {
-
-        console.error('Failed to stop playback after ' + MAX_STOP_ATTEMPTS + ' attempts. Giving up.');
-        return;
-
-    }
+async function stopClip () {
 
     if (currentClipIndex !== -1) {
 
@@ -380,29 +398,15 @@ function stopClip () {
     setStopResumeShown(false);
 
     clearTimeout(clipTimeout);
-
     endProgressBarLoop();
 
-    fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${deviceId}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((response) => {
+    const stopped = await pausePlaybackWithRetry();
 
-        if (response.ok) {
+    if (!stopped) {
 
-            isStopped = true;
-            retryStopCount = 0;
+        console.error('Failed to stop playback after ' + MAX_STOP_ATTEMPTS + ' attempts. Giving up.');
 
-        } else {
-
-            console.log('Failed to stop clip. Trying again...');
-            stopClip();
-
-        }
-
-    });
+    }
 
 }
 
@@ -459,7 +463,6 @@ function nextClip () {
                 }
 
                 console.log('Skipping clip', currentClipIndex);
-
                 currentClipIndex++;
 
             }
@@ -478,7 +481,7 @@ function nextClip () {
         stopClip();
         endProgressBarLoop();
         fillBar(0);
-        resetUI(); // Reset UI when the last clip finishes
+        resetUI();
 
         resumeButton.disabled = false;
 

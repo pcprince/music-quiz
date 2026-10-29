@@ -20,6 +20,13 @@ function showEmptyProgressBar () {
 
 function createProgressBars (onClick) {
 
+    if (songClips.length === 0) {
+
+        showEmptyProgressBar();
+        return;
+
+    }
+
     emptyProgressBarHolder.style.display = 'none';
 
     progressBars = [];

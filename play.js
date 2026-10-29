@@ -197,7 +197,7 @@ async function getPlayListInformation (playlistId) {
 
     try {
 
-        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}?fields=name,tracks(total)`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -232,9 +232,36 @@ async function getPlayListInformation (playlistId) {
 
 const playlistUrls = [];
 
-function resetStartModal () {
+function parseBoundedInt (value, minValue, maxValue, fallbackValue) {
 
-    startModal.hide();
+    const parsed = Number.parseInt(value, 10);
+
+    if (Number.isNaN(parsed)) {
+
+        return fallbackValue;
+
+    }
+
+    return Math.min(Math.max(parsed, minValue), maxValue);
+
+}
+
+function getSeededOptions (seedInput, offsetInput, seededEnabled) {
+
+    if (!seededEnabled || seedInput.value.length === 0) {
+
+        return {};
+
+    }
+
+    return {
+        seed: seedInput.value,
+        offset: parseBoundedInt(offsetInput.value, 0, Number.MAX_SAFE_INTEGER, 0)
+    };
+
+}
+
+function restoreStartModalControls () {
 
     quickplayButton.innerText = 'Play';
     playlistChoosePlayButton.innerText = 'Play';
@@ -244,6 +271,14 @@ function resetStartModal () {
     quickplayButton.disabled = false;
     playlistUrlButton.disabled = false;
 
+    playlistChoosePlayButton.disabled = false;
+    playlistChooseCancelButton.disabled = false;
+
+    playlistUrlAddButton.disabled = false;
+    playlistUrlRemoveButton.disabled = false;
+    playlistUrlPlayButton.disabled = false;
+    playlistUrlCancelButton.disabled = false;
+
     const playlistChooseCheckboxes = document.getElementsByClassName('playlist-choose-checkbox');
 
     for (let i = 0; i < playlistChooseCheckboxes.length; i++) {
@@ -252,13 +287,12 @@ function resetStartModal () {
 
     }
 
-    playlistChoosePlayButton.disabled = false;
-    playlistChooseCancelButton.disabled = false;
+}
 
-    playlistUrlAddButton.disabled = false;
-    playlistUrlRemoveButton.disabled = false;
-    playlistUrlPlayButton.disabled = false;
-    playlistUrlCancelButton.disabled = false;
+function resetStartModal () {
+
+    startModal.hide();
+    restoreStartModalControls();
 
 }
 
@@ -334,22 +368,32 @@ quickplayButton.addEventListener('click', async () => {
         playlistUrlButton.disabled = true;
         quickplayButton.innerText = 'Preparing...';
 
-        const songCount = Math.max(quickplaySongCountInput.value, 1);
+        try {
 
-        let seed, offset;
+            const songCount = parseBoundedInt(quickplaySongCountInput.value, 1, 50, 50);
+            const seededOptions = getSeededOptions(quickplaySeededSeedInput, quickplaySeededNumberInput, quickplaySeededCheckbox.checked);
 
-        if (quickplaySeededCheckbox.checked && quickplaySeededSeedInput.value.length > 0) {
+            const clipCount = await loadClipListFromFile(songCount, seededOptions.seed, seededOptions.offset);
 
-            seed = quickplaySeededSeedInput.value;
-            offset = parseInt(quickplaySeededNumberInput.value);
+            if (clipCount <= 0) {
+
+                displayError(quickplayButton, 'No playable tracks found.');
+                restoreStartModalControls();
+                return;
+
+            }
+
+            const quizLength = parseBoundedInt(quickplayTimeInput.value, 1, 30, 15);
+
+            prepareGame(quizLength);
+
+        } catch (error) {
+
+            console.error('Failed to prepare quickplay:', error);
+            displayError(quickplayButton, 'Failed to prepare quiz.');
+            restoreStartModalControls();
 
         }
-
-        await loadClipListFromFile(songCount, seed, offset);
-
-        const quizLength = Math.max(quickplayTimeInput.value, 1);
-
-        prepareGame(quizLength);
 
     }
 
@@ -407,22 +451,32 @@ playlistChoosePlayButton.addEventListener('click', async () => {
 
         }
 
-        const songCount = Math.max(playlistChooseSongCountInput.value, 1);
+        try {
 
-        let seed, offset;
+            const songCount = parseBoundedInt(playlistChooseSongCountInput.value, 1, 50, 50);
+            const seededOptions = getSeededOptions(playlistChooseSeededSeedInput, playlistChooseSeededNumberInput, playlistChooseSeededCheckbox.checked);
 
-        if (playlistChooseSeededCheckbox.checked && playlistChooseSeededSeedInput.value.length > 0) {
+            const clipCount = await populateClipList(playlistIds, songCount, seededOptions.seed, seededOptions.offset);
 
-            seed = playlistChooseSeededSeedInput.value;
-            offset = parseInt(playlistChooseSeededNumberInput.value);
+            if (clipCount <= 0) {
+
+                displayError(playlistChoosePlayButton, 'No playable tracks found.');
+                restoreStartModalControls();
+                return;
+
+            }
+
+            const quizLength = parseBoundedInt(playlistChooseTimeInput.value, 1, 30, 15);
+
+            prepareGame(quizLength);
+
+        } catch (error) {
+
+            console.error('Failed to prepare chosen playlists:', error);
+            displayError(playlistChoosePlayButton, 'Failed to prepare quiz.');
+            restoreStartModalControls();
 
         }
-
-        await populateClipList(playlistIds, songCount, seed, offset);
-
-        const quizLength = Math.max(playlistChooseTimeInput.value, 1);
-
-        prepareGame(quizLength);
 
     }
 
@@ -453,22 +507,32 @@ playlistUrlPlayButton.addEventListener('click', async () => {
 
         const playlistIdArray = [...playlistUrlSelect.options].map(o => o.value);
 
-        const songCount = Math.max(playlistUrlSongCountInput.value, 1);
+        try {
 
-        let seed, offset;
+            const songCount = parseBoundedInt(playlistUrlSongCountInput.value, 1, 50, 50);
+            const seededOptions = getSeededOptions(playlistUrlSeededSeedInput, playlistUrlSeededNumberInput, playlistUrlSeededCheckbox.checked);
 
-        if (playlistUrlSeededCheckbox.checked && playlistUrlSeededSeedInput.value.length > 0) {
+            const clipCount = await populateClipList(playlistIdArray, songCount, seededOptions.seed, seededOptions.offset);
 
-            seed = playlistUrlSeededSeedInput.value;
-            offset = parseInt(playlistUrlSeededNumberInput.value);
+            if (clipCount <= 0) {
+
+                displayError(playlistUrlPlayButton, 'No playable tracks found.');
+                restoreStartModalControls();
+                return;
+
+            }
+
+            const quizLength = parseBoundedInt(playlistUrlTimeInput.value, 1, 30, 15);
+
+            prepareGame(quizLength);
+
+        } catch (error) {
+
+            console.error('Failed to prepare URL playlists:', error);
+            displayError(playlistUrlPlayButton, 'Failed to prepare quiz.');
+            restoreStartModalControls();
 
         }
-
-        await populateClipList(playlistIdArray, songCount, seed, offset);
-
-        const quizLength = Math.max(playlistUrlTimeInput.value, 1);
-
-        prepareGame(quizLength);
 
     }
 
@@ -501,13 +565,20 @@ async function showStartModalChoose () {
         playlistUrlSongCountInput.disabled = true;
         playlistUrlTimeInput.disabled = true;
 
-        chooseOpened = true;
-
         // Populate playlist choose select
+
+        let loadedPlaylists = 0;
 
         for (let i = 0; i < playlistChooseIds.length; i++) {
 
             const playlistInfo = await getPlayListInformation(playlistChooseIds[i]);
+
+            if (!playlistInfo) {
+
+                console.error('Failed to load playlist metadata for', playlistChooseIds[i]);
+                continue;
+
+            }
 
             // Add a checkbox
 
@@ -528,8 +599,11 @@ async function showStartModalChoose () {
             playlistRow.appendChild(playlistCheckboxLabel);
 
             playlistChooseCheckboxHolder.appendChild(playlistRow);
+            loadedPlaylists++;
 
         }
+
+        chooseOpened = loadedPlaylists > 0;
 
         // Re-enable UI
 
@@ -547,6 +621,14 @@ async function showStartModalChoose () {
 
         playlistUrlSongCountInput.disabled = false;
         playlistUrlTimeInput.disabled = false;
+
+        if (!chooseOpened) {
+
+            displayError(playlistChooseButton, 'Failed to load playlists.');
+            showStartModalHome();
+            return;
+
+        }
 
     }
 
@@ -570,7 +652,7 @@ playlistUrlButton.addEventListener('click', showStartModalUrl);
 playlistChooseCancelButton.addEventListener('click', showStartModalHome);
 playlistUrlCancelButton.addEventListener('click', showStartModalHome);
 
-async function enablePrepareUI() {
+async function enablePrepareUI () {
 
     // Enable buttons
 
@@ -676,8 +758,7 @@ playlistUrlArtistModeCheckbox.addEventListener('change', updateArtistModeUI);
 function matchSongCounts (e) {
 
     const input = e.target;
-    input.value = Math.min(input.value, 50);
-    input.value = Math.max(input.value, 1);
+    input.value = parseBoundedInt(input.value, 1, 50, 50);
 
     quickplaySongCountInput.value = input.value;
     playlistChooseSongCountInput.value = input.value;
@@ -692,8 +773,7 @@ playlistUrlSongCountInput.addEventListener('change', matchSongCounts);
 function matchTimes (e) {
 
     const input = e.target;
-    input.value = Math.min(input.value, 30);
-    input.value = Math.max(input.value, 1);
+    input.value = parseBoundedInt(input.value, 1, 30, 15);
 
     quickplayTimeInput.value = input.value;
     playlistChooseTimeInput.value = input.value;

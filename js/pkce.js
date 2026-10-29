@@ -17,6 +17,31 @@ const authUrl = new URL('https://accounts.spotify.com/authorize');
 let token;
 
 let spotifyReady;
+const ACCESS_TOKEN_KEY = 'access_token';
+const ACCESS_TOKEN_EXPIRY_KEY = 'access_token_expiry';
+
+function getStoredAccessToken () {
+
+    const storedToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const storedExpiryMs = Number(localStorage.getItem(ACCESS_TOKEN_EXPIRY_KEY));
+
+    if (!storedToken || Number.isNaN(storedExpiryMs)) {
+
+        return null;
+
+    }
+
+    if (storedExpiryMs <= Date.now()) {
+
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+        localStorage.removeItem(ACCESS_TOKEN_EXPIRY_KEY);
+        return null;
+
+    }
+
+    return storedToken;
+
+}
 
 async function sha256 (plain) {
 
@@ -78,34 +103,62 @@ async function authorise () {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
 
-    if (code) {
+    if (!code) {
 
-        const codeVerifier = localStorage.getItem('code_verifier');
+        const storedToken = getStoredAccessToken();
 
-        const payload = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                client_id: clientId,
-                grant_type: 'authorization_code',
-                code,
-                redirect_uri: redirectURL,
-                code_verifier: codeVerifier
-            })
-        };
+        if (storedToken) {
 
-        const url = 'https://accounts.spotify.com/api/token';
+            token = storedToken;
+            spotifyReady = true;
+            enablePrepareUI();
+            return;
+
+        }
+
+        redirect();
+        return;
+
+    }
+
+    const codeVerifier = localStorage.getItem('code_verifier');
+
+    if (!codeVerifier) {
+
+        console.error('Missing PKCE code verifier. Redirecting to restart auth flow.');
+        redirect();
+        return;
+
+    }
+
+    const payload = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: redirectURL,
+            code_verifier: codeVerifier
+        })
+    };
+
+    const url = 'https://accounts.spotify.com/api/token';
+
+    try {
 
         const body = await fetch(url, payload);
         const response = await body.json();
 
         if (response.access_token) {
 
-            localStorage.setItem('access_token', response.access_token);
+            const parsedExpiresIn = Number.parseInt(response.expires_in, 10);
+            const expiresInSeconds = Number.isNaN(parsedExpiresIn) ? 3600 : parsedExpiresIn;
 
-            console.log('Obtained access token:', response.access_token);
+            localStorage.setItem(ACCESS_TOKEN_KEY, response.access_token);
+            localStorage.setItem(ACCESS_TOKEN_EXPIRY_KEY, String(Date.now() + (expiresInSeconds * 1000)));
 
             token = response.access_token;
 
@@ -127,9 +180,16 @@ async function authorise () {
 
         }
 
-    } else {
+    } catch (error) {
 
-        redirect();
+        console.error('Failed to exchange Spotify authorization code:', error);
+        console.log('Redirecting to home page in 3 seconds...');
+
+        setTimeout(() => {
+
+            window.location.href = homeURL;
+
+        }, 3000);
 
     }
 

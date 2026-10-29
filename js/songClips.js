@@ -32,6 +32,21 @@ const DISTANCE_FROM_END_MS = 10000;
 
 let songClips = [];
 
+function removeTracksByIndexes (tracks, indexes) {
+
+    indexes.sort((a, b) => b - a);
+
+    for (let i = 0; i < indexes.length; i++) {
+
+        const index = indexes[i];
+
+        console.error('Removing', tracks[index]);
+        tracks.splice(index, 1);
+
+    }
+
+}
+
 function selectRandomClip (durationMs, seed) {
 
     // Ensure that the start time is within valid range
@@ -139,11 +154,17 @@ async function getRandomSongsFromPlaylist (playlistId, numberOfSongs, token, see
 
             const data = await response.json();
 
-            // allTracks.push(...data.items);
-
             for (let i = 0; i < data.items.length; i++) {
 
-                allTracks.push(data.items[i].track);
+                const track = data.items[i].track;
+
+                if (!track || !track.duration_ms || !track.artists || track.artists.length === 0) {
+
+                    continue;
+
+                }
+
+                allTracks.push(track);
 
             }
 
@@ -473,12 +494,7 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         }
 
-        for (let i = 0; i < tracksToBeRemoved.length; i++) {
-
-            console.error('Removing', allTracks[tracksToBeRemoved[i]]);
-            allTracks.splice(tracksToBeRemoved[i], 1);
-
-        }
+        removeTracksByIndexes(allTracks, tracksToBeRemoved);
 
         allTracks = addMissingClipTimes(allTracks, seed);
 
@@ -506,9 +522,12 @@ async function loadClipListFromFile (songCount, seed, offset) {
 
         prepareUI();
 
+        return songClips.length;
+
     } catch (error) {
 
         console.error('Error reading JSON file:', error);
+        return 0;
 
     }
 
@@ -538,7 +557,7 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
         // Assign the remaining tracks to a random playlist
 
         const r = seed ? seededRandom(seed) : Math.random();
-        const remainderIndex = Math.floor(r * (playListCount - 1));
+        const remainderIndex = Math.floor(r * playListCount);
 
         trackCounts[remainderIndex] += remainder;
 
@@ -581,12 +600,7 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
 
         }
 
-        for (let i = 0; i < tracksToBeRemoved.length; i++) {
-
-            console.error('Removing', newSongs[tracksToBeRemoved[i]]);
-            newSongs.splice(tracksToBeRemoved[i], 1);
-
-        }
+        removeTracksByIndexes(newSongs, tracksToBeRemoved);
 
         songClips = songClips.concat(newSongs);
 
@@ -611,6 +625,8 @@ async function populateClipList (playlistIdArray, songCount, seed, offset) {
     createProgressBars(playSpecificClip);
 
     prepareUI();
+
+    return songClips.length;
 
 }
 
